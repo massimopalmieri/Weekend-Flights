@@ -1,12 +1,12 @@
 body {
-  background: ;
+  background: #CAE0C4;
   font-family: 'Courier New', Courier, monospace;
 }
 
 .App {
   max-width: 900px;
   margin: 0 auto;
-  background: #7887AB;
+  background: #7DCED7;
 }
 
 .header {
@@ -17,7 +17,7 @@ body {
   font-size: 20px;
   text-align: center;
   font-weight: bold;
-  color: #000;
+  color: #20465C;
   margin-bottom: 10px;
 }
 
@@ -26,4 +26,17 @@ body {
   color: #061539;
   text-align: center;
   font-weight: bold;
+}
+
+.searchForm {
+  padding: 0 0 20px 0;
+  text-align: center;
+}
+
+.searchForm label {
+  padding: 0 10px;
+}
+
+.searchForm input[type="text"] {
+  background: #3199CB;
 }

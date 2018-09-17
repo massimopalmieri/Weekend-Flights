@@ -10,6 +10,17 @@ class App extends Component {
           <h1>Weekend Flights</h1>
           <h2>Find the best flights for your city break</h2>
         </header>
+        <div className="searchForm">
+          <label>
+            From: 
+            <input type="text" />
+          </label>
+          <label>
+            Weekend: 
+            <input type="text" />
+          </label>
+          <button>Find</button>
+        </div>
       </div>
     );
   }
