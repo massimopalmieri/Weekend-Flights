@@ -1,0 +1,29 @@
+body {
+  background: ;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.App {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #7887AB;
+}
+
+.header {
+  padding: 20px 0;
+}
+
+.header h1 {
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.header h2 {
+  font-size: 14px;
+  color: #061539;
+  text-align: center;
+  font-weight: bold;
+}
