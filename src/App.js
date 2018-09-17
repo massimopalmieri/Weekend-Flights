@@ -13,13 +13,17 @@ class App extends Component {
         <div className="searchForm">
           <label>
             From: 
-            <input type="text" />
+            <input type="text" defaultValue="London" />
           </label>
           <label>
             Weekend: 
-            <input type="text" />
+
+            <select>
+              <option>38 - 21.09 - 24.09</option>
+              <option>39 - 27.09 - 01.10</option>
+            </select>
           </label>
-          <button>Find</button>
+          <button>Find 	&raquo;</button>
         </div>
       </div>
     );
