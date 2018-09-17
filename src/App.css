@@ -1,0 +1,76 @@
+body {
+  /* background: #CAE0C4; */
+  background: #7DCED7;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.container {
+  
+}
+
+.header {
+  padding: 10px 0 0;
+  height: 75px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: #20465C;
+  color: white;
+  text-align: center;
+  font-size: 10px;
+  line-height: 200%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header h1 {
+  font-size: 20px;
+  text-align: center;
+  color: #D1DAD3;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.header h2 {
+  font-size: 14px;
+  color: #7DCED7;
+  text-align: center;
+}
+
+.searchForm {
+  margin-top: 75px;
+  padding: 10px 0 20px 0;
+  font-size: 12px;
+}
+
+.form-control, 
+.btn {
+  font-size: 12px;
+}
+
+.btn-success {
+  background-color: #20465C;
+  color: #D1DAD3;
+}
+
+.btn-success:hover {
+  background-color: #3199CB;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #20465C;
+  color: #D1DAD3;
+  text-align: center;
+  font-size: 10px;
+  line-height: 250%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.footer a {
+  color: #D1DAD3;
+  padding: 0 5px;
+}
