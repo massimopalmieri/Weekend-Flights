@@ -1,43 +1,14 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 
-
-// render() { 
-//     let _ = require('underscore')
-//     let buttonStyle = _.clone(button);
-//   }
-
 class SearchForm extends Component {
 
     componentDidMount = () => {
-        // var _ = require('lodash');
         console.log('component (SearchForm) mounted')
-        // debugger;
         fetch('http://localhost:3000/airports.json')
         .then(response => response.json())
         .then(json => {
-            // var airports = Object.values(json);
-
-            var europeCountries = ["Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kazakhstan", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "Vatican City"];
-            var europeanAirports = [];
-
-            _.each(europeCountries, (country) => {
-                var selected = _.filter(json, {
-                    country: country
-                });
-                
-                if (selected.length) {
-                    europeanAirports = europeanAirports.concat(selected)
-                } else {
-                    // debugger;
-                    console.info('missing airports from: ', country);
-                }
-                
-            })
-
-            
-
-            console.info('ALL');
+            console.info('airports: ', json.airports)
             
             debugger;
         })
