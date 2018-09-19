@@ -3806,7 +3806,7 @@ function getWeekendOptions() {
     "label": d.getFullYear(),
     "options": options
   });
-  debugger;
+  // debugger;
 
   return [weekendsGroups, defaultWeekend];
 }

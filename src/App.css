@@ -78,3 +78,10 @@ body {
 .my-select  {
   width: 270px;
 }
+
+.loader {
+  background: url('/images/loader.gif');
+  width: 274px;
+  height: 230px;
+  margin: 0 auto;
+}

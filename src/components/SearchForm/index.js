@@ -60,31 +60,35 @@ const SelectWeekends = () => (
 )
 
 class SearchForm extends Component {
+    searchFlights = (e) => {
+        e.preventDefault();
 
-    componentDidMount = () => {
-        
+        this.setState({
+            loading: true
+        });
+    }
 
-    //     // fetch('http://localhost:3000/airports.json')
-    //     fetch('http://localhost:3000/cities.json')
-    //     .then(response => response.json())
-    //     .then(json => {
-    //     })
+    showLoader() {
+        return (this.state && this.state.loading) ? 'loader' : '';
     }
 
     render() {
       return (  
-          <div className="searchForm">
-              <form action="" className="form-inline justify-content-center">
-                  <div className="form-group">
-                      <label className="sr-only">From</label>
-                      <SelectAirports />
-                  </div>
-                  <div className="form-group">
-                      <label className="sr-only">Weekend</label>
-                      <SelectWeekends />
-                  </div>
-                  <button type="submit" className="btn btn-success ">Find	&raquo;</button>
-              </form>
+          <div>
+            <div className="searchForm">
+                <form action="" className="form-inline justify-content-center">
+                    <div className="form-group">
+                        <label className="sr-only">From</label>
+                        <SelectAirports />
+                    </div>
+                    <div className="form-group">
+                        <label className="sr-only">Weekend</label>
+                        <SelectWeekends />
+                    </div>
+                    <button type="submit" className="btn btn-success" onClick={this.searchFlights} >Find	&raquo;</button>
+                </form>
+            </div>
+            <div className={this.showLoader()}></div>
           </div>
       );
     }
