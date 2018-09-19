@@ -74,3 +74,7 @@ body {
   color: #D1DAD3;
   padding: 0 5px;
 }
+
+.my-select  {
+  width: 250px;
+}
