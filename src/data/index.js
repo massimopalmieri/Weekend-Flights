@@ -1,4 +1,4 @@
-export const groupedOptions = [
+export const airports = [
   {
     "label": "Albania",
     "options": [
@@ -3728,6 +3728,90 @@ export const groupedOptions = [
         "ports": "SAW",
         "country": "TR"
       }
-  ]
-},
+    ]
+  },
 ];
+
+function getMonday(d) {
+  d = new Date(d);
+  var day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+  return new Date(d.setDate(diff));
+}
+
+function getWeekNumber(d) {
+  // Copy date so don't modify original
+  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+  // Get first day of year
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  // Calculate full weeks to nearest Thursday
+  var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+  // Return array of year and week number
+  return [d.getUTCFullYear(), weekNo];
+}
+
+
+function getWeekendOptions() {
+  var options = [],
+    weekendsGroups = [],
+    now = new Date(),
+    startDate = getMonday(new Date()),
+    labels = [startDate.getFullYear()],
+    defaultWeek = getWeekNumber(new Date())[1] + 3,
+    defaultWeekend = '',
+    daysOfYear = [],
+    end = new Date(startDate.getTime());
+
+  end.setDate(end.getDate() + 183);
+  for (var d = new Date(startDate.getTime()); d <= end; d.setDate(d.getDate() + 7)) {
+    var saturday = new Date(d.getTime()),
+    sunday = new Date(d.getTime()),
+    label = '';
+
+    daysOfYear.push(new Date(d));
+    saturday.setDate(saturday.getDate() + 5);
+    sunday.setDate(sunday.getDate() + 6);
+
+    if (labels.indexOf(d.getFullYear()) === -1) {
+      weekendsGroups.push({
+        "label": (d.getFullYear() - 1),
+        "options": options
+      });
+      options = [];
+      labels.push(d.getFullYear());
+    }
+
+    label = "Weekend " + getWeekNumber(d)[1] + " - " 
+      + saturday.getDate() + "." + (saturday.getMonth() + 1) + " - "
+      + sunday.getDate() + "." + (sunday.getMonth() + 1);
+
+    var option = {
+        "value": getWeekNumber(d)[1],
+        "label": label,
+    };
+    
+
+    if (defaultWeek === getWeekNumber(d)[1]) {
+      defaultWeekend = option;
+      // option.selected = true;
+      // debugger;
+    }
+    options.push(option);
+  };
+
+  weekendsGroups.push({
+    "label": d.getFullYear(),
+    "options": options
+  });
+  debugger;
+
+  return [weekendsGroups, defaultWeekend];
+}
+
+export const [weekends, weekendsDefault] = getWeekendOptions();
+
+// export const weekends = weekendsGroups;
+// export const weekendsDefault = defaultWeekend; //"aaaa";// getWeekNumber(new Date())[1] + 3
