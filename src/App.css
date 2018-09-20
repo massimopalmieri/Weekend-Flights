@@ -4,12 +4,13 @@ body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+.container-fluid {
+  padding: 0;
+}
+
 .header {
   padding: 10px 0 0;
   height: 80px;
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
   background-color: #20465C;
   color: white;
@@ -34,7 +35,6 @@ body {
 }
 
 .searchForm {
-  margin-top: 80px;
   padding: 10px 0 20px 0;
   font-size: 16px;
 }
@@ -54,10 +54,11 @@ body {
 }
 
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  /* position: fixed; */
+  /* left: 0; */
+  /* bottom: 0; */
+  /* width: 100%; */
+  margin-top: 10px;
   background-color: #20465C;
   color: #D1DAD3;
   text-align: center;
@@ -83,7 +84,7 @@ body {
 }
 
 .flight-results {
-  padding: 0 20px 20px;
+  padding: 0 20px 5px;
   border-radius: 10px;
   position: relative;
   border: 1px dotted #20465C;

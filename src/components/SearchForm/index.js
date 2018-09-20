@@ -231,6 +231,50 @@ class SearchForm extends Component {
                             </div>
                         </div>
                     </div>
+
+                    <div class="col col-sm-12 col-md-6  col-lg-4">
+                        <div class="card">
+                            <div class="card-img-top flight-image">
+                                <img src="images/demo/nice.jpg" alt="Nice (France)" />
+                            </div>
+                            <img class="flight-flag" src="images/flags/france.png" alt="France" />
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    2. Nice , France
+                                    <span className="float-right">£78</span>
+                                </h5>
+                                <p class="card-text">
+                                    Fri 19:10 - 21:20 (1h 45m)  
+                                    <span className="float-right">LTN-NCE</span>
+                                    <br />
+                                    Mon 07:00 - 08:20 (1h 45m)  
+                                    <span className="float-right">NCE-LTN</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col col-sm-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-img-top flight-image">
+                                <img src="images/demo/palma.jpg" alt="Palma Mall (Spain)" />
+                            </div>
+                            {/* <img class="card-img-top" src="images/demo/palma.jpg" alt="Palma Mall (Spain)" /> */}
+                            <img class="flight-flag" src="images/flags/spain.png" alt="Spain" />
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    3. Palma Mall, Spain
+                                    <span className="float-right">£83</span>
+                                </h5>
+                                <p class="card-text">
+                                    Fri 18:40 - 20:50 (2h 10m) 
+                                    <span className="float-right">STN-PMI</span> <br />
+                                    Mon 05:40 - 08:10 (2h 10m) 
+                                    <span className="float-right">PMI-STN</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
