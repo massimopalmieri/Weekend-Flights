@@ -119,10 +119,10 @@ class SearchForm extends Component {
             <div className={this.showLoader()}></div>
 
             <div className= {this.showResults()}>
-                <h2>From Friday 21.09.18 to Monday 24.09.18:</h2>
+                <h2>Flights from Friday 21.09.18 to Monday 24.09.18:</h2>
 
                 <div class="row ">
-                    <div class="col col-sm-12 col-md-6  col-lg-4">
+                    <div class="col col-12 col-md-6  col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/warsaw.jpg" alt="Warsaw (Poland)" />
@@ -143,7 +143,7 @@ class SearchForm extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-12 col-md-6  col-lg-4">
+                    <div class="col col-12 col-md-6  col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/nice.jpg" alt="Nice (France)" />
@@ -164,7 +164,7 @@ class SearchForm extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-12 col-md-6 col-lg-4">
+                    <div class="col col-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/palma.jpg" alt="Palma Mall (Spain)" />
@@ -185,7 +185,7 @@ class SearchForm extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-12 col-md-6  col-lg-4">
+                    <div class="col col-12 col-md-6  col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/warsaw.jpg" alt="Warsaw (Poland)" />
@@ -206,7 +206,7 @@ class SearchForm extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-12 col-md-6  col-lg-4">
+                    <div class="col col-12 col-md-6  col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/nice.jpg" alt="Nice (France)" />
@@ -227,7 +227,7 @@ class SearchForm extends Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col col-sm-12 col-md-6 col-lg-4">
+                    <div class="col col-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/palma.jpg" alt="Palma Mall (Spain)" />
@@ -249,7 +249,7 @@ class SearchForm extends Component {
                         </div>
                     </div>
 
-                    <div class="col col-sm-12 col-md-6  col-lg-4">
+                    <div class="col col-12 col-md-6  col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/nice.jpg" alt="Nice (France)" />
@@ -271,7 +271,7 @@ class SearchForm extends Component {
                         </div>
                     </div>
 
-                    <div class="col col-sm-12 col-md-6 col-lg-4">
+                    <div class="col col-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-img-top flight-image">
                                 <img src="images/demo/palma.jpg" alt="Palma Mall (Spain)" />
