@@ -63,7 +63,9 @@ class SearchForm extends Component {
     searchFlights = (e) => {
         e.preventDefault();
 
-        this.setState({ loading: true });
+        // this.setState({ action: 'loading' });
+        this.setState({ action: 'ready' });
+        // this.setState({ 'loading' });
 
         // fetch('http://localhost:3000/results/week-40_London_06.10-08.10.json')
         //     .then(response => response.json())
@@ -80,8 +82,20 @@ class SearchForm extends Component {
     }
 
     showLoader() {
-        return (this.state && this.state.loading) ? 'loader' : '';
+        return (this.state && this.state.action === 'loading') ? 'loader' : '';
     }
+
+    showResults() {
+        return (this.state && this.state.action === 'ready') ? 'flight-results' : 'flight-results d-none';
+    }    
+
+    // getInitialState(){
+    //     // className={this.showLoader()}
+    //     // className={styleCondition ? "btn-menu show-on-small" : ""
+    //     // className={this.props.showLoader}
+    //     debugger;
+    //     return {"showHideSidenav":"hidden"};
+    //   }
 
     render() {
       return (  
@@ -101,7 +115,7 @@ class SearchForm extends Component {
             </div>
             <div className={this.showLoader()}></div>
 
-            <div className="flight-results">
+            <div className= {this.showResults()}>
                 <h2>From Friday 21.09.18 to Monday 24.09.18:</h2>
 
                 <div class="row ">

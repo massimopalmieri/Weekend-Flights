@@ -4,14 +4,14 @@ import SearchForm from '../../components/SearchForm'
 class Homepage extends Component {
     render() {
       return (  
-        <div>
+        <div className="container-main">
           <div className="container-fluid">
             <header className="header">
               <h1>Weekend Flights</h1>
               <h2>Find the best flights for your city break!</h2>
             </header>
           </div>
-          
+
           <div className="container">
             <SearchForm />
           </div>
