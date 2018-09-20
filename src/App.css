@@ -87,31 +87,23 @@ body {
 }
 
 .flight-results {
-  /* background: white; */
   padding: 0 20px 20px;
   border-radius: 10px;
   position: relative;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
   border: 1px dotted #20465C;
+  background: rgba(255,255,255,0.5);
 }
 
 .flight-results h2 {
-  /* background-color: #20465C; */
-  /* background: #7DCED7;
-  color: #D1DAD3; */
   color: #20465C;
-
   text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
   font-size: 26px;
-  /* background: white; */
   border-radius: 10px;
-  /* margin-bottom: 20px; */
-  /* margin: 0 auto; */
-  /* display: inline-block; */
-
+  line-height: 150%;
+  margin-bottom: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .flight-results .card {
