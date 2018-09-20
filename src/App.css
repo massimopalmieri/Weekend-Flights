@@ -4,10 +4,6 @@ body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.container {
-  
-}
-
 .header {
   padding: 10px 0 0;
   height: 80px;
@@ -108,8 +104,21 @@ body {
 
 .flight-results .card {
   cursor: pointer;
-  margin-bottom: 20px;
-  /* background: #7DCED7; */
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #20465C;
+}
+
+.flight-results .col {
+  padding-right:7px;
+  padding-left:7px;
+}
+
+@media only screen and (max-width: 1199px) {
+  .flight-results .col {
+    padding-right:5px;
+    padding-left:5px;
+  } 
 }
 
 .flight-results .flight-flag {
@@ -122,14 +131,20 @@ body {
   border-radius: 16px;
 }
 
-@media only screen and (max-width: 767px) {
-  .flight-results .card-columns {
-    column-count: 1;
-  }
+.flight-results .flight-image {
+  position: relative;
+  overflow: hidden;
+}
+.flight-results .flight-image img {
+  max-width: 100%;  
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.8s;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-  .flight-results .card-columns {
-    column-count: 2;
-  }
+.flight-results .card:hover .flight-image img {
+  opacity: 0.9;
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
