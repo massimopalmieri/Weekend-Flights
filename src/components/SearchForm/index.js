@@ -63,9 +63,12 @@ class SearchForm extends Component {
     searchFlights = (e) => {
         e.preventDefault();
 
-        // this.setState({ action: 'loading' });
-        this.setState({ action: 'ready' });
-        // this.setState({ 'loading' });
+        this.setState({ action: 'loading' });
+
+        setTimeout(() => { 
+            this.setState({ action: 'ready' });
+        }, 3000);
+
 
         // fetch('http://localhost:3000/results/week-40_London_06.10-08.10.json')
         //     .then(response => response.json())
