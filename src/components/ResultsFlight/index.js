@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const ResulltFlight = ({flight}) => (
+const ResultFlight = ({flight}) => (
 
     <div class="col col-12 col-md-6  col-lg-4">
         <div class="card">
@@ -25,4 +25,4 @@ const ResulltFlight = ({flight}) => (
     </div>
 )
 
-export default ResulltFlight
+export default ResultFlight

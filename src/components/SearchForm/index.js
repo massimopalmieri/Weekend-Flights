@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import Select from 'react-select'
-import ResultsFlight from '../../components/ResultsFlight'
+import ResultsGroup from '../../components/ResultsGroup'
+// import ResultsFlight from '../../components/ResultsFlight'
 import { airports, weekends, weekendsDefault } from '../../data';
 
 const groupStyles = {
@@ -62,12 +63,13 @@ const SelectWeekends = () => (
 
 class SearchForm extends Component {
     static defaultProps = {
-        flights: [],
+        groups: [],
         title: 'Weekend Flights'
     }
 
     state = {
-        flights: this.props.flights
+        // flights: this.props.flights
+        groups: this.props.groups
         // ,
         // draft: ''
     }
@@ -86,7 +88,7 @@ class SearchForm extends Component {
         // fetch('http://localhost:3000/results/week-40_London_06.10-08.10.json')
         fetch('http://localhost:3000/flights.json')
             .then(response => response.json())
-            .then(json => this.setState({flights: json.flights}))
+            .then(json => this.setState({groups: json.groups}))
             // .then(json => { 
         //         this.setState({ loading: false });
         //         var maxAllowedPrice = 100;
@@ -117,7 +119,7 @@ class SearchForm extends Component {
 
     render() {
       const { title } = this.props
-      const { flights } = this.state
+      const { groups } = this.state
       return (  
           <div>
             <div className="searchForm">
@@ -136,11 +138,7 @@ class SearchForm extends Component {
             <div className={this.showLoader()}></div>
 
             <div className= {this.showResults()}>
-                <h2>Flights from Friday 21.09.18 to Monday 24.09.18:</h2>
-
-                <div class="row ">
-                    {flights.map(flight => <ResultsFlight flight={flight} />)}
-                </div>
+                {groups.map(group => <ResultsGroup group={group} />)}
             </div>
         </div>
       );
