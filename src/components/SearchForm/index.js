@@ -110,7 +110,7 @@ class SearchForm extends Component {
         this.setState({ groups: groups});
 
         for (var i=1;i<=4;i++) {
-            fetch('api_single.json')
+            fetch('http://weekendflights.eu/api/api.php?action=flights&week=42&dep=London&max_price=100&part=' + i)
             // fetch('http://localhost/www/flights/api.php?action=flights&week=40&dep=London&max_price=100&part='+i)
                 .then(response => response.json())
                 .then(json => {
