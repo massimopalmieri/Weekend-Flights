@@ -74,6 +74,27 @@ class SearchForm extends Component {
         // draft: ''
     }
 
+    getGroups = () => {
+        return [
+            {
+                name: "From Friday Evening to Sunday Evening",
+                flights: []
+            }, 
+            {
+                name: "From Friday Evening to Monday Morning",
+                flights: []
+            }, 
+            {
+                name: "From Saturday Morning to Sunday Evening",
+                flights: []
+            }, 
+            {
+                name: "From Saturday Morning to Monday Morning",
+                flights: []
+            }
+        ]
+    }
+
     searchFlights = (e) => {
         e.preventDefault();
 
@@ -84,25 +105,21 @@ class SearchForm extends Component {
         //     this.setState({ action: 'ready' });
         // }, 3000);
 
+        var groups = this.getGroups();
 
-        // fetch('http://localhost:3000/results/week-40_London_06.10-08.10.json')
-        
-        fetch('api.json')
-        // fetch('http://localhost:3000/api.json')
-        // fetch('http://localhost/www/flights/api.php?action=json&week=40&dep=London&max_price=100')
-        // fetch('http://localhost:3000/flights.json')
-            .then(response => response.json())
-            .then(json => this.setState({groups: json.groups}))
-            // .then(json => { 
-        //         this.setState({ loading: false });
-        //         var maxAllowedPrice = 100;
-        //         var flights = _.filter(json, (flight) => {  // todo: move to backend
-        //             return flight.total_price < maxAllowedPrice
-        //         });
+        this.setState({ groups: groups});
 
-            //     debugger;
-            // })
-
+        for (var i=1;i<=4;i++) {
+            fetch('api_single.json')
+            // fetch('http://localhost/www/flights/api.php?action=flights&week=40&dep=London&max_price=100&part='+i)
+                .then(response => response.json())
+                .then(json => {
+                    json.id = parseInt(json.id);
+                    groups[parseInt(json.id) -1] = json;
+                    this.setState({ groups: groups});
+                    
+                });
+        }
     }
 
     showLoader() {
