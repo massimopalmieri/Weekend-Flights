@@ -86,7 +86,11 @@ class SearchForm extends Component {
 
 
         // fetch('http://localhost:3000/results/week-40_London_06.10-08.10.json')
-        fetch('http://localhost:3000/flights.json')
+        
+        fetch('api.json')
+        // fetch('http://localhost:3000/api.json')
+        // fetch('http://localhost/www/flights/api.php?action=json&week=40&dep=London&max_price=100')
+        // fetch('http://localhost:3000/flights.json')
             .then(response => response.json())
             .then(json => this.setState({groups: json.groups}))
             // .then(json => { 
@@ -138,7 +142,7 @@ class SearchForm extends Component {
             <div className={this.showLoader()}></div>
 
             <div className= {this.showResults()}>
-                {groups.map(group => <ResultsGroup group={group} />)}
+                {groups.map(group => <ResultsGroup group={group} key={group.name} />)}
             </div>
         </div>
       );
