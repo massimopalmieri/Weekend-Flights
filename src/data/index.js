@@ -3,8 +3,11 @@ export const airports = [
     "label": "Albania",
     "options": [
       {
+        "value": "Albania",
         "label": "Albania (all airports)",
-        "value": "Albania"
+        "name": "AL",
+        "ports": "TIA",
+        "country": "AL"
       },
       {
         "value": "Tirana",
@@ -19,8 +22,11 @@ export const airports = [
     "label": "Armenia",
     "options": [
       {
+        "value": "Armenia",
         "label": "Armenia (all airports)",
-        "value": "Armenia"
+        "name": "AM",
+        "ports": "EVN_LWN",
+        "country": "AM"
       },
       {
         "value": "Yerevan",
@@ -42,8 +48,11 @@ export const airports = [
     "label": "Austria",
     "options": [
       {
+        "value": "Austria",
         "label": "Austria (all airports)",
-        "value": "Austria"
+        "name": "AT",
+        "ports": "GRZ_INN_LNZ_SZG_VIE_KLU",
+        "country": "AT"
       },
       {
         "value": "Graz",
@@ -93,8 +102,11 @@ export const airports = [
     "label": "Bosnia and Herzegovina",
     "options": [
       {
+        "value": "Bosnia and Herzegovina",
         "label": "Bosnia and Herzegovina (all airports)",
-        "value": "Bosnia and Herzegovina"
+        "name": "BA",
+        "ports": "OMO_SJJ_BNX_TZL",
+        "country": "BA"
       },
       {
         "value": "Mostar",
@@ -130,8 +142,11 @@ export const airports = [
     "label": "Belgium",
     "options": [
       {
+        "value": "Belgium",
         "label": "Belgium (all airports)",
-        "value": "Belgium"
+        "name": "BE",
+        "ports": "ANR_BRU_CRL_LGG_OST",
+        "country": "BE"
       },
       {
         "value": "Antwerp-Deurne",
@@ -166,7 +181,7 @@ export const airports = [
         "ports": "BRU_CRL",
         "country": "BE"
       },
-	    {
+      {
         "value": "Brussels",
         "label": "Brussels",
         "name": "BRU",
@@ -186,8 +201,11 @@ export const airports = [
     "label": "Bulgaria",
     "options": [
       {
+        "value": "Bulgaria",
         "label": "Bulgaria (all airports)",
-        "value": "Bulgaria"
+        "name": "BG",
+        "ports": "BOJ_PDV_SOF_VAR",
+        "country": "BG"
       },
       {
         "value": "Bourgas",
@@ -223,8 +241,11 @@ export const airports = [
     "label": "Belarus",
     "options": [
       {
+        "value": "Belarus",
         "label": "Belarus (all airports)",
-        "value": "Belarus"
+        "name": "BY",
+        "ports": "MSQ",
+        "country": "BY"
       },
       {
         "value": "Minsk",
@@ -239,8 +260,11 @@ export const airports = [
     "label": "Switzerland",
     "options": [
       {
+        "value": "Switzerland",
         "label": "Switzerland (all airports)",
-        "value": "Switzerland"
+        "name": "CH",
+        "ports": "GVA_ZRH_BSL",
+        "country": "CH"
       },
       {
         "value": "Geneva",
@@ -269,8 +293,11 @@ export const airports = [
     "label": "Cyprus",
     "options": [
       {
+        "value": "Cyprus",
         "label": "Cyprus (all airports)",
-        "value": "Cyprus"
+        "name": "CY",
+        "ports": "LCA_PFO_ECN",
+        "country": "CY"
       },
       {
         "value": "Larnaca",
@@ -299,8 +326,11 @@ export const airports = [
     "label": "Czechia",
     "options": [
       {
+        "value": "Czechia",
         "label": "Czechia (all airports)",
-        "value": "Czechia"
+        "name": "CZ",
+        "ports": "KLV_OSR_PED_PRG_BRQ",
+        "country": "CZ"
       },
       {
         "value": "Karlovy Vary",
@@ -344,7 +374,10 @@ export const airports = [
     "options": [
       {
         "label": "Germany (all airports)",
-        "value": "Germany"
+        "value": "Germany",
+        "ports": "SXF_DRS_ERF_FRA_FMO_HAM_CGN_DUS_MUC_NUE_LEJ_SCN_STR_TXL_HAJ_BRE_HHN_PAD_DTM_FDH_GWT_FMM_FKB_NRN_HDF",
+        "country": "DE",
+        "name": "DE"
       },
       {
         "value": "Dresden",
@@ -491,14 +524,14 @@ export const airports = [
         "ports": "DUS_NRN",
         "country": "DE"
       },
-	    {
+      {
         "value": "Duesseldorf",
         "label": "Duesseldorf",
         "name": "DUS",
         "ports": "DUS",
         "country": "DE"
       },
-	    {
+      {
         "value": "Dusseldorf (Weeze)",
         "label": "Dusseldorf (Weeze)",
         "name": "NRN",
@@ -517,14 +550,14 @@ export const airports = [
         "ports": "SXF_TXL",
         "country": "DE"
       },
-	    {
+      {
         "value": "Berlin (Schonefeld)",
         "label": "Berlin (Schonefeld)",
         "name": "SXF",
         "ports": "SXF",
         "country": "DE"
       },
-	    {
+      {
         "value": "Berlin (Tegel)",
         "label": "Berlin (Tegel)",
         "name": "TXL",
@@ -543,14 +576,14 @@ export const airports = [
         "ports": "FRA_HHN",
         "country": "DE"
       },
-	    {
+      {
         "value": "Frankfurt",
         "label": "Frankfurt",
         "name": "FRA",
         "ports": "FRA",
         "country": "DE"
       },
-	    {
+      {
         "value": "Frankfurt (Hahn)",
         "label": "Frankfurt (Hahn)",
         "name": "HHN",
@@ -564,7 +597,10 @@ export const airports = [
     "options": [
       {
         "label": "Denmark (all airports)",
-        "value": "Denmark"
+        "value": "Denmark",
+        "ports": "AAR_BLL_CPH_AAL",
+        "country": "DK",
+        "name": "DK"
       },
       {
         "value": "Aarhus",
@@ -601,7 +637,10 @@ export const airports = [
     "options": [
       {
         "label": "Estonia (all airports)",
-        "value": "Estonia"
+        "value": "Estonia",
+        "ports": "TLL",
+        "country": "EE",
+        "name": "EE"
       },
       {
         "value": "Tallinn",
@@ -617,9 +656,11 @@ export const airports = [
     "options": [
       {
         "label": "Spain (all airports)",
-        "value": "Spain"
+        "value": "Spain",
+        "ports": "FUE_VDE_SPC_LPA_ACE_TFS_TFN_ALC_LEI_OVD_BIO_BCN_LCG_GRO_GRX_IBZ_XRY_MJV_MAD_AGP_MAH_REU_EAS_SCQ_VLC_VLL_VIT_VGO_SDR_ZAZ_SVQ_PMI_GMZ_CDT",
+        "country": "ES",
+        "name": "ES"
       },
-      
       {
         "value": "Fuerteventura",
         "label": "Fuerteventura",
@@ -849,21 +890,21 @@ export const airports = [
         "ports": "BCN_GRO_REU",
         "country": "ES"
       },
-	    {
+      {
         "value": "Barcelona",
         "label": "Barcelona",
         "name": "BCN",
         "ports": "BCN",
         "country": "ES"
       },
-	    {
+      {
         "value": "Barcelona (Girona)",
         "label": "Barcelona (Girona)",
         "name": "GRO",
         "ports": "GRO",
         "country": "ES"
       },
-	    {
+      {
         "value": "Barcelona (Reus)",
         "label": "Barcelona (Reus)",
         "name": "REU",
@@ -877,7 +918,10 @@ export const airports = [
     "options": [
       {
         "label": "Finland (all airports)",
-        "value": "Finland"
+        "value": "Finland",
+        "ports": "HEL_IVL_KTT_LPP_OUL_RVN_TMP_TKU_VAA",
+        "country": "FI",
+        "name": "FI"
       },
       {
         "value": "Helsinki",
@@ -965,7 +1009,10 @@ export const airports = [
     "options": [
       {
         "label": "France (all airports)",
-        "value": "France"
+        "value": "France",
+        "ports": "BOD_EGC_PIS_LIG_TLS_PUF_LDE_BVE_BIQ_RDZ_DLE_ETZ_BIA_CLY_FSC_AJA_CMF_CFE_LYS_GNB_CCF_MRS_NCE_PGF_MPL_BZR_AVN_BVA_XCR_TUF_CDG_ORY_LIL_BES_DNR_DOL_LRT_CFR_RNS_NTE_MLH_SXB_TLN_FNI_LRH",
+        "country": "FR",
+        "name": "FR"
       },
       {
         "value": "Bordeaux",
@@ -1266,28 +1313,28 @@ export const airports = [
         "ports": "CDG_ORY_BVA_XCR_LBG",
         "country": "FR"
       },
-	    {
+      {
         "value": "Paris (Beauvais)",
         "label": "Paris (Beauvais)",
         "name": "BVA",
         "ports": "BVA",
         "country": "FR"
       },
-  	  {
+      {
         "value": "Paris (Charles de Gaulle)",
         "label": "Paris (Charles de Gaulle)",
         "name": "CDG",
         "ports": "CDG",
         "country": "FR"
       },
-	    {
+      {
         "value": "Paris (Orly)",
         "label": "Paris (Orly)",
         "name": "ORY",
         "ports": "ORY",
         "country": "FR"
       },
-	    {
+      {
         "value": "Chalons-Vatry",
         "label": "Chalons-Vatry",
         "name": "XCR",
@@ -1301,8 +1348,11 @@ export const airports = [
     "options": [
       {
         "label": "United Kingdom (all airports)",
-        "value": "United Kingdom"
-      },      
+        "value": "United Kingdom",
+        "ports": "BFS_BHD_LDY_BHX_MAN_NQY_CWL_BRS_LPL_LTN_BOH_SOU_LGW_LCY_LHR_SEN_HUY_LBA_NCL_MME_EMA_WIC_ABZ_INV_GLA_EDI_PIK_SYY_NWI_STN_EXT_DSA_VLY",
+        "country": "GB",
+        "name": "GB"
+      },
       {
         "value": "Derry",
         "label": "Derry",
@@ -1476,7 +1526,7 @@ export const airports = [
         "ports": "BFS_BHD",
         "country": "GB"
       },
-	    {
+      {
         "value": "Belfast",
         "label": "Belfast",
         "name": "BFS",
@@ -1489,7 +1539,7 @@ export const airports = [
         "name": "BHD",
         "ports": "BHD",
         "country": "GB"
-      },
+      }
     ]
   },
   {
@@ -1502,20 +1552,20 @@ export const airports = [
         "ports": "PIK_GLA",
         "country": "GB"
       },
-	    {
+      {
         "value": "Glasgow",
         "label": "Glasgow",
         "name": "GLA",
         "ports": "GLA",
         "country": "GB"
       },
-	    {
+      {
         "value": "Glasgow (Prestwick)",
         "label": "Glasgow (Prestwick)",
         "name": "PIK",
         "ports": "PIK",
         "country": "GB"
-      },
+      }
     ]
   },
   {
@@ -1569,7 +1619,7 @@ export const airports = [
         "name": "SEN",
         "ports": "SEN",
         "country": "GB"
-      },
+      }
     ]
   },
   {
@@ -1577,7 +1627,10 @@ export const airports = [
     "options": [
       {
         "label": "Georgia (all airports)",
-        "value": "Georgia"
+        "value": "Georgia",
+        "ports": "BUS_KUT_TBS",
+        "country": "GE",
+        "name": "GE"
       },
       {
         "value": "Batumi",
@@ -1607,7 +1660,10 @@ export const airports = [
     "options": [
       {
         "label": "Gibraltar (all airports)",
-        "value": "Gibraltar"
+        "value": "Gibraltar",
+        "ports": "GIB",
+        "country": "GI",
+        "name": "GI"
       },
       {
         "value": "Gibraltar",
@@ -1623,7 +1679,10 @@ export const airports = [
     "options": [
       {
         "label": "Greece (all airports)",
-        "value": "Greece"
+        "value": "Greece",
+        "ports": "VOL_HER_EFL_KLX_KGS_AOK_CFU_KVA_JMK_MJT_PVK_RHO_GPA_CHQ_JSI_SMI_JTR_JSH_SKG_ZTH_ATH",
+        "country": "GR",
+        "name": "GR"
       },
       {
         "value": "Volos",
@@ -1779,7 +1838,10 @@ export const airports = [
     "options": [
       {
         "label": "Croatia (all airports)",
-        "value": "Croatia"
+        "value": "Croatia",
+        "ports": "DBV_OSI_PUY_RJK_SPU_ZAG_ZAD_BWK",
+        "country": "HR",
+        "name": "HR"
       },
       {
         "value": "Dubrovnik",
@@ -1844,7 +1906,10 @@ export const airports = [
     "options": [
       {
         "label": "Hungary (all airports)",
-        "value": "Hungary"
+        "value": "Hungary",
+        "ports": "BUD_DEB",
+        "country": "HU",
+        "name": "HU"
       },
       {
         "value": "Budapest",
@@ -1867,7 +1932,10 @@ export const airports = [
     "options": [
       {
         "label": "Ireland (all airports)",
-        "value": "Ireland"
+        "value": "Ireland",
+        "ports": "ORK_DUB_NOC_KIR_SNN_CFN",
+        "country": "IE",
+        "name": "IE"
       },
       {
         "value": "Cork",
@@ -1918,7 +1986,10 @@ export const airports = [
     "options": [
       {
         "label": "Iceland (all airports)",
-        "value": "Iceland"
+        "value": "Iceland",
+        "ports": "AEY_KEF_RKV",
+        "country": "IS",
+        "name": "IS"
       },
       {
         "value": "Reykjavik",
@@ -1955,7 +2026,10 @@ export const airports = [
     "options": [
       {
         "label": "Italy (all airports)",
-        "value": "Italy"
+        "value": "Italy",
+        "ports": "CRV_BRI_PSR_BDS_SUF_CTA_LMP_PNL_PMO_REG_TPS_AHO_CAG_OLB_MXP_BGY_TRN_GOA_LIN_PMF_CUF_BLQ_TSF_TRS_RMI_VRN_VCE_CIA_FCO_NAP_PSA_FLR_PEG_AOI_CIY",
+        "country": "IT",
+        "name": "IT"
       },
       {
         "value": "Crotone",
@@ -2165,7 +2239,7 @@ export const airports = [
         "ports": "MXP_BGY_LIN",
         "country": "IT"
       },
-	  {
+      {
         "value": "Milan (Malpensa)",
         "label": "Milan (Malpensa)",
         "name": "MXP",
@@ -2179,18 +2253,18 @@ export const airports = [
         "ports": "BGY",
         "country": "IT"
       },
-		{
+      {
         "value": "Milan (Linate)",
         "label": "Milan (Linate)",
         "name": "LIN",
         "ports": "LIN",
         "country": "IT"
-      },
+      }
     ]
   },
   {
     "label": "Venice, Italy",
-    "options": [      
+    "options": [
       {
         "value": "Venice",
         "label": "Venice (all airports)",
@@ -2198,14 +2272,14 @@ export const airports = [
         "ports": "VCE_TSF",
         "country": "IT"
       },
-	    {
+      {
         "value": "Venice (Treviso)",
         "label": "Venice (Treviso)",
         "name": "TSF",
         "ports": "TSF",
         "country": "IT"
       },
-	    {
+      {
         "value": "Venice (Marco Polo)",
         "label": "Venice (Marco Polo)",
         "name": "VCE",
@@ -2224,7 +2298,7 @@ export const airports = [
         "ports": "FCO_CIA",
         "country": "IT"
       },
-	    {
+      {
         "value": "Rome (Ciampino)",
         "label": "Rome (Ciampino)",
         "name": "CIA",
@@ -2237,7 +2311,7 @@ export const airports = [
         "name": "FCO",
         "ports": "FCO",
         "country": "IT"
-      },
+      }
     ]
   },
   {
@@ -2245,7 +2319,10 @@ export const airports = [
     "options": [
       {
         "label": "Lithuania (all airports)",
-        "value": "Lithuania"
+        "value": "Lithuania",
+        "ports": "KUN_PLQ_VNO",
+        "country": "LT",
+        "name": "LT"
       },
       {
         "value": "Kaunas",
@@ -2275,7 +2352,10 @@ export const airports = [
     "options": [
       {
         "label": "Luxembourg (all airports)",
-        "value": "Luxembourg"
+        "value": "Luxembourg",
+        "ports": "LUX",
+        "country": "LU",
+        "name": "LU"
       },
       {
         "value": "Luxembourg",
@@ -2291,7 +2371,10 @@ export const airports = [
     "options": [
       {
         "label": "Latvia (all airports)",
-        "value": "Latvia"
+        "value": "Latvia",
+        "ports": "LPX_RIX",
+        "country": "LV",
+        "name": "LV"
       },
       {
         "value": "Liepaja",
@@ -2314,7 +2397,10 @@ export const airports = [
     "options": [
       {
         "label": "Macedonia (all airports)",
-        "value": "Macedonia"
+        "value": "Macedonia",
+        "ports": "OHD_SKP",
+        "country": "MK",
+        "name": "MK"
       },
       {
         "value": "Ohrid",
@@ -2337,7 +2423,10 @@ export const airports = [
     "options": [
       {
         "label": "Malta (all airports)",
-        "value": "Malta"
+        "value": "Malta",
+        "ports": "MLA",
+        "country": "MT",
+        "name": "MT"
       },
       {
         "value": "Malta",
@@ -2353,7 +2442,10 @@ export const airports = [
     "options": [
       {
         "label": "Netherlands (all airports)",
-        "value": "Netherlands"
+        "value": "Netherlands",
+        "ports": "AMS_MST_EIN_GRQ_RTM",
+        "country": "NL",
+        "name": "NL"
       },
       {
         "value": "Amsterdam",
@@ -2397,7 +2489,10 @@ export const airports = [
     "options": [
       {
         "label": "Norway  (all airports)",
-        "value": "Norway"
+        "value": "Norway",
+        "ports": "AES_ANX_ALF_BNN_BOO_BGO_BJF_KRS_BDU_EVE_FRO_OSL_HAU_HAA_KSU_KKN_MOL_MJF_LKL_RRS_SSJ_TOS_TRF_TRD_SVG_HFT_HVG_MEH_VDS_HOV_BVG_FDE_LKN_OSY_MQN_RVK_RET_SDN_SOG_SVJ_SOJ_VAW",
+        "country": "NO",
+        "name": "NO"
       },
       {
         "value": "Aalesund",
@@ -2691,14 +2786,14 @@ export const airports = [
         "ports": "OSL_TRF_RYG",
         "country": "NO"
       },
-	    {
+      {
         "value": "Oslo (Gardermoen)",
         "label": "Oslo (Gardermoen)",
         "name": "OSL",
         "ports": "OSL",
         "country": "NO"
       },
-	    {
+      {
         "value": "Oslo (Torp)",
         "label": "Oslo (Torp)",
         "name": "TRF",
@@ -2712,7 +2807,10 @@ export const airports = [
     "options": [
       {
         "label": "Poland (all airports)",
-        "value": "Poland"
+        "value": "Poland",
+        "ports": "SZY_GDN_KRK_KTW_POZ_RZE_SZZ_WAW_WRO_BZG_LCJ_WMI_LUZ",
+        "country": "PL",
+        "name": "PL"
       },
       {
         "value": "Olsztyn-Mazury",
@@ -2803,14 +2901,14 @@ export const airports = [
         "ports": "WAW_WMI",
         "country": "PL"
       },
-	    {
+      {
         "value": "Warsaw",
         "label": "Warsaw",
         "name": "WAW",
         "ports": "WAW",
         "country": "PL"
       },
-	    {
+      {
         "value": "Warsaw (Modlin)",
         "label": "Warsaw (Modlin)",
         "name": "WMI",
@@ -2824,7 +2922,10 @@ export const airports = [
     "options": [
       {
         "label": "Portugal (all airports)",
-        "value": "Portugal"
+        "value": "Portugal",
+        "ports": "FAO_TER_PDL_OPO_PXO_LIS_FNC",
+        "country": "PT",
+        "name": "PT"
       },
       {
         "value": "Faro",
@@ -2882,7 +2983,10 @@ export const airports = [
     "options": [
       {
         "label": "Romania (all airports)",
-        "value": "Romania"
+        "value": "Romania",
+        "ports": "BCM_CND_CLJ_CRA_IAS_OMR_OTP_SBZ_SUJ_SCV_TGM_TSR",
+        "country": "RO",
+        "name": "RO"
       },
       {
         "value": "Bucharest",
@@ -3227,28 +3331,28 @@ export const airports = [
         "ports": "DME_SVO_VKO_BKA",
         "country": "RU"
       },
-	    {
+      {
         "value": "Moscow (Sheremetyevo)",
         "label": "Moscow (Sheremetyevo)",
         "name": "SVO",
         "ports": "SVO",
         "country": "RU"
       },
-	    {
+      {
         "value": "Moscow (Vnukovo)",
         "label": "Moscow (Vnukovo)",
         "name": "VKO",
         "ports": "VKO",
         "country": "RU"
       },
-	    {
+      {
         "value": "Moscow (Domodedovo)",
         "label": "Moscow (Domodedovo)",
         "name": "DME",
         "ports": "DME",
         "country": "RU"
       },
-	    {
+      {
         "value": "Moscow (Zhukovsky)",
         "label": "Moscow (Zhukovsky)",
         "name": "ZIA",
@@ -3262,7 +3366,10 @@ export const airports = [
     "options": [
       {
         "label": "Sweden (all airports)",
-        "value": "Sweden"
+        "value": "Sweden",
+        "ports": "GOT_NYO_MMX_VXO_KRN_SFT_UME_VST_LLA_ARN_VBY_OSD_KSD",
+        "country": "SE",
+        "name": "SE"
       },
       {
         "value": "Goteborg (Landvetter)",
@@ -3346,21 +3453,21 @@ export const airports = [
         "ports": "ARN_BMA_NYO_VST",
         "country": "SE"
       },
-	    {
+      {
         "value": "Stockholm (Skavsta)",
         "label": "Stockholm (Skavsta)",
         "name": "NYO",
         "ports": "NYO",
         "country": "SE"
       },
-	    {
+      {
         "value": "Stockholm (Vasteras)",
         "label": "Stockholm (Vasteras)",
         "name": "VST",
         "ports": "VST",
         "country": "SE"
       },
-	    {
+      {
         "value": "Stockholm (Arlanda)",
         "label": "Stockholm (Arlanda)",
         "name": "ARN",
@@ -3374,7 +3481,10 @@ export const airports = [
     "options": [
       {
         "label": "Slovenia (all airports)",
-        "value": "Slovenia"
+        "value": "Slovenia",
+        "ports": "LJU",
+        "country": "SI",
+        "name": "SI"
       },
       {
         "value": "Ljubljana",
@@ -3390,7 +3500,10 @@ export const airports = [
     "options": [
       {
         "label": "Slovakia (all airports)",
-        "value": "Slovakia"
+        "value": "Slovakia",
+        "ports": "BTS_KSC_TAT",
+        "country": "SK",
+        "name": "SK"
       },
       {
         "value": "Bratislava",
@@ -3420,7 +3533,10 @@ export const airports = [
     "options": [
       {
         "label": "Turkey (all airports)",
-        "value": "Turkey"
+        "value": "Turkey",
+        "ports": "ESB_ADA_AYT_GZT_KYA_MZH_VAS_MLX_ASR_DNZ_IST_ADB_DLM_EZS_DIY_ERC_ERZ_TZX_VAN_BAL_BJV_SAW_USQ_KSY_KCM_AJI_ADF_EDO_SZF_MQM_AOE_CKZ_MSR_NOP_TEQ_HTY_GZP_KZR_GNY_KFS_OGU_BGG",
+        "country": "TR",
+        "name": "TR"
       },
       {
         "value": "Ankara",
@@ -3714,14 +3830,14 @@ export const airports = [
         "ports": "IST_SAW",
         "country": "TR"
       },
-	    {
+      {
         "value": "Istanbul (Ataturk)",
         "label": "Istanbul (Ataturk)",
         "name": "IST",
         "ports": "IST",
         "country": "TR"
       },
-	    {
+      {
         "value": "Istanbul (Sabiha Gokcen)",
         "label": "Istanbul (Sabiha Gokcen)",
         "name": "SAW",
@@ -3729,7 +3845,7 @@ export const airports = [
         "country": "TR"
       }
     ]
-  },
+  }
 ];
 
 function getMonday(d) {

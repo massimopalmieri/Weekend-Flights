@@ -4,6 +4,7 @@
             "name": "Flights from Friday 21.09.18 to Monday 24.09.18",
             "flights": [
                 {
+                    "id": "1",
                     "image": "images/demo/warsaw.jpg",
                     "flag": "images/flags/poland.png",
                     "city": "Warsaw, Poland",
@@ -15,6 +16,7 @@
                     "to_airport": "WMI-STN"
                 },
                 {
+                    "id": "2",
                     "image": "images/demo/nice.jpg",
                     "flag": "images/flags/france.png",
                     "city": "Nice, France",
@@ -26,6 +28,7 @@
                     "to_airport": "NCE-LTN"
                 },
                 {
+                    "id": "3",
                     "image": "images/demo/palma.jpg",
                     "flag": "images/flags/spain.png",
                     "city": "Palma Mall, Spain",
