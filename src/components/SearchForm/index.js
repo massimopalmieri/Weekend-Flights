@@ -33,27 +33,33 @@ const formatGroupLabel = data => (
 
 const defaultFrom = {
     "value": "London",
-    "label": "London (all airports)"
+    "label": "London (all airports)",
+    "name": "LON_ALL",
+    "ports": "LGW_STN_LTN_LCY_LHR_SEN_BQH",
+    "country": "GB"
 };
 
 const SelectAirports = () => (
     <Select
         className="my-select my-1 mr-sm-2" 
+        name="airports"
         // defaultInputValue="London"
         defaultValue={defaultFrom}
+        // defaultValue={this.state.from}
+        // value={selectedOption}
         options={airports}
         formatGroupLabel={formatGroupLabel}
         // isMulti="true" - @todo in future
         defaultOptions="false"
         placeholder= "From"
         allowClear="true"
-
     />
 )
 
 const SelectWeekends = () => (
     <Select
         className="my-select my-1 mr-sm-2" 
+        name="weekend"
         defaultValue={weekendsDefault}
         options={weekends}
         formatGroupLabel={formatGroupLabel}
@@ -69,9 +75,19 @@ class SearchForm extends Component {
 
     state = {
         // flights: this.props.flights
-        groups: this.props.groups
+        groups: this.props.groups,
+        selectedOption: null,
+        from: defaultFrom,
+        weekend: weekendsDefault 
+        // weekend: 
         // ,
         // draft: ''
+    }
+
+    handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+        debugger;
     }
 
     getGroups = () => {
@@ -97,6 +113,11 @@ class SearchForm extends Component {
 
     searchFlights = (e) => {
         e.preventDefault();
+        // console.info('this.state', this.state);
+        // console.info('ports', this.state.from.ports);
+        // console.info('text', this.state.from.value);
+        // console.info('weekend', this.state.weekend.value);
+        // debugger;
 
         // this.setState({ action: 'loading' });
         this.setState({ action: 'ready' });
@@ -109,9 +130,14 @@ class SearchForm extends Component {
 
         this.setState({ groups: groups});
 
+        
+
         for (var i=1;i<=4;i++) {
-            fetch('http://weekendflights.eu/api/api.php?action=flights&week=42&dep=London&max_price=100&part=' + i)
-            // fetch('http://localhost/www/flights/api.php?action=flights&week=40&dep=London&max_price=100&part='+i)
+            console.info(this.state.from);
+            debugger;
+            fetch('http://weekendflights.eu/api/api.php?'+
+                'action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
+                '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&part=' + i)
                 .then(response => response.json())
                 .then(json => {
                     json.id = parseInt(json.id);
@@ -130,30 +156,55 @@ class SearchForm extends Component {
         return (this.state && this.state.action === 'ready') ? 'flight-results' : 'flight-results d-none';
     }    
 
-    // getInitialState(){
-    //     // className={this.showLoader()}
-    //     // className={styleCondition ? "btn-menu show-on-small" : ""
-    //     // className={this.props.showLoader}
-    //     debugger;
-    //     return {"showHideSidenav":"hidden"};
-    //   }
+    handleFromChange = (selectedOption) => {
+        this.setState({from: selectedOption });
+    }
+
+    handleWeekendChange = (selectedOption) => {
+        this.setState({weekend: selectedOption });
+    }
 
     render() {
+      const { selectedOption } = this.state;
+
       const { title } = this.props
       const { groups } = this.state
       return (  
           <div>
             <div className="searchForm">
-                <form action="" className="form-inline justify-content-center">
+                <form className="form-inline justify-content-center" onSubmit={this.searchFlights}>
                     <div className="form-group">
                         <label className="sr-only">From</label>
-                        <SelectAirports />
+                        {/* <SelectAirports /> */}
+
+                        <Select
+                            className="my-select my-1 mr-sm-2" 
+                            name="airports"
+                            defaultValue={this.state.from}
+                            options={airports}
+                            onChange={this.handleFromChange}
+                            formatGroupLabel={formatGroupLabel}
+                            defaultOptions="false"
+                            placeholder= "From"
+                            allowClear="true"
+                        />
                     </div>
                     <div className="form-group">
                         <label className="sr-only">Weekend</label>
-                        <SelectWeekends />
+
+                        <Select
+                                className="my-select my-1 mr-sm-2" 
+                                name="weekend"
+                                defaultValue={this.state.weekend}
+                                options={weekends}
+                                formatGroupLabel={formatGroupLabel}
+                                placeholder= "When"
+                                onChange={this.handleWeekendChange}
+                            />
+
+                        {/* <SelectWeekends onChange={this.handleWeekendChange} /> */}
                     </div>
-                    <button type="submit" className="btn btn-success" onClick={this.searchFlights} >Find	&raquo;</button>
+                    <button type="submit" className="btn btn-success">Find	&raquo;</button>
                 </form>
             </div>
             <div className={this.showLoader()}></div>
