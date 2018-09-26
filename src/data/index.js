@@ -3878,26 +3878,24 @@ function getWeekendOptions() {
     labels = [startDate.getFullYear()],
     defaultWeek = getWeekNumber(new Date())[1] + 3,
     defaultWeekend = '',
-    daysOfYear = [],
     end = new Date(startDate.getTime());
 
   end.setDate(end.getDate() + 183);
   for (var d = new Date(startDate.getTime()); d <= end; d.setDate(d.getDate() + 7)) {
     var saturday = new Date(d.getTime()),
-    sunday = new Date(d.getTime()),
-    label = '';
+      sunday = new Date(d.getTime()),
+      label = '';
 
-    daysOfYear.push(new Date(d));
     saturday.setDate(saturday.getDate() + 5);
     sunday.setDate(sunday.getDate() + 6);
 
-    if (labels.indexOf(d.getFullYear()) === -1) {
+    if (labels.indexOf(saturday.getFullYear()) === -1) {
       weekendsGroups.push({
-        "label": (d.getFullYear() - 1),
+        "label": (saturday.getFullYear() - 1),
         "options": options
       });
       options = [];
-      labels.push(d.getFullYear());
+      labels.push(saturday.getFullYear());
     }
 
     label = "Weekend " + getWeekNumber(d)[1] + " - " 
