@@ -113,28 +113,12 @@ class SearchForm extends Component {
 
     searchFlights = (e) => {
         e.preventDefault();
-        // console.info('this.state', this.state);
-        // console.info('ports', this.state.from.ports);
-        // console.info('text', this.state.from.value);
-        // console.info('weekend', this.state.weekend.value);
-        // debugger;
-
-        // this.setState({ action: 'loading' });
-        this.setState({ action: 'ready' });
-
-        // setTimeout(() => { 
-        //     this.setState({ action: 'ready' });
-        // }, 3000);
-
+        
+        this.setState({ action: 'loading' });
         var groups = this.getGroups();
-
         this.setState({ groups: groups});
 
-        
-
         for (var i=1;i<=4;i++) {
-            console.info(this.state.from);
-            // debugger;
             fetch('http://weekendflights.eu/api/api.php?'+
                 'action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
                 '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&part=' + i)
@@ -142,8 +126,7 @@ class SearchForm extends Component {
                 .then(json => {
                     json.id = parseInt(json.id);
                     groups[parseInt(json.id) -1] = json;
-                    this.setState({ groups: groups});
-                    
+                    this.setState({ action: 'ready', groups: groups});
                 });
         }
     }

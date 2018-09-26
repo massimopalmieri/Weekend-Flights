@@ -140,6 +140,10 @@ body {
   border: 1px solid #20465C;
 }
 
+.flight-results .card .card-body {
+  font-size: 15px;
+}
+
 .flight-results .col {
   padding-right:7px;
   padding-left:7px;
