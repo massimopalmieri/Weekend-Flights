@@ -15,7 +15,7 @@ class Homepage extends Component {
           <div className="container">
             <SearchForm />
           </div>
-        
+
           <div className="container-fluid">
             <div className="footer">  
               &copy; 2018 Copyright 

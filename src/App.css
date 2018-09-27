@@ -72,10 +72,13 @@ body {
 .btn-success {
   background-color: #20465C;
   color: #D1DAD3;
+  border-color: rgb(51, 105, 136);
 }
-
-.btn-success:hover {
+ 
+.btn-success:hover, .btn-success:focus, .btn-success:not(:disabled):not(.disabled):active:focus {
   background-color: #3199CB;
+  border-color: rgb(51, 105, 136);
+  box-shadow: none;
 }
 
 .footer {
@@ -185,4 +188,132 @@ body {
   -moz-transform: scale(1.1);
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.flight-details img {
+  max-width: 100%;
+}
+
+.flight-details .modal-header {
+  padding: 0;
+}
+
+.flight-details .modal-header .close {
+  position: absolute;
+  top: 10px;
+  color: white;
+  opacity: 1;
+  text-shadow: none;
+  font-weight: normal;
+
+}
+
+@media only screen and (max-width: 575px) {
+  .flight-details .modal-header .close {
+    color: black;
+    right: 10px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .flight-details .modal-header .close:not(:disabled):not(.disabled):focus, .flight-details .modal-header .close:not(:disabled):not(.disabled):hover {
+    color: white;
+  }
+
+  .flight-details .modal-header .close {
+    right: -3%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .flight-details .modal-header .close {
+    right: -4%;
+    font-size: 40px;
+    /* font-size: 58px; */
+  }
+}
+
+.flight-details .card-body .airlines-logo {
+  width: 100px;
+  font-size: 13px;
+  color: 	#808080;
+  float: right;
+  width: auto;
+  max-width: 100px;
+
+}
+
+.flight-details .card-body .airlines-logo img {
+  width: 50px;
+  float: right;
+}
+
+.flight-details .card-body .airlines-logo div {
+  clear: both;
+  text-align: right;
+  padding-top: 5px;
+}
+
+.flight-details .flight-time {
+  background: url('/images/connection.png') no-repeat;
+  background-position: left center;
+  padding-left: 21px;
+  line-height: 24px;
+}
+
+.flight-details .card {
+  clear: both;
+}
+
+.flight-time .card-text {
+  margin-bottom: 8px;
+}
+
+.flight-time .flight-time-duration {
+  color: 	#808080;
+  padding-left: 10px;
+}
+
+.flight-details .flight-price {
+  font-size: 22px;
+  padding-top: 5px;
+}
+
+.flight-details .flight-price .btn-book {
+  margin-top: -5px;
+}
+
+.arrow-both {
+  background: url(/images/arrow-both.png) no-repeat;
+  background-size: 100%;
+  background-position: 0px 0px;
+  width: 30px;
+  height: 26px;
+  display: inline-block;
+  margin: 0 5px;
+  opacity: 0.7;
+}
+
+.flight-details .flight-flag {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  right: 10px;
+  top: 10px;
+  border: 1px dotted #D1DAD3;
+  border-radius: 16px;
+}
+
+@media only screen and (max-width: 575px) {
+  .flight-details .flight-flag {
+    right: none;
+    left: 10px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .flight-details {
+    width: 90%;
+    max-width: 1000px;
+  }
 }
