@@ -141,6 +141,7 @@ body {
   margin-bottom: 10px;
   border-radius: 5px;
   border: 1px solid #20465C;
+  margin: 0 auto 10px;
 }
 
 .flight-results .card .card-body {
@@ -180,7 +181,7 @@ body {
   -webkit-transition: all 0.3s;
   transition: all 0.8s;
   text-align: center;
-  max-height: 221px;
+  /* max-height: 221px; */
 }
 
 .flight-results .card:hover .flight-image img {

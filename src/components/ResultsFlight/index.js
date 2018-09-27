@@ -49,30 +49,30 @@ class ResultFlight extends Component {
                     </ModalHeader>
                     <ModalBody>
                         <h3>
-                            London 
+                            {flight.from_city}
                             <span class="arrow-both"></span>
-                            Warsaw, Poland
-                            <span className="float-right">£81.97</span>
+                            {flight.city}
+                            <span className="float-right">{flight.price}</span>
                         </h3>
                         <div className="card">
                             <div className="card-body">
                                 <div className="airlines-logo">
-                                    <img src="images/airlines/FR.png" alt="" />
+                                    <img src={flight.from_airlines_image} alt={flight.from_airlines} />
                                     <div>
-                                        Ryanair <br />
-                                        FR 8729
+                                        {flight.from_airlines} <br />
+                                        {flight.from_flight_number}
                                     </div>
                                 </div>
-                                <h5 className="card-title">Departing flight: <span className="text-nowrap">Mon 21 Jan</span></h5>
+                                <h5 className="card-title">Departing flight: <span className="text-nowrap">{flight.from_day}</span></h5>
                                 <div className="flight-time">
-                                    <p className="card-text">09:00 London Stansted Airport STN</p>
-                                    <p className="card-text flight-time-duration">1 h 55 m</p>
-                                    <p className="card-text">11:55 Milan–Malpensa Airport MXP</p>
+                                    <p className="card-text">{flight.from_start_airport}</p>
+                                    <p className="card-text flight-time-duration">{flight.from_duration}</p>
+                                    <p className="card-text">{flight.from_stop_airport}</p>
                                 </div>
                                 
                                 <p className="card-text flight-price">
                                     <a href="#" className="btn btn-success float-right btn-book">Book flight</a>
-                                    £41.99
+                                    {flight.from_price}
                                 </p>
                             </div>
                         </div>
@@ -80,26 +80,24 @@ class ResultFlight extends Component {
                         <div className="card">
                             <div className="card-body">
                                 <div className="airlines-logo">
-                                        <img src="images/airlines/FR.png" alt="" />
-                                        <div>
-                                            Ryanair <br />
-                                            FR 8728
-                                        </div>
+                                    <img src={flight.to_airlines_image} alt={flight.to_airlines} />
+                                    <div>
+                                        {flight.to_airlines} <br />
+                                        {flight.to_flight_number}
+                                    </div>
                                 </div>
-                                <h5 className="card-title">Returning flight: <span className="text-nowrap">Tue 29 Jan</span></h5>
+                                <h5 className="card-title">Returning flight: <span className="text-nowrap">{flight.to_day}</span></h5>
                                 <div className="flight-time">
-                                    <p className="card-text">07:10 Milan–Malpensa Airport MXP</p>
-                                    <p className="card-text flight-time-duration">2 h 10 m</p>
-                                    <p className="card-text">08:20 London Stansted Airport STN</p>
+                                    <p className="card-text">{flight.to_start_airport}</p>
+                                    <p className="card-text flight-time-duration">{flight.to_duration}</p>
+                                    <p className="card-text">{flight.to_stop_airport}</p>
                                 </div>
                                 <p className="card-text flight-price">
                                     <a href="#" className="btn btn-success float-right btn-book">Book flight</a>
-                                    £41.99
+                                    {flight.to_price}
                                 </p>
                             </div>
                         </div>
-                          {/* <br /> */}
-                          {/* Total price: £81.97<br /> */}
                     </ModalBody>
                 </Modal>
             </div>
