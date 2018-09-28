@@ -71,7 +71,7 @@ class ResultFlight extends Component {
                                 </div>
                                 
                                 <p className="card-text flight-price">
-                                    <a href="#" className="btn btn-success float-right btn-book">Book flight</a>
+                                    <a href={flight.from_url} target="_blank" className="btn btn-success float-right btn-book">Book flight</a>
                                     {flight.from_price}
                                 </p>
                             </div>
@@ -93,7 +93,7 @@ class ResultFlight extends Component {
                                     <p className="card-text">{flight.to_stop_time_airport}</p>
                                 </div>
                                 <p className="card-text flight-price">
-                                    <a href="#" className="btn btn-success float-right btn-book">Book flight</a>
+                                    <a href={flight.to_url} target="_blank" className="btn btn-success float-right btn-book">Book flight</a>
                                     {flight.to_price}
                                 </p>
                             </div>
