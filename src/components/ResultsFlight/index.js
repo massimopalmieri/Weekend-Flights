@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import Img from 'react-image';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
+const imgLoader = () =>
+  <Img src="images/placeholder.gif" alt="" />
 
 class ResultFlight extends Component {
     constructor(props) {
@@ -24,9 +28,9 @@ class ResultFlight extends Component {
             <div className="col col-12 col-md-6  col-lg-4">
                 <div className="card" onClick={this.toggleDetails}>
                     <div className="card-img-top flight-image">
-                        <img src={flight.image} alt={flight.city} />
+                        <Img src={flight.image} alt={flight.city} loader={imgLoader()} unloader={imgLoader()} />
                     </div>
-                    <img className="flight-flag" src={flight.flag} alt={flight.country} />
+                    <Img className="flight-flag" src={flight.flag} alt={flight.country} />
                     <div className="card-body">
                         <h5 className="card-title">
                             {flight.city}
@@ -44,8 +48,8 @@ class ResultFlight extends Component {
 
                 <Modal isOpen={this.state.modal} toggle={this.toggleDetails} className="modal-lg flight-details" show="false">
                     <ModalHeader toggle={this.toggleDetails}>
-                        <img src={flight.image_wide} alt={flight.city} />
-                        <img className="flight-flag" src={flight.flag} alt={flight.country} />
+                        <Img src={flight.image_wide} alt={flight.city} />
+                        <Img className="flight-flag" src={flight.flag} alt={flight.country} />
                     </ModalHeader>
                     <ModalBody>
                         <h3>
