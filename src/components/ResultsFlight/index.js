@@ -54,7 +54,7 @@ class ResultFlight extends Component {
                     <ModalBody>
                         <h3>
                             {flight.from_city}
-                            <span class="arrow-both"></span>
+                            <span className="arrow-both"></span>
                             {flight.city}
                             <span className="float-right">{flight.price}</span>
                         </h3>

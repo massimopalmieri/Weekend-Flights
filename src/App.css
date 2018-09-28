@@ -234,6 +234,10 @@ body {
   }
 }
 
+.flight-details .modal-body {
+  background: white;
+}
+
 .flight-details .card-body .airlines-logo {
   width: 100px;
   font-size: 13px;
