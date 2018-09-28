@@ -44,7 +44,7 @@ class ResultFlight extends Component {
 
                 <Modal isOpen={this.state.modal} toggle={this.toggleDetails} className="modal-lg flight-details" show="false">
                     <ModalHeader toggle={this.toggleDetails}>
-                        <img src="http://localhost/www/flights/image.php?f=wide&q=Goteborg%2C+Sweden" alt="" />
+                        <img src={flight.image_wide} alt={flight.city} />
                         <img className="flight-flag" src={flight.flag} alt={flight.country} />
                     </ModalHeader>
                     <ModalBody>
@@ -63,11 +63,11 @@ class ResultFlight extends Component {
                                         {flight.from_flight_number}
                                     </div>
                                 </div>
-                                <h5 className="card-title">Departing flight: <span className="text-nowrap">{flight.from_day}</span></h5>
+                                <h5 className="card-title">Departing flight: <span className="text-nowrap">{flight.from_date}</span></h5>
                                 <div className="flight-time">
-                                    <p className="card-text">{flight.from_start_airport}</p>
+                                    <p className="card-text">{flight.from_start_time_airport}</p>
                                     <p className="card-text flight-time-duration">{flight.from_duration}</p>
-                                    <p className="card-text">{flight.from_stop_airport}</p>
+                                    <p className="card-text">{flight.from_stop_time_airport}</p>
                                 </div>
                                 
                                 <p className="card-text flight-price">
@@ -86,11 +86,11 @@ class ResultFlight extends Component {
                                         {flight.to_flight_number}
                                     </div>
                                 </div>
-                                <h5 className="card-title">Returning flight: <span className="text-nowrap">{flight.to_day}</span></h5>
+                                <h5 className="card-title">Returning flight: <span className="text-nowrap">{flight.to_date}</span></h5>
                                 <div className="flight-time">
-                                    <p className="card-text">{flight.to_start_airport}</p>
+                                    <p className="card-text">{flight.to_start_time_airport}</p>
                                     <p className="card-text flight-time-duration">{flight.to_duration}</p>
-                                    <p className="card-text">{flight.to_stop_airport}</p>
+                                    <p className="card-text">{flight.to_stop_time_airport}</p>
                                 </div>
                                 <p className="card-text flight-price">
                                     <a href="#" className="btn btn-success float-right btn-book">Book flight</a>
