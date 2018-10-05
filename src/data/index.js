@@ -1,4 +1,4 @@
-export const airports = [
+const airports = [
   {
     "label": "Albania",
     "options": [
@@ -3925,7 +3925,19 @@ function getWeekendOptions() {
   return [weekendsGroups, defaultWeekend];
 }
 
-export const [weekends, weekendsDefault] = getWeekendOptions();
+const fromDefault = {
+  "value": "London",
+  "label": "London (all airports)",
+  "name": "LON_ALL",
+  "ports": "LGW_STN_LTN_LCY_LHR_SEN_BQH",
+  "country": "GB"
+};
+
+const weekendParts = 4;
+
+const [weekends, weekendDefault] = getWeekendOptions();
+
+export {airports, weekends, fromDefault, weekendDefault, weekendParts};
 
 // export const weekends = weekendsGroups;
 // export const weekendsDefault = defaultWeekend; //"aaaa";// getWeekNumber(new Date())[1] + 3

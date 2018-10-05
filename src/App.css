@@ -109,6 +109,25 @@ body {
   width: 270px;
 }
 
+.my-select-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-select-group-size {
+  background-color: #EBECF0;
+  border-radius: 2em;
+  color: #172B4D;
+  display: inline-block;
+  font-size: 12;
+  font-weight: normal;
+  line-height: 1;
+  min-width: 1;
+  padding: 3px 6px;
+  text-align: center;
+}
+
 .loader {
   background: url('/images/loader.gif');
   width: 274px;
@@ -122,6 +141,11 @@ body {
   position: relative;
   border: 1px dotted #20465C;
   background: rgba(255,255,255,0.5);
+}
+
+.flight-results:empty {
+  border: none;
+  padding: 0;
 }
 
 .flight-results h2 {
