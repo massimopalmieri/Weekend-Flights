@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
 import Img from 'react-image';
+import OnVisible from 'react-on-visible';
 
 const imgLoader = () =>
   <Img src="images/placeholder.gif" alt="" />
 
+const imgFailed = () =>
+  <Img src="images/placeholder-failed.gif" alt="" />
+
 const Flight = (params) => 
-    <div className="flight-row">
-        {params.data.time} <span className="float-right">{params.data.airport}</span>
-    </div>
+    <OnVisible className="flight-row" key={10} percent={10}  onChange={params.handleResultVisible.bind(this, params.flightId, params.isFrom, params.groupId, params.flight.id)}>
+        {params.flight.time} <span className="float-right">{params.flight.airport}</span>
+    </OnVisible>
 
 class ResultFlight extends Component {
 
     render() {
-        const { flight, group, handleShowDetails } = this.props
+        const { flight, group, handleShowDetails, handleResultVisible } = this.props
         
         return (
             <div className="col col-12 col-md-6 col-lg-4">
                 <div className="card" onClick={handleShowDetails} data-group={group.id}  data-flight={flight.id}>
                     <div className="card-img-top flight-image">
-                        <Img src={flight.image} alt={flight.city} loader={imgLoader()} unloader={imgLoader()} alt={flight.city} />
+                        <Img src={flight.image} alt={flight.city} loader={imgLoader()} unloader={imgFailed()} alt={flight.city} />
                     </div>
                     <Img className="flight-flag" src={flight.flag} alt={flight.country} />
                     <div className="card-body">
@@ -41,8 +45,8 @@ class ResultFlight extends Component {
                                 {flight.price_currency}{flight.price}
                             </span>
                         </h5>
-                        <Flight data={flight.from} />
-                        <Flight data={flight.to} />
+                        <Flight flight={flight.from} flightId={flight.id} isFrom={true} groupId={group.id} handleResultVisible={handleResultVisible} />
+                        <Flight flight={flight.to} flightId={flight.id} isFrom={false} groupId={group.id} handleResultVisible={handleResultVisible} />
                     </div>
                 </div>
             </div>

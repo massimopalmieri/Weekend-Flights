@@ -14,6 +14,7 @@ class Homepage extends Component {
     this.handleSearchFlights = this.handleSearchFlights.bind(this)
     this.handleFromChange = this.handleFromChange.bind(this)
     this.handleWeekendChange = this.handleWeekendChange.bind(this)
+    this.handleResultVisible = this.handleResultVisible.bind(this)
   }
 
   static defaultProps = {
@@ -47,7 +48,7 @@ class Homepage extends Component {
   }
 
   setStatePriceUpdating(state, isFrom, groupId, flightId) {
-    let flightGroup = state.groups[groupId].flights[flightId];
+    let flightGroup = state.groups[groupId - 1].flights[flightId];
     let flight = isFrom ? flightGroup.from : flightGroup.to;
     Object.assign(flight, {
       updating: true
@@ -56,7 +57,7 @@ class Homepage extends Component {
   }
 
   setStatePriceError(state, isFrom, groupId, flightId, error_message) {
-    let flightGroup = state.groups[groupId].flights[flightId];
+    let flightGroup = state.groups[groupId - 1].flights[flightId];
     let flight = isFrom ? flightGroup.from : flightGroup.to;
     Object.assign(flight, {
       updating: false,
@@ -67,7 +68,7 @@ class Homepage extends Component {
   }
 
   setStatePriceUpdated(state, isFrom, groupId, flightId, price) {
-    let flightGroup = state.groups[groupId].flights[flightId];
+    let flightGroup = state.groups[groupId - 1].flights[flightId];
     let flight = isFrom ? flightGroup.from : flightGroup.to;
     Object.assign(flight, {
       updating: false,
@@ -81,13 +82,11 @@ class Homepage extends Component {
     return state;
   }
 
-  updateStatus(el, isFrom, groupId, flightId) {
-    console.log(el);
-
+  handleResultVisible(flightId, isFrom, groupId, flightKey) {
     this.setState((state, props) => this.setStatePriceUpdating(state, isFrom, groupId, flightId));
 
     fetch('http://localhost/www/flights/api.php?'+ // fetch('http://weekendflights.eu/api/api.php?'+ 
-      'action=refresh&id=' + el.id)
+      'action=refresh&id=' + flightKey)
     .then(response => response.json())
     .then(json => {    
         if (json.error) {
@@ -113,10 +112,6 @@ class Homepage extends Component {
                 json.id = parseInt(json.id);
                 groups[json.id - 1] = json;
                 this.setState({ fetchInProgress: false, groups: groups});
-                json.flights.forEach((el, id) => {
-                  this.updateStatus(el.from, true, json.id - 1, id);
-                  this.updateStatus(el.to, false, json.id - 1, id);
-                });
             });
     }
   }
@@ -151,7 +146,7 @@ class Homepage extends Component {
           { 
             fetchInProgress
               ? <div className="loader"></div>
-              : <Results groups={groups} handleShowDetails={this.handleShowDetails} />
+              : <Results groups={groups} handleShowDetails={this.handleShowDetails} handleResultVisible={this.handleResultVisible} />
           } {
             flight &&
             <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />

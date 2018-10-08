@@ -33,7 +33,7 @@ class FlightDetailsFlight extends Component {
                         ) : ( flight.updating ) ? (
                             <img src="images/loader-small.gif" className="loader-small" alt="" />
                         ) : ( // ( flight.updated && flight.to.updated )
-                            <img src="images/success.png" className="loader-small" alt="" />
+                            <img src="images/success.png" className="icon-success" alt="" />
                         )}                      
                     </p>
                 </div>

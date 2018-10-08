@@ -197,15 +197,21 @@ body {
 .flight-results .flight-image {
   position: relative;
   overflow: hidden;
-  text-align: center;
+  text-align: center; 
 }
+
+@media only screen and (min-width: 576px) {
+  .flight-results .flight-image {
+    min-height: 176px;
+  }
+}
+
 .flight-results .flight-image img {
   max-width: 100%;  
   -moz-transition: all 0.3s;
   -webkit-transition: all 0.3s;
   transition: all 0.8s;
   text-align: center;
-  /* max-height: 221px; */
 }
 
 .flight-results .card:hover .flight-image img {
@@ -225,7 +231,7 @@ body {
 
 .flight-results .flight-price-icon.error {
   width: 18px;
-  margin-right: 3px;
+  margin-right: 5px;
   margin-bottom: 4px;
 }
 
@@ -345,8 +351,12 @@ body {
 .flight-details .flight-price .price-error .icon-error {
   width: 23px;
   height: auto;
-  margin-bottom: 7px;
-  margin-right: 6px;
+  margin: 0 6px 7px 10px;
+}
+
+.flight-details .flight-price .icon-success {
+  width: 25px;
+  margin-left: 5px;
 }
 
 .arrow-both {
