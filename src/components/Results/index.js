@@ -8,7 +8,9 @@ class Results extends Component {
   
       return (
         <div className="flight-results">
-            {groups.map(group => <ResultsGroup group={group} key={group.name} handleShowDetails={handleShowDetails} handleResultVisible={handleResultVisible} />)}
+            { groups.map( group => 
+              <ResultsGroup group={group} key={group.name} handleShowDetails={handleShowDetails} handleResultVisible={handleResultVisible} />)
+            }
         </div>
       )
     }

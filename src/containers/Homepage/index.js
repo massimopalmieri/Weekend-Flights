@@ -3,7 +3,7 @@ import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
 import FlightDetails from '../../components/FlightDetails'
 import { weekendParts, weekendDefault, fromDefault } from '../../data';
-
+import _ from 'lodash';
 
 class Homepage extends Component {
   constructor(props) {
@@ -33,12 +33,17 @@ class Homepage extends Component {
     e.preventDefault();
 
     let flightId = e.currentTarget.dataset.flight,
-      group = e.currentTarget.dataset.group,
-      flight = this.state.groups[parseInt(group)-1].flights.find(function(el) { return el.id == flightId });
+      groupId = parseInt(e.currentTarget.dataset.group) ;
 
-    this.setState({
-      flight: flight
-    });
+    if (this.state.groups[groupId - 1]) {
+      let flight = this.state.groups[groupId - 1].flights.find((el) => { 
+        return el ? el.id == flightId : false;
+      });
+
+      this.setState({
+        flight: flight
+      });
+    }
   }
 
   handleCloseDetails() {
@@ -48,46 +53,61 @@ class Homepage extends Component {
   }
 
   setStatePriceUpdating(state, isFrom, groupId, flightId) {
-    let flightGroup = state.groups[groupId - 1].flights[flightId];
-    let flight = isFrom ? flightGroup.from : flightGroup.to;
-    Object.assign(flight, {
-      updating: true
-    });
+    if (state.groups[groupId - 1]) {
+      let flightGroup = state.groups[groupId - 1].flights[flightId];
+      if (flightGroup) {
+        let flight = isFrom ? flightGroup.from : flightGroup.to;
+        Object.assign(flight, {
+          updating: true
+        });
+      }
+    }
     return state;
   }
 
   setStatePriceError(state, isFrom, groupId, flightId, error_message) {
-    let flightGroup = state.groups[groupId - 1].flights[flightId];
-    let flight = isFrom ? flightGroup.from : flightGroup.to;
-    Object.assign(flight, {
-      updating: false,
-      error: true,
-      error_message: error_message
-    });
+    if (state.groups[groupId - 1]) {
+      let flightGroup = state.groups[groupId - 1].flights[flightId];
+      if (flightGroup) {
+        let flight = isFrom ? flightGroup.from : flightGroup.to;
+        Object.assign(flight, {
+          updating: false,
+          error: true,
+          error_message: error_message
+        });
+      }
+    }
     return state;
   }
 
-  setStatePriceHide(state, isFrom, groupId, flightId, error_message) {
-    let flightGroup = state.groups[groupId - 1].flights[flightId];
-    let flight = isFrom ? flightGroup.from : flightGroup.to;
-    Object.assign(flight, {
-      hidden: true
-    });
+  setStateFlightRemove(state, isFrom, groupId, flightId, error_message) {
+    if (state.groups[groupId - 1] && state.groups[groupId - 1].flights[flightId]) {
+      delete state.groups[groupId - 1].flights[flightId];
+      var reduce = _(state.groups[groupId - 1].flights).reduce((a,v,k) => { 
+        if(v){ a[k]=v; } 
+        return a; 
+      },{});
+      if (_.isEmpty(reduce)) { // correct way to check flights size
+          delete state.groups[groupId - 1];
+      }
+    }
     return state;
   }
 
   setStatePriceUpdated(state, isFrom, groupId, flightId, price) {
     let flightGroup = state.groups[groupId - 1].flights[flightId];
-    let flight = isFrom ? flightGroup.from : flightGroup.to;
-    Object.assign(flight, {
-      updating: false,
-      updated: true
-    });
+    if (flightGroup) {
+      let flight = isFrom ? flightGroup.from : flightGroup.to;
+      Object.assign(flight, {
+        updating: false,
+        updated: true
+      });
 
-    if (price != parseFloat(flight.price)) {
-      flight.price = price; // todo: add condition on max price to hide if higher
-      flightGroup.price = (parseFloat(flightGroup.from.price) + parseFloat(flightGroup.to.price)).toFixed(0);
-    }    
+      if (price != parseFloat(flight.price)) {
+        flight.price = price; // todo: add condition on max price to hide if higher
+        flightGroup.price = (parseFloat(flightGroup.from.price) + parseFloat(flightGroup.to.price)).toFixed(0);
+      }    
+    }
     return state;
   }
 
@@ -101,7 +121,7 @@ class Homepage extends Component {
         if (json.error) {
             this.setState((state, props) => this.setStatePriceError(state, isFrom, groupId, flightId, json.error));
             setTimeout( () => { 
-              this.setState((state, props) => this.setStatePriceHide(state, isFrom, groupId, flightId, json.error));
+              this.setState((state, props) => this.setStateFlightRemove(state, isFrom, groupId, flightId, json.error));
             }, 1000);
         } else {
             this.setState((state, props) => this.setStatePriceUpdated(state, isFrom, groupId, flightId, json.fly.priceLocal));
@@ -121,9 +141,11 @@ class Homepage extends Component {
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&part=' + i)
             .then(response => response.json())
             .then(json => {
+              if (json.flights.length) {
                 json.id = parseInt(json.id);
                 groups[json.id - 1] = json;
                 this.setState({ fetchInProgress: false, groups: groups});
+              }
             });
     }
   }
