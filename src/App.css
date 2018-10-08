@@ -168,6 +168,16 @@ body {
   margin: 0 auto 10px;
 }
 
+.flight-results .colFlight.fadeOut {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
+}
+
+.flight-results .colFlight.hidden {
+  display: none;
+}
+
 .flight-results .card .card-body {
   font-size: 15px;
 }

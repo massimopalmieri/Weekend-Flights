@@ -67,6 +67,15 @@ class Homepage extends Component {
     return state;
   }
 
+  setStatePriceHide(state, isFrom, groupId, flightId, error_message) {
+    let flightGroup = state.groups[groupId - 1].flights[flightId];
+    let flight = isFrom ? flightGroup.from : flightGroup.to;
+    Object.assign(flight, {
+      hidden: true
+    });
+    return state;
+  }
+
   setStatePriceUpdated(state, isFrom, groupId, flightId, price) {
     let flightGroup = state.groups[groupId - 1].flights[flightId];
     let flight = isFrom ? flightGroup.from : flightGroup.to;
@@ -91,6 +100,9 @@ class Homepage extends Component {
     .then(json => {    
         if (json.error) {
             this.setState((state, props) => this.setStatePriceError(state, isFrom, groupId, flightId, json.error));
+            setTimeout( () => { 
+              this.setState((state, props) => this.setStatePriceHide(state, isFrom, groupId, flightId, json.error));
+            }, 1000);
         } else {
             this.setState((state, props) => this.setStatePriceUpdated(state, isFrom, groupId, flightId, json.fly.priceLocal));
         }

@@ -15,11 +15,22 @@ const Flight = (params) =>
 
 class ResultFlight extends Component {
 
+    getClassName() {
+        let classes = 'col col-12 col-md-6 col-lg-4 colFlight';
+        if ( this.props.flight.from.error || this.props.flight.to.error) {
+            classes += ' fadeOut';
+        }
+        if ( this.props.flight.from.hidden || this.props.flight.to.hidden ) {
+            classes += ' hidden';
+        } 
+        return classes;
+    }
+
     render() {
         const { flight, group, handleShowDetails, handleResultVisible } = this.props
         
         return (
-            <div className="col col-12 col-md-6 col-lg-4">
+            <div className={this.getClassName()}>
                 <div className="card" onClick={handleShowDetails} data-group={group.id}  data-flight={flight.id}>
                     <div className="card-img-top flight-image">
                         <Img src={flight.image} alt={flight.city} loader={imgLoader()} unloader={imgFailed()} alt={flight.city} />
