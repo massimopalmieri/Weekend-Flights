@@ -4,6 +4,7 @@ import Results from '../../components/Results'
 import FlightDetails from '../../components/FlightDetails'
 import { weekendParts, weekendDefault, fromDefault } from '../../data';
 
+
 class Homepage extends Component {
   constructor(props) {
     super(props)
@@ -45,6 +46,58 @@ class Homepage extends Component {
     });
   }
 
+  setStatePriceUpdating(state, isFrom, groupId, flightId) {
+    let flightGroup = state.groups[groupId].flights[flightId];
+    let flight = isFrom ? flightGroup.from : flightGroup.to;
+    Object.assign(flight, {
+      updating: true
+    });
+    return state;
+  }
+
+  setStatePriceError(state, isFrom, groupId, flightId, error_message) {
+    let flightGroup = state.groups[groupId].flights[flightId];
+    let flight = isFrom ? flightGroup.from : flightGroup.to;
+    Object.assign(flight, {
+      updating: false,
+      error: true,
+      error_message: error_message
+    });
+    return state;
+  }
+
+  setStatePriceUpdated(state, isFrom, groupId, flightId, price) {
+    let flightGroup = state.groups[groupId].flights[flightId];
+    let flight = isFrom ? flightGroup.from : flightGroup.to;
+    Object.assign(flight, {
+      updating: false,
+      updated: true
+    });
+
+    if (price != parseFloat(flight.price)) {
+      flight.price = price; // todo: add condition on max price to hide if higher
+      flightGroup.price = (parseFloat(flightGroup.from.price) + parseFloat(flightGroup.to.price)).toFixed(0);
+    }    
+    return state;
+  }
+
+  updateStatus(el, isFrom, groupId, flightId) {
+    console.log(el);
+
+    this.setState((state, props) => this.setStatePriceUpdating(state, isFrom, groupId, flightId));
+
+    fetch('http://localhost/www/flights/api.php?'+ // fetch('http://weekendflights.eu/api/api.php?'+ 
+      'action=refresh&id=' + el.id)
+    .then(response => response.json())
+    .then(json => {    
+        if (json.error) {
+            this.setState((state, props) => this.setStatePriceError(state, isFrom, groupId, flightId, json.error));
+        } else {
+            this.setState((state, props) => this.setStatePriceUpdated(state, isFrom, groupId, flightId, json.fly.priceLocal));
+        }
+    });
+  }
+
   handleSearchFlights = (e) => {
     e.preventDefault();
     
@@ -52,7 +105,7 @@ class Homepage extends Component {
     let groups = [];
 
     for (var i=1; i<=weekendParts; i++) {
-        fetch('http://weekendflights.eu/api/api.php?'+ // fetch('http://localhost/www/flights/api.php?'
+        fetch('http://localhost/www/flights/api.php?'+ // fetch('http://weekendflights.eu/api/api.php?'+
             'action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&part=' + i)
             .then(response => response.json())
@@ -60,6 +113,10 @@ class Homepage extends Component {
                 json.id = parseInt(json.id);
                 groups[json.id - 1] = json;
                 this.setState({ fetchInProgress: false, groups: groups});
+                json.flights.forEach((el, id) => {
+                  this.updateStatus(el.from, true, json.id - 1, id);
+                  this.updateStatus(el.to, false, json.id - 1, id);
+                });
             });
     }
   }

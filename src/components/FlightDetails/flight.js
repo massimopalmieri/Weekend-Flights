@@ -24,6 +24,17 @@ class FlightDetailsFlight extends Component {
                     <p className="card-text flight-price">
                         <a href={flight.url} target="_blank" className="btn btn-success float-right btn-book">Book flight</a>
                         {flight.price}
+
+                        {( flight.error ) ? (
+                            <span className="price-error">
+                                <img src="images/error.png" className="icon-error" alt="" />
+                                Ticket not available {/* Flight sold out */} {/* Error - {message} */}
+                            </span>
+                        ) : ( flight.updating ) ? (
+                            <img src="images/loader-small.gif" className="loader-small" alt="" />
+                        ) : ( // ( flight.updated && flight.to.updated )
+                            <img src="images/success.png" className="loader-small" alt="" />
+                        )}                      
                     </p>
                 </div>
             </div>

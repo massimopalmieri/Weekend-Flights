@@ -215,6 +215,24 @@ body {
   transform: scale(1.1);
 }
 
+.flight-results .flight-price-icon {
+  width: 24px;
+}
+
+.flight-results .flight-price-icon.loader-small {
+  width: 34px;
+}
+
+.flight-results .flight-price-icon.error {
+  width: 18px;
+  margin-right: 3px;
+  margin-bottom: 4px;
+}
+
+.flight-results .flight-row {
+  clear: both;
+}
+
 .flight-details img {
   max-width: 100%;
 }
@@ -312,6 +330,23 @@ body {
 
 .flight-details .flight-price .btn-book {
   margin-top: -5px;
+}
+
+.flight-details .flight-price .loader-small {
+  vertical-align: bottom;
+  width: 34px;
+  height: 34px;
+}
+
+.flight-details .flight-price .price-error {
+  font-size: 16px;
+}
+
+.flight-details .flight-price .price-error .icon-error {
+  width: 23px;
+  height: auto;
+  margin-bottom: 7px;
+  margin-right: 6px;
 }
 
 .arrow-both {
