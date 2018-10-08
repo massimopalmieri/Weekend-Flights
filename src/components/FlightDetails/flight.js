@@ -23,7 +23,7 @@ class FlightDetailsFlight extends Component {
                     </div>
                     <p className="card-text flight-price">
                         <a href={flight.url} target="_blank" className="btn btn-success float-right btn-book">Book flight</a>
-                        {flight.price}
+                        {flight.price_currency}{flight.price}
 
                         {( flight.error ) ? (
                             <span className="price-error">
