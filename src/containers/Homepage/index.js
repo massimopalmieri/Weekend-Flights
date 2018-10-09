@@ -122,8 +122,7 @@ class Homepage extends Component {
   handleResultVisible(flightId, isFrom, groupId, flightKey) {
     this.setState((state, props) => this.setStatePriceUpdating(state, isFrom, groupId, flightId));
 
-    fetch('http://localhost/www/flights/api.php?'+ // fetch('http://weekendflights.eu/api/api.php?'+ 
-      'action=refresh&id=' + flightKey)
+    fetch('api/?action=refresh&id=' + flightKey)
     .then(response => response.json())
     .then(json => {    
         if (json.error) {
@@ -144,9 +143,8 @@ class Homepage extends Component {
     let groups = [], 
       c = 0;    
     for (var i=1; i<=weekendParts; i++) {
-        fetch('http://localhost/www/flights/api.php?'+ // fetch('http://weekendflights.eu/api/api.php?'+
-            'action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
-            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&part=' + i)
+        fetch('api/?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
+            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i)
             .then(response => response.json())
             .then(json => {
               c++;
@@ -154,7 +152,7 @@ class Homepage extends Component {
                 json.id = parseInt(json.id);
                 groups[json.id - 1] = json;
                 this.setState({ fetchInProgress: false, groups: groups, noResults: false});
-              } else if (c == weekendParts) { // all empty
+              } else if (c == weekendParts) { // all parts empty
                 this.setState({ fetchInProgress: false, groups: [], noResults: true});
               }
             });
