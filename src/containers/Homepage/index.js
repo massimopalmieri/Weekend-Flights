@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
 import FlightDetails from '../../components/FlightDetails'
-import { weekendParts, weekendDefault, fromDefault } from '../../data';
+import { weekendParts, weekendDefault, fromDefault, apiLocation } from '../../data';
 import _ from 'lodash';
 
 class Homepage extends Component {
@@ -103,18 +103,20 @@ class Homepage extends Component {
   }
 
   setStatePriceUpdated(state, isFrom, groupId, flightId, price) {
-    let flightGroup = state.groups[groupId - 1].flights[flightId];
-    if (flightGroup) {
-      let flight = isFrom ? flightGroup.from : flightGroup.to;
-      Object.assign(flight, {
-        updating: false,
-        updated: true
-      });
+    if (state.groups[groupId - 1]) {
+      let flightGroup = state.groups[groupId - 1].flights[flightId];
+      if (flightGroup) {
+        let flight = isFrom ? flightGroup.from : flightGroup.to;
+        Object.assign(flight, {
+          updating: false,
+          updated: true
+        });
 
-      if (price != parseFloat(flight.price)) {
-        flight.price = price; // todo: add condition on max price to hide if higher
-        flightGroup.price = (parseFloat(flightGroup.from.price) + parseFloat(flightGroup.to.price)).toFixed(0);
-      }    
+        if (price != parseFloat(flight.price)) {
+          flight.price = price; // todo: add condition on max price to hide if higher
+          flightGroup.price = (parseFloat(flightGroup.from.price) + parseFloat(flightGroup.to.price)).toFixed(0);
+        }    
+      }
     }
     return state;
   }
@@ -122,7 +124,7 @@ class Homepage extends Component {
   handleResultVisible(flightId, isFrom, groupId, flightKey) {
     this.setState((state, props) => this.setStatePriceUpdating(state, isFrom, groupId, flightId));
 
-    fetch('api/?action=refresh&id=' + flightKey)
+    fetch( apiLocation + '?action=refresh&id=' + flightKey)
     .then(response => response.json())
     .then(json => {    
         if (json.error) {
@@ -143,7 +145,7 @@ class Homepage extends Component {
     let groups = [], 
       c = 0;    
     for (var i=1; i<=weekendParts; i++) {
-        fetch('api/?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
+        fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i)
             .then(response => response.json())
             .then(json => {

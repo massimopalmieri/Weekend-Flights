@@ -3935,9 +3935,11 @@ const fromDefault = {
 
 const weekendParts = 4;
 
+const apiLocation = (window.location.hostname === 'localhost') ? 'api/' : 'http://api.weekendflights.eu/'; 
+
 const [weekends, weekendDefault] = getWeekendOptions();
 
-export {airports, weekends, fromDefault, weekendDefault, weekendParts};
+export {airports, weekends, fromDefault, weekendDefault, weekendParts, apiLocation };
 
 // export const weekends = weekendsGroups;
 // export const weekendsDefault = defaultWeekend; //"aaaa";// getWeekNumber(new Date())[1] + 3
