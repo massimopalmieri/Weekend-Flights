@@ -28,7 +28,6 @@ body {
 
 .header {
   padding: 10px 0 0;
-  height: 80px;
   width: 100%;
   background-color: #20465C;
   color: white;
@@ -50,6 +49,7 @@ body {
   font-size: 18px; 
   color: #7DCED7;
   text-align: center;
+  padding-bottom: 10px;
 }
 
 .searchForm {
@@ -402,4 +402,13 @@ body {
     width: 90%;
     max-width: 1000px;
   }
+}
+
+.no-results {
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  border: 1px dotted #20465C;
+  background: rgba(255,255,255,0.5);
+  text-align: center; 
 }

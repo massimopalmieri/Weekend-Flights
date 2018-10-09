@@ -42,13 +42,12 @@ class ResultFlight extends Component {
                             
                             <span className="float-right">
                                 {( flight.from.error || flight.to.error ) ? (
-                                    ( flight.from.error || flight.to.error ) &&
                                     <span className="price-error">
                                         <img src="images/error.png" className="flight-price-icon error" alt="" />
                                     </span>
                                 ) : ( flight.from.updating || flight.to.updating ) ? (
                                     <img src="images/loader-small.gif" className="flight-price-icon loader-small" alt="" />
-                                ) : ( // ( flight.from.updated && flight.to.updated )
+                                ) : ( flight.from.updated && flight.to.updated ) && (
                                     <span>
                                         <img src="images/success.png" className="flight-price-icon" alt="" />
                                     </span> 

@@ -80,15 +80,23 @@ class Homepage extends Component {
     return state;
   }
 
+  isEmptyArray(array) {
+    var reduce = _(array).reduce((a,v,k) => { 
+      if(v){ a[k]=v; } 
+      return a; 
+    },{});
+    return _.isEmpty(reduce);
+  }
+
   setStateFlightRemove(state, isFrom, groupId, flightId, error_message) {
     if (state.groups[groupId - 1] && state.groups[groupId - 1].flights[flightId]) {
       delete state.groups[groupId - 1].flights[flightId];
-      var reduce = _(state.groups[groupId - 1].flights).reduce((a,v,k) => { 
-        if(v){ a[k]=v; } 
-        return a; 
-      },{});
-      if (_.isEmpty(reduce)) { // correct way to check flights size
+      if (this.isEmptyArray(state.groups[groupId - 1].flights)) {
           delete state.groups[groupId - 1];
+          if (this.isEmptyArray(state.groups)) {
+            state.groups = [];
+            state.noResults = true;
+          }
       }
     }
     return state;
@@ -133,18 +141,21 @@ class Homepage extends Component {
     e.preventDefault();
     
     this.setState({ fetchInProgress: true });
-    let groups = [];
-
+    let groups = [], 
+      c = 0;    
     for (var i=1; i<=weekendParts; i++) {
         fetch('http://localhost/www/flights/api.php?'+ // fetch('http://weekendflights.eu/api/api.php?'+
             'action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&part=' + i)
             .then(response => response.json())
             .then(json => {
+              c++;
               if (json.flights.length) {
                 json.id = parseInt(json.id);
                 groups[json.id - 1] = json;
-                this.setState({ fetchInProgress: false, groups: groups});
+                this.setState({ fetchInProgress: false, groups: groups, noResults: false});
+              } else if (c == weekendParts) { // all empty
+                this.setState({ fetchInProgress: false, groups: [], noResults: true});
               }
             });
     }
@@ -164,7 +175,7 @@ class Homepage extends Component {
   }
 
   render() {
-    const { fetchInProgress, groups, flight } = this.state;
+    const { fetchInProgress, groups, flight, noResults } = this.state;
 
     return (  
       <div className="container-main">
@@ -178,9 +189,12 @@ class Homepage extends Component {
         <div className="container">
           <SearchForm handleSearchFlights={this.handleSearchFlights} handleFromChange={this.handleFromChange} handleWeekendChange={this.handleWeekendChange}  />
           { 
-            fetchInProgress
-              ? <div className="loader"></div>
-              : <Results groups={groups} handleShowDetails={this.handleShowDetails} handleResultVisible={this.handleResultVisible} />
+            fetchInProgress ? 
+            <div className="loader"></div>
+            : noResults ? 
+            <div className="no-results">No Flights available for current search critieria :/</div>
+            : 
+            <Results groups={groups} handleShowDetails={this.handleShowDetails} handleResultVisible={this.handleResultVisible} />
           } {
             flight &&
             <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />
