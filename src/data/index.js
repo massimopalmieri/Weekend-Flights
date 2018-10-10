@@ -3873,8 +3873,7 @@ function getWeekNumber(d) {
 function getWeekendOptions() {
   var options = [],
     weekendsGroups = [],
-    now = new Date(),
-    startDate = getMonday(new Date()),
+    startDate = getMonday(new Date()), // get monday from current week
     labels = [startDate.getFullYear()],
     defaultWeek = getWeekNumber(new Date())[1] + 3,
     defaultWeekend = '',

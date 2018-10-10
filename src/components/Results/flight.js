@@ -9,9 +9,9 @@ const imgFailed = () =>
   <Img src="images/placeholder-failed.gif" alt="" />
 
 const Flight = (params) => 
-    <OnVisible className="flight-row" key={10} percent={10}  onChange={params.handleResultVisible.bind(this, params.flightId, params.isFrom, params.groupId, params.flight.id)}>
+    <div className="flight-row">
         {params.flight.time} <span className="float-right">{params.flight.airport}</span>
-    </OnVisible>
+    </div>
 
 class ResultFlight extends Component {
 
@@ -20,9 +20,6 @@ class ResultFlight extends Component {
         if ( this.props.flight.from.error || this.props.flight.to.error) {
             classes += ' fadeOut';
         }
-        if ( this.props.flight.from.hidden || this.props.flight.to.hidden ) {
-            classes += ' hidden';
-        } 
         return classes;
     }
 
@@ -45,18 +42,19 @@ class ResultFlight extends Component {
                                     <span className="price-error">
                                         <img src="images/error.png" className="flight-price-icon error" alt="" />
                                     </span>
-                                ) : ( flight.from.updating || flight.to.updating ) ? (
+                                ) : ( flight.updating ) ? (
                                     <img src="images/loader-small.gif" className="flight-price-icon loader-small" alt="" />
-                                ) : ( flight.from.updated && flight.to.updated ) && (
+                                ) : ( flight.updated ) && (
                                     <span>
                                         <img src="images/success.png" className="flight-price-icon" alt="" />
                                     </span> 
                                 )}
                                 {flight.price_currency}{flight.price}
+                                <OnVisible percent={10} onChange={handleResultVisible.bind(this, flight.id, group.id, flight.from.id, flight.to.id)}></OnVisible>
                             </span>
                         </h5>
-                        <Flight flight={flight.from} flightId={flight.id} isFrom={true} groupId={group.id} handleResultVisible={handleResultVisible} />
-                        <Flight flight={flight.to} flightId={flight.id} isFrom={false} groupId={group.id} handleResultVisible={handleResultVisible} />
+                        <Flight flight={flight.from} />
+                        <Flight flight={flight.to} />
                     </div>
                 </div>
             </div>

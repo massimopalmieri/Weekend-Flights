@@ -29,8 +29,8 @@ class FlightDetails extends Component {
                         {flight.city}
                         <span className="float-right">{flight.price_currency}{flight.price}</span>
                     </h3>
-                    <FlightDetailsFlight flight={flight.from} />
-                    <FlightDetailsFlight flight={flight.to} />
+                    <FlightDetailsFlight flight={flight} details={flight.from} />
+                    <FlightDetailsFlight flight={flight} details={flight.to} />
                 </ModalBody>
             </Modal>
         )
