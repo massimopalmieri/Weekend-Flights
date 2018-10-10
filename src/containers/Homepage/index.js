@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
 import FlightDetails from '../../components/FlightDetails'
-import { weekendParts, weekendDefault, fromDefault, apiLocation } from '../../data';
+import { weekendParts, weekendDefault, fromDefault, apiLocation, fetchConfig } from '../../data';
 import _ from 'lodash';
 
 class Homepage extends Component {
@@ -130,17 +130,23 @@ class Homepage extends Component {
 
   handleResultVisible( flightId, groupId, flightFromId, flightToId ) {
     this.setState((state, props) => this.setStatePriceUpdating(state, flightId, groupId));
+    let self = this;
 
-    fetch( apiLocation + '?action=refresh&id=' + flightFromId + ',' + flightToId)
-    .then(response => response.json()) 
-    .then(json => {
-      if (json.error) {
+    fetch( apiLocation + '?action=refresh&id=' + flightFromId + ',' + flightToId, this.fetchConfig).then(response => response.text()) 
+    .then(text => {
+      if (text == '') {
+        console.info('Fetch price reloaded: '.flightFromId);
+        self.handleResultVisible( flightId, groupId, flightFromId, flightToId );  
+      } else {
+        let json = JSON.parse(text);
+        if (json.error) {
           this.setState((state, props) => this.setStatePriceError(state, flightId, groupId, json.error, json.flight_id));
           setTimeout( () => { // animation of hiding, 1 sec later real remove
             this.setState((state, props) => this.setStateFlightRemove(state, flightId, groupId));
           }, 1000);
-      } else {
-          this.setState((state, props) => this.setStatePriceUpdated(state, flightId, groupId, json[0].priceLocal, json[1].priceLocal));
+        } else {
+            this.setState((state, props) => this.setStatePriceUpdated(state, flightId, groupId, json[0].priceLocal, json[1].priceLocal));
+        }
       }
     });
   }
@@ -153,18 +159,18 @@ class Homepage extends Component {
       c = 0;    
     for (var i=0; i<weekendParts; i++) {
         fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
-            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i)
-            .then(response => response.json())
-            .then(json => {
-              c++;
-              if (json.flights.length) {
-                json.id = parseInt(json.id);
-                groups[json.id] = json;
-                this.setState({ fetchInProgress: false, groups: groups, noResults: false});
-              } else if (c == weekendParts) { // all parts empty
-                this.setState({ fetchInProgress: false, groups: [], noResults: true});
-              }
-            });
+            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, this.fetchConfig)
+        .then(response => response.json())
+        .then(json => {
+          c++;
+          if (json.flights.length) {
+            json.id = parseInt(json.id);
+            groups[json.id] = json;
+            this.setState({ fetchInProgress: false, groups: groups, noResults: false});
+          } else if (c == weekendParts) { // all parts empty
+            this.setState({ fetchInProgress: false, groups: [], noResults: true});
+          }
+        });
     }
   }
 
