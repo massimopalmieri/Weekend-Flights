@@ -112,11 +112,11 @@ class Homepage extends Component {
         });
 
         if (priceFrom != parseFloat(flightGroup.from.price)) {
-          flightGroup.from.price = priceFrom;
+          flightGroup.from.price = priceFrom.toFixed(2);
           changed = true;
         }
         if (priceTo != parseFloat(flightGroup.to.price)) {
-          flightGroup.to.price = priceTo;
+          flightGroup.to.price = priceTo.toFixed(2);
           changed = true;
         }
 
