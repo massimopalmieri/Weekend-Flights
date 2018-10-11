@@ -148,7 +148,7 @@ body {
   padding: 0;
 }
 
-.flight-results h2 {
+.flight-results .group-name {
   color: #20465C;
   text-align: center;
   padding: 10px 0;
@@ -158,6 +158,22 @@ body {
   margin-bottom: 10px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  background-image: url('/images/angle-down.png');
+  background-repeat: no-repeat;
+  background-position: 100% 22px;
+  cursor: pointer;
+}
+
+.flight-results .group-name:hover {
+  background-image: url('/images/angle-down-hover.png');
+}
+
+.flight-results .group-name.closed {
+  background-image: url('/images/angle-up.png');
+}
+
+.flight-results .group-name.closed:hover {
+  background-image: url('/images/angle-up-hover.png');
 }
 
 .flight-results .card {

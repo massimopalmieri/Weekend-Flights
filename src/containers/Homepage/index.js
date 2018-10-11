@@ -128,6 +128,11 @@ class Homepage extends Component {
     return state;
   }
 
+  setStateGroupToggle(state, groupId) {
+    state.groups[groupId].open = !state.groups[groupId].open;
+    return state;
+  }
+
   handleResultVisible( flightId, groupId, flightFromId, flightToId ) {
     this.setState((state, props) => this.setStatePriceUpdating(state, flightId, groupId));
     let self = this;
@@ -165,6 +170,7 @@ class Homepage extends Component {
           c++;
           if (json.flights.length) {
             json.id = parseInt(json.id);
+            json.open = true;
             groups[json.id] = json;
             this.setState({ fetchInProgress: false, groups: groups, noResults: false});
           } else if (c == weekendParts) { // all parts empty
@@ -187,6 +193,11 @@ class Homepage extends Component {
     });
   }
 
+  handleGroupToggle = (e) => {
+    let groupId = parseInt(e.currentTarget.dataset.group);
+    this.setState((state, props) => this.setStateGroupToggle(state, groupId));
+  }
+
   render() {
     const { fetchInProgress, groups, flight, noResults } = this.state;
 
@@ -207,7 +218,7 @@ class Homepage extends Component {
             : noResults ? 
             <div className="no-results">No Flights available for current search critieria :/</div>
             : 
-            <Results groups={groups} handleShowDetails={this.handleShowDetails} handleResultVisible={this.handleResultVisible} />
+            <Results groups={groups} handleShowDetails={this.handleShowDetails} handleResultVisible={this.handleResultVisible} handleGroupToggle={this.handleGroupToggle} />
           } {
             flight &&
             <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />
