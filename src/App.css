@@ -445,12 +445,10 @@ body {
 }
 
 .no-results {
-  padding: 20px;
-  border-radius: 10px;
-  position: relative;
-  border: 1px dotted #20465C;
-  background: rgba(255,255,255,0.5);
-  text-align: center; 
+  padding: 0 0 16px;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 20px;
 }
 
 @media (max-width: 767px) {

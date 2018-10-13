@@ -87,11 +87,7 @@ class Homepage extends Component {
     if (state.groups[groupId] && state.groups[groupId].flights[flightId]) {
       delete state.groups[groupId].flights[flightId];
       if (this.isEmptyArray(state.groups[groupId].flights)) {
-          delete state.groups[groupId];
-          if (this.isEmptyArray(state.groups)) {
-            state.groups = [];
-            state.noResults = true;
-          }
+        state.groups[groupId].empty = true;
       }
     }
     return state;
@@ -137,25 +133,22 @@ class Homepage extends Component {
     
     this.setState({ fetchInProgress: true });
     let groups = [], 
-      c = 0;    
+      open = true;
     for (var i=0; i < weekendParts; i++) {
         fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, fetchConfig)
         .then(response => response.json())
         .then(json => {
-          c++;
-          if (json.flights.length) {
-            json.id = parseInt(json.id);
-            json.open = (json.id == 0); // only first open
-            groups[json.id] = json;
-            this.setState({ fetchInProgress: false, groups: groups, noResults: false}, () => {
-              if (json.open) {
-                this.fetchGroupFlights(json.id);
-              }
-            });
-          } else if (c == weekendParts) { // all parts empty
-            this.setState({ fetchInProgress: false, groups: [], noResults: true});
-          }
+          json.id = parseInt(json.id);
+          json.open = open;
+          open = false; // only first loaded group is open
+          json.empty = !json.flights.length;
+          groups[json.id] = json;
+          this.setState({ fetchInProgress: false, groups: groups}, () => {
+            if (json.open) {
+              this.fetchGroupFlights(json.id);
+            }
+          });
         });
     }
   }
@@ -231,7 +224,7 @@ class Homepage extends Component {
   }
 
   render() {
-    const { fetchInProgress, groups, flight, noResults } = this.state;
+    const { fetchInProgress, groups, flight } = this.state;
 
     return (  
       <div className="container-main">
@@ -247,8 +240,6 @@ class Homepage extends Component {
           { 
             fetchInProgress ? 
             <div className="loader"></div>
-            : noResults ? 
-            <div className="no-results">No Flights available for current search critieria :/</div>
             : 
             <Results groups={groups} handleShowDetails={this.handleShowDetails} handleGroupToggle={this.handleGroupToggle} />
           } {

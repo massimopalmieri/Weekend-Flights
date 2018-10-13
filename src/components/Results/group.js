@@ -11,6 +11,9 @@ class ResultsGroup extends Component {
             <h2 className="group-name" data-group={group.id} onClick={handleGroupToggle}>{group.name}</h2>
             <div className="group-flights row">
                 {group.flights.map(flight => <ResultsFlight flight={flight} group={group} key={flight.id} handleShowDetails={handleShowDetails} />)}
+                {( group.empty ) && (
+                    <div className="no-results">No flights available</div>
+                )}
             </div>
         </div>
       )
