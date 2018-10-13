@@ -75,18 +75,22 @@ class Homepage extends Component {
     return state;
   }
 
-  isEmptyArray(array) {
-    var reduce = _(array).reduce((a,v,k) => { 
-      if(v){ a[k]=v; } 
-      return a; 
-    },{});
-    return _.isEmpty(reduce);
-  }
-
-  setStateFlightRemove(state, flightId, groupId) {
-    if (state.groups[groupId] && state.groups[groupId].flights[flightId]) {
+  setStateFlightRemove(state, flightId, groupId, config) {
+    let group, flights;
+    if ((group = state.groups[groupId]) && (flights = group.flights[flightId])) {
+      if (flights.visible) {
+        state.groups[groupId].flights.every((flight) => {
+          if (flight && !flight.visible) {
+            flight.visible = true;
+            return false;
+          }
+          return true;
+        });
+      }
+      
       delete state.groups[groupId].flights[flightId];
-      if (this.isEmptyArray(state.groups[groupId].flights)) {
+      state.groups[groupId].size -= 1;
+      if (!state.groups[groupId].size) {
         state.groups[groupId].empty = true;
       }
     }
@@ -115,8 +119,8 @@ class Homepage extends Component {
     return state;
   }
 
-  setStateGroupToggle(state, groupId) {
-    state.groups[groupId].open = !state.groups[groupId].open;    
+  setStateGroupOpen(state, groupId) {
+    state.groups[groupId].open = !state.groups[groupId].open;
     return state;
   }
 
@@ -142,13 +146,10 @@ class Homepage extends Component {
           json.id = parseInt(json.id);
           json.open = open;
           open = false; // only first loaded group is open
+          json.size = json.flights.length;
           json.empty = !json.flights.length;
           groups[json.id] = json;
-          this.setState({ fetchInProgress: false, groups: groups}, () => {
-            if (json.open) {
-              this.fetchGroupFlights(json.id);
-            }
-          });
+          this.setState({ fetchInProgress: false, groups: groups});
         });
     }
   }
@@ -178,7 +179,7 @@ class Homepage extends Component {
       } else if ((json = JSON.parse(text)) && json.error) {
         this.setState((state, props) => this.setStatePriceError(state, flight.id, groupId, json.error, json.flight_id));
         setTimeout( () => { // animation of hiding, 1 sec later real remove
-          this.setState((state, props) => this.setStateFlightRemove(state, flight.id, groupId)); 
+          this.setState((state, props) => this.setStateFlightRemove(state, flight.id, groupId, config)); 
         }, 1000);
       } else {
           this.setState((state, props) => this.setStatePriceUpdated(state, flight.id, groupId, json[0].priceLocal, json[1].priceLocal));
@@ -193,34 +194,9 @@ class Homepage extends Component {
     });  
   }
 
-  fetchGroupFlights = (groupId) => {
-    this.abortControllers[groupId] = new window.AbortController();
-    let config = Object.assign({}, { signal: this.abortControllers[groupId].signal }, fetchConfig);
-
-    _.each(this.state.groups[groupId].flights, (flight) => {
-      if (flight && !flight.updated) {
-        this.fetchFlightUpdate(flight, groupId, config);
-      }
-    })    
-  }
-
-  abortControllers = []
-
-  stopFetch = (groupId) => {
-    this.abortControllers[groupId].abort();
-  }
-
   handleGroupToggle = (e) => {
     let groupId = parseInt(e.currentTarget.dataset.group);
-    if (e.currentTarget.parentElement.classList.contains('closed')) {
-      setTimeout( () => { // triggers fetch group after toggle animation finish
-        this.fetchGroupFlights(groupId);
-      }, 500);
-    } else {
-      this.stopFetch(groupId);
-    }
-
-    this.setState((state, props) => this.setStateGroupToggle(state, groupId));
+    this.setState((state, props) => this.setStateGroupOpen(state, groupId));
   }
 
   render() {
@@ -241,7 +217,11 @@ class Homepage extends Component {
             fetchInProgress ? 
             <div className="loader"></div>
             : 
-            <Results groups={groups} handleShowDetails={this.handleShowDetails} handleGroupToggle={this.handleGroupToggle} />
+            <Results groups={groups} 
+              handleShowDetails={this.handleShowDetails} 
+              handleGroupToggle={this.handleGroupToggle} 
+              fetchFlightUpdate={this.fetchFlightUpdate}
+            />
           } {
             flight &&
             <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Img from 'react-image';
+import {  fetchConfig } from '../../data';
 
 const imgLoader = () =>
   <Img src="images/placeholder.gif" alt="" />
@@ -13,6 +14,15 @@ const Flight = (params) =>
     </div>
 
 class ResultFlight extends Component {
+    componentDidMount() {
+        this.abortController = new window.AbortController();
+        let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
+        return this.props.fetchFlightUpdate(this.props.flight, this.props.group.id, config);
+     }
+
+     componentWillUnmount() {
+        this.abortController.abort();
+     }
 
     getClassName() {
         let classes = 'col col-12 col-md-6 col-lg-4 colFlight';
