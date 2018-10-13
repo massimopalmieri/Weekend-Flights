@@ -7,7 +7,6 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-image": "^1.5.1",
-    "react-on-visible": "^1.5.1",
     "react-scripts": "1.1.5",
     "react-select": "^2.0.0",
     "reactstrap": "^6.4.0",

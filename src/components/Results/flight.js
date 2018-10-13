@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Img from 'react-image';
-import OnVisible from 'react-on-visible';
 
 const imgLoader = () =>
   <Img src="images/placeholder.gif" alt="" />
@@ -24,7 +23,7 @@ class ResultFlight extends Component {
     }
 
     render() {
-        const { flight, group, handleShowDetails, handleResultVisible } = this.props
+        const { flight, group, handleShowDetails } = this.props
         
         return (
             <div className={this.getClassName()}>
@@ -50,7 +49,6 @@ class ResultFlight extends Component {
                                     </span> 
                                 )}
                                 {flight.price_currency}{flight.price}
-                                <OnVisible percent={10} onChange={handleResultVisible.bind(this, flight.id, group.id, flight.from.id, flight.to.id)}></OnVisible>
                             </span>
                         </h5>
                         <Flight flight={flight.from} />

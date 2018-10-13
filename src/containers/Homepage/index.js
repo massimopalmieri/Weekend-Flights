@@ -14,7 +14,6 @@ class Homepage extends Component {
     this.handleSearchFlights = this.handleSearchFlights.bind(this)
     this.handleFromChange = this.handleFromChange.bind(this)
     this.handleWeekendChange = this.handleWeekendChange.bind(this)
-    this.handleResultVisible = this.handleResultVisible.bind(this)
   }
 
   static defaultProps = {
@@ -31,15 +30,15 @@ class Homepage extends Component {
 
   handleShowDetails(e) {
     e.preventDefault();
-
     let flightId = e.currentTarget.dataset.flight,
-      groupId = parseInt(e.currentTarget.dataset.group) ;
-
-    if (this.state.groups[groupId]) {
-      let flight = this.state.groups[groupId].flights.find((el) => { 
+      groupId = parseInt(e.currentTarget.dataset.group),
+      group, flight;
+    if (
+      (group = this.state.groups[groupId]) &&
+      (flight = group.flights.find((el) => { 
         return el ? el.id == flightId : false;
-      });
-
+      }))
+    ) {
       this.setState({
         flight: flight
       });
@@ -53,28 +52,25 @@ class Homepage extends Component {
   }
 
   setStatePriceUpdating(state, flightId, groupId) {
-    if (state.groups[groupId]) {
-      let flightGroup = state.groups[groupId].flights[flightId];
-      if (flightGroup) {
-        flightGroup.updating = true;
-      }
+    let group, flights;
+    if ((group = state.groups[groupId]) && (flights = group.flights[flightId])) {
+      flights.updating = true;
     }
     return state;
   }
 
   setStatePriceError(state, flightId, groupId, error_message, flight_id) {
-    if (state.groups[groupId]) {
-      let flightGroup = state.groups[groupId].flights[flightId];
-      if (flightGroup) {
-        Object.assign(flightGroup, { updating: false });
-        let flight = (flightGroup.from.id == flight_id) ? flightGroup.from : flightGroup.to;
-        if (flight) {
-          Object.assign(flight, {
-            error: true,
-            error_message: error_message
-          });
-        }
-      }
+    let group, flights, flight;
+    if (
+      (group = state.groups[groupId]) && 
+      (flights = state.groups[groupId].flights[flightId]) &&
+      (flight = (flights.from.id == flight_id) ? flights.from : flights.to)
+    ) {
+      flights.updating = false; 
+      Object.assign(flight, {
+        error: true,
+        error_message: error_message
+      });
     }
     return state;
   }
@@ -102,58 +98,38 @@ class Homepage extends Component {
   }
 
   setStatePriceUpdated(state, flightId, groupId, priceFrom, priceTo) {
-    if (state.groups[groupId]) {
-      let flightGroup = state.groups[groupId].flights[flightId],
-        changed = false;
-      if (flightGroup) {
-        Object.assign(flightGroup, {
-          updating: false,
-          updated: true
-        });
-
-        if (priceFrom != parseFloat(flightGroup.from.price)) {
-          flightGroup.from.price = priceFrom.toFixed(2);
-          changed = true;
-        }
-        if (priceTo != parseFloat(flightGroup.to.price)) {
-          flightGroup.to.price = priceTo.toFixed(2);
-          changed = true;
-        }
-
-        if (changed) {
-          flightGroup.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
-        }
+    let group, flights, 
+      changedFrom = false, 
+      changedTo = false;
+    if ((group = state.groups[groupId]) && (flights = state.groups[groupId].flights[flightId])) {
+      Object.assign(flights, {
+        updating: false,
+        updated: true
+      });
+      if (changedFrom = (priceFrom != parseFloat(flights.from.price))) {
+        flights.from.price = priceFrom.toFixed(2);
+      }
+      if (changedTo = (priceTo != parseFloat(flights.to.price))) {
+        flights.to.price = priceTo.toFixed(2);
+      }
+      if (changedFrom || changedTo) {
+        flights.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
       }
     }
     return state;
   }
 
   setStateGroupToggle(state, groupId) {
-    state.groups[groupId].open = !state.groups[groupId].open;
+    state.groups[groupId].open = !state.groups[groupId].open;    
     return state;
   }
 
-  handleResultVisible( flightId, groupId, flightFromId, flightToId ) {
-    this.setState((state, props) => this.setStatePriceUpdating(state, flightId, groupId));
-    let self = this;
-
-    fetch( apiLocation + '?action=refresh&id=' + flightFromId + ',' + flightToId, this.fetchConfig).then(response => response.text()) 
-    .then(text => {
-      if (text == '') {
-        console.info('Fetch price reloaded: '.flightFromId);
-        self.handleResultVisible( flightId, groupId, flightFromId, flightToId );  
-      } else {
-        let json = JSON.parse(text);
-        if (json.error) {
-          this.setState((state, props) => this.setStatePriceError(state, flightId, groupId, json.error, json.flight_id));
-          setTimeout( () => { // animation of hiding, 1 sec later real remove
-            this.setState((state, props) => this.setStateFlightRemove(state, flightId, groupId));
-          }, 1000);
-        } else {
-            this.setState((state, props) => this.setStatePriceUpdated(state, flightId, groupId, json[0].priceLocal, json[1].priceLocal));
-        }
-      }
-    });
+  setStateUpdatingAborted(state, flightId, groupId) {
+    let group, flights;
+    if ((group = this.state.groups[groupId]) && (flights = group.flights[flightId])) {
+      flights.updating = false;
+    }
+    return state;
   }
 
   handleSearchFlights = (e) => {
@@ -162,17 +138,21 @@ class Homepage extends Component {
     this.setState({ fetchInProgress: true });
     let groups = [], 
       c = 0;    
-    for (var i=0; i<weekendParts; i++) {
+    for (var i=0; i < weekendParts; i++) {
         fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
-            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, this.fetchConfig)
+            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, fetchConfig)
         .then(response => response.json())
         .then(json => {
           c++;
           if (json.flights.length) {
             json.id = parseInt(json.id);
-            json.open = true;
+            json.open = (json.id == 0); // only first open
             groups[json.id] = json;
-            this.setState({ fetchInProgress: false, groups: groups, noResults: false});
+            this.setState({ fetchInProgress: false, groups: groups, noResults: false}, () => {
+              if (json.open) {
+                this.fetchGroupFlights(json.id);
+              }
+            });
           } else if (c == weekendParts) { // all parts empty
             this.setState({ fetchInProgress: false, groups: [], noResults: true});
           }
@@ -193,8 +173,60 @@ class Homepage extends Component {
     });
   }
 
+  fetchFlightUpdate = (flight, groupId, config) => {
+    let json;
+    this.setState((state, props) => this.setStatePriceUpdating(state, flight.id, groupId)); 
+
+    fetch( apiLocation + '?action=refresh&id=' + flight.from.id + ',' + flight.to.id, config)
+    .then(response => response.text()).then(text => {
+      if (text == '') { // if empty response - fetch again
+        console.info('Fetch price reloaded', groupId, flight);
+        this.fetchFlightUpdate(flight, groupId, config);
+      } else if ((json = JSON.parse(text)) && json.error) {
+        this.setState((state, props) => this.setStatePriceError(state, flight.id, groupId, json.error, json.flight_id));
+        setTimeout( () => { // animation of hiding, 1 sec later real remove
+          this.setState((state, props) => this.setStateFlightRemove(state, flight.id, groupId)); 
+        }, 1000);
+      } else {
+          this.setState((state, props) => this.setStatePriceUpdated(state, flight.id, groupId, json[0].priceLocal, json[1].priceLocal));
+      }
+    }).catch(err => {
+      if (err.name === 'AbortError') { // after this.stopFetch()
+        console.log('Fetch aborted', groupId, flight);
+        this.setState((state, props) => this.setStateUpdatingAborted(state, flight.id, groupId));
+      } else {
+        console.error('Uh oh, an error!', err);
+      }
+    });  
+  }
+
+  fetchGroupFlights = (groupId) => {
+    this.abortControllers[groupId] = new window.AbortController();
+    let config = Object.assign({}, { signal: this.abortControllers[groupId].signal }, fetchConfig);
+
+    _.each(this.state.groups[groupId].flights, (flight) => {
+      if (flight && !flight.updated) {
+        this.fetchFlightUpdate(flight, groupId, config);
+      }
+    })    
+  }
+
+  abortControllers = []
+
+  stopFetch = (groupId) => {
+    this.abortControllers[groupId].abort();
+  }
+
   handleGroupToggle = (e) => {
     let groupId = parseInt(e.currentTarget.dataset.group);
+    if (e.currentTarget.parentElement.classList.contains('closed')) {
+      setTimeout( () => { // triggers fetch group after toggle animation finish
+        this.fetchGroupFlights(groupId);
+      }, 500);
+    } else {
+      this.stopFetch(groupId);
+    }
+
     this.setState((state, props) => this.setStateGroupToggle(state, groupId));
   }
 
@@ -218,7 +250,7 @@ class Homepage extends Component {
             : noResults ? 
             <div className="no-results">No Flights available for current search critieria :/</div>
             : 
-            <Results groups={groups} handleShowDetails={this.handleShowDetails} handleResultVisible={this.handleResultVisible} handleGroupToggle={this.handleGroupToggle} />
+            <Results groups={groups} handleShowDetails={this.handleShowDetails} handleGroupToggle={this.handleGroupToggle} />
           } {
             flight &&
             <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />
