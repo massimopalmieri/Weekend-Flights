@@ -158,19 +158,24 @@ class Homepage extends Component {
     if ((group = this.state.groups[groupId]) && (flights = group.flights[flightId])) {
       flights.updating = false;
     }
-    return state;
+    return state;  
   }
 
   handleSearchFlights = (e) => {
     e.preventDefault();
     
-    this.setState({ fetchInProgress: true });
+    if (this.abortController) {
+      this.abortController.abort(); // when clicked on search again, previous query will be aborted
+    }
+    this.setState({ loadingFlights: true });
+    this.abortController = new window.AbortController();
     let groups = [], 
-      open = true;
+      open = true,
+      config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
 
     for (var i=0; i < weekendParts; i++) {
         fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
-            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, fetchConfig)
+            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, config)
         .then(response => response.json())
         .then(json => {
           json.id = parseInt(json.id);  
@@ -182,8 +187,14 @@ class Homepage extends Component {
             open = false; // only first loaded group is open  
           }
           groups[json.id] = json;
-          this.setState({ fetchInProgress: false, groups: groups});
-        });
+          this.setState({ loadingFlights: false, groups: groups});
+        }).catch(err => {
+          if (err.name === 'AbortError') { // after this.stopFetch()
+            console.log('HandleSearchFlights aborted', this.state.weekend.value, this.state.from.ports, this.state.from.value, this.state.from.name, i);
+          } else {
+            console.error('HandleSearchFlights error', err);
+          }
+        });  
     }
   }
 
@@ -219,10 +230,10 @@ class Homepage extends Component {
       }
     }).catch(err => {
       if (err.name === 'AbortError') { // after this.stopFetch()
-        console.log('Fetch aborted', groupId, flight);
+        console.log('FetchFlightUpdate aborted', groupId, flight);
         this.setState((state) => this.setStateUpdatingAborted(state, flight.id, groupId));
       } else {
-        console.error('Uh oh, an error!', err);
+        console.error('FetchFlightUpdate error', err);
       }
     });  
   }
@@ -237,7 +248,7 @@ class Homepage extends Component {
   }
 
   render() {
-    const { fetchInProgress, groups, flight } = this.state;
+    const { loadingFlights, groups, flight } = this.state;
 
     return (  
       <div className="container-main">
@@ -251,7 +262,7 @@ class Homepage extends Component {
         <div className="container">
           <SearchForm handleSearchFlights={this.handleSearchFlights} handleFromChange={this.handleFromChange} handleWeekendChange={this.handleWeekendChange}  />
           { 
-            fetchInProgress ? 
+            loadingFlights ? 
               <Loader /> 
             : 
               <Results 
