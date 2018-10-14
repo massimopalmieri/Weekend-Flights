@@ -4,7 +4,7 @@ import ResultsGroup from './group'
 class Results extends Component {
     
     render() {
-      const { groups, handleShowDetails, handleGroupToggle, fetchFlightUpdate } = this.props
+      const { groups, handleShowDetails, handleGroupToggle, fetchFlightUpdate, handlePageChange } = this.props
   
       return (
         <div className="flight-results">
@@ -14,6 +14,7 @@ class Results extends Component {
                 handleShowDetails={handleShowDetails} 
                 handleGroupToggle={handleGroupToggle}
                 fetchFlightUpdate={fetchFlightUpdate}
+                handlePageChange={handlePageChange}
               />)
             }
         </div>

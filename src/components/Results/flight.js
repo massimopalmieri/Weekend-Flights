@@ -15,13 +15,17 @@ const Flight = (params) =>
 
 class ResultFlight extends Component {
     componentDidMount() {
-        this.abortController = new window.AbortController();
-        let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
-        return this.props.fetchFlightUpdate(this.props.flight, this.props.group.id, config);
+        if (!this.props.flight.updated) { // fetch update only once
+            this.abortController = new window.AbortController();
+            let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
+            return this.props.fetchFlightUpdate(this.props.flight, this.props.group.id, config);
+        }
      }
 
      componentWillUnmount() {
-        this.abortController.abort();
+        if (this.abortController) {
+            this.abortController.abort();
+        }
      }
 
     getClassName() {

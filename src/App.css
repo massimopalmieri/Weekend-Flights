@@ -456,3 +456,41 @@ body {
     margin-bottom: 16px !important;
   }
 }
+
+.flights-nav {
+  margin: 10px auto 0;
+  width: 100%;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.flights-nav .page-link {
+  font-size: 20px;
+  background: none;
+  border: none;
+  line-height: 25px;
+  color: #20465C;
+}
+
+.flights-nav .page-link:focus {
+  box-shadow: none;
+}
+
+.flights-nav .page-link:hover {
+  font-weight: bold;
+}
+
+.flights-nav .page-item.disabled {
+  cursor: not-allowed;
+}
+
+
+.flights-nav .page-item.disabled .page-link {
+  background: none; 
+  font-size:25px;
+  cursor: not-allowed;
+}
+
+.flights-nav .page-item.active .page-link {
+  background: #20465C; 
+  border: none;
+}

@@ -3942,12 +3942,11 @@ const fetchConfig = {
 };
 
 const weekendParts = 4;
-
+const flightsPerPage = 9;
 const apiLocation = (window.location.hostname === 'localhost') ? 'api/' : 'http://api.weekendflights.eu/'; 
-
 const [weekends, weekendDefault] = getWeekendOptions();
 
-export {airports, weekends, fromDefault, weekendDefault, weekendParts, apiLocation, fetchConfig };
+export {airports, weekends, fromDefault, weekendDefault, weekendParts, flightsPerPage, apiLocation, fetchConfig };
 
 // export const weekends = weekendsGroups;
 // export const weekendsDefault = defaultWeekend; //"aaaa";// getWeekNumber(new Date())[1] + 3

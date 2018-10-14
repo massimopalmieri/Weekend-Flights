@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
 import FlightDetails from '../../components/FlightDetails'
-import { weekendParts, weekendDefault, fromDefault, apiLocation, fetchConfig } from '../../data';
+import { weekendParts, weekendDefault, fromDefault, apiLocation, fetchConfig, flightsPerPage } from '../../data';
 import _ from 'lodash';
 
 class Homepage extends Component {
@@ -75,21 +75,38 @@ class Homepage extends Component {
     return state;
   }
 
+  setVisiblePage(group, page) {
+    let c = 0;
+    group.activePage = page;
+    _.each(group.flights, (el) => {
+      if (el) {
+        el.visible = ( 
+          (c >= (flightsPerPage * (page - 1))) &&
+          (c < (flightsPerPage * page))
+        );
+        c++;
+      }
+    });
+  }
+
   setStateFlightRemove(state, flightId, groupId, config) {
-    let group, flights;
+    let group, flights, lastPage;
     if ((group = state.groups[groupId]) && (flights = group.flights[flightId])) {
       if (flights.visible) {
-        state.groups[groupId].flights.every((flight) => {
-          if (flight && !flight.visible) {
+        group.flights.every((flight) => { // returns first next flight that wasn't visible
+          if (flight && flight.id > flightId && !flight.visible) {
             flight.visible = true;
             return false;
           }
           return true;
         });
       }
-      
       delete state.groups[groupId].flights[flightId];
       state.groups[groupId].size -= 1;
+      lastPage = Math.ceil(group.size / flightsPerPage);
+      if (group.activePage > lastPage) {
+        this.setVisiblePage(group, lastPage);
+      }
       if (!state.groups[groupId].size) {
         state.groups[groupId].empty = true;
       }
@@ -124,6 +141,17 @@ class Homepage extends Component {
     return state;
   }
 
+  setStateGroupPageChange(state, page, groupId) {
+    let group;
+    if (
+      (group = this.state.groups[groupId]) && 
+      (page <= Math.ceil(group.size / flightsPerPage))
+    ) {
+      this.setVisiblePage(group, page);
+    }
+    return state;
+  }
+
   setStateUpdatingAborted(state, flightId, groupId) {
     let group, flights;
     if ((group = this.state.groups[groupId]) && (flights = group.flights[flightId])) {
@@ -148,6 +176,7 @@ class Homepage extends Component {
           open = false; // only first loaded group is open
           json.size = json.flights.length;
           json.empty = !json.flights.length;
+          json.activePage = 1;
           groups[json.id] = json;
           this.setState({ fetchInProgress: false, groups: groups});
         });
@@ -199,6 +228,10 @@ class Homepage extends Component {
     this.setState((state, props) => this.setStateGroupOpen(state, groupId));
   }
 
+  handlePageChange = (pageNumber, groupId) => {
+    this.setState((state, props) => this.setStateGroupPageChange(state, pageNumber, groupId));
+  }
+
   render() {
     const { fetchInProgress, groups, flight } = this.state;
 
@@ -217,10 +250,12 @@ class Homepage extends Component {
             fetchInProgress ? 
             <div className="loader"></div>
             : 
-            <Results groups={groups} 
+            <Results 
+              groups={groups} 
               handleShowDetails={this.handleShowDetails} 
               handleGroupToggle={this.handleGroupToggle} 
               fetchFlightUpdate={this.fetchFlightUpdate}
+              handlePageChange={this.handlePageChange}
             />
           } {
             flight &&
