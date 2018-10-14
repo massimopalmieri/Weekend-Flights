@@ -184,7 +184,7 @@ class Homepage extends Component {
     for (var i=0; i < weekendParts; i++) {
         fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=' + this.state.maxPrice + 
-            '&page=0&part=' + i, config)
+            '&part=' + i, config)
         .then(response => response.json())
         .then(json => {
           json.id = parseInt(json.id);  
