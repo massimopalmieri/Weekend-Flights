@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { imagesLocation } from '../../data';
 
 class FlightDetailsFlight extends Component {
 
@@ -27,13 +28,13 @@ class FlightDetailsFlight extends Component {
 
                         {( details.error ) ? (
                             <span className="price-error">
-                                <img src="images/error.png" className="icon-error" alt="" />
-                                Ticket not available {/* Flight sold out */} {/* Error - {message} */}
+                                <img src={`${imagesLocation}images/error.png`} className="icon-error" alt="" />
+                                Ticket not available
                             </span>
                         ) : ( flight.updating ) ? (
-                            <img src="images/loader-small.gif" className="loader-small" alt="" />
+                            <img src={`${imagesLocation}loader-small.gif`} className="loader-small" alt="" />
                         ) : ( flight.updated ) && (
-                            <img src="images/success.png" className="icon-success" alt="" />
+                            <img src={`${imagesLocation}success.png`} className="icon-success" alt="" />
                         )}                      
                     </p>
                 </div>

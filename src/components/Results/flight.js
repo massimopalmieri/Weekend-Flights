@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Img from 'react-image';
-import {  fetchConfig } from '../../data';
+import { imagesLocation, fetchConfig } from '../../data';
 
 const imgLoader = () =>
-  <Img src="images/placeholder.gif" alt="" />
+  <Img src={`${imagesLocation}placeholder.gif`} alt="" />
 
 const imgFailed = () =>
-  <Img src="images/placeholder-failed.gif" alt="" />
+  <Img src={`${imagesLocation}placeholder-failed.gif`} alt="" />
 
 const Flight = (params) => 
     <div className="flight-row">
@@ -53,13 +53,13 @@ class ResultFlight extends Component {
                             <span className="float-right">
                                 {( flight.from.error || flight.to.error ) ? (
                                     <span className="price-error">
-                                        <img src="images/error.png" className="flight-price-icon error" alt="" />
+                                        <img src={`${imagesLocation}error.png`} className="flight-price-icon error" alt="" />
                                     </span>
                                 ) : ( flight.updating ) ? (
-                                    <img src="images/loader-small.gif" className="flight-price-icon loader-small" alt="" />
+                                    <img src={`${imagesLocation}loader-small.gif`} className="flight-price-icon loader-small" alt="" />
                                 ) : ( flight.updated ) && (
                                     <span>
-                                        <img src="images/success.png" className="flight-price-icon" alt="" />
+                                        <img src={`${imagesLocation}success.png`} className="flight-price-icon" alt="" />
                                     </span> 
                                 )}
                                 {flight.price_currency}{flight.price}

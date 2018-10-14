@@ -3947,7 +3947,8 @@ const countries = [
 
 const weekendParts = 4;
 const flightsPerPage = 9;
-const apiLocation = (window.location.hostname === 'localhost') ? 'api/' : 'http://api.weekendflights.eu/'; 
+const apiLocation = 'api/'; 
+const imagesLocation = 'http://images.weekendflights.eu/'; 
 const [weekends, weekendDefault] = getWeekendOptions();
 
-export {airports, weekends, fromDefault, weekendDefault, weekendParts, flightsPerPage, apiLocation, fetchConfig, countries };
+export {airports, weekends, fromDefault, weekendDefault, weekendParts, flightsPerPage, apiLocation, imagesLocation, fetchConfig, countries };

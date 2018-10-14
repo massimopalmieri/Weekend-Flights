@@ -129,7 +129,7 @@ body {
 }
 
 .loader {
-  background: url('/images/loader.gif') no-repeat top center;
+  background: url('http://images.weekendflights.eu/loader.gif') no-repeat top center;
   margin: 50px auto 0;
   text-align: center;
   padding-top: 226px;
@@ -191,22 +191,22 @@ body {
   margin-bottom: 10px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background-image: url('/images/angle-up.png');
+  background-image: url('http://images.weekendflights.eu/angle-up.png');
   background-repeat: no-repeat;
   background-position: 100% 22px;
   cursor: pointer;
 }
 
 .flight-results .group .group-name:hover {
-  background-image: url('/images/angle-up-hover.png');
+  background-image: url('http://images.weekendflights.eu/angle-up-hover.png');
 }
 
 .flight-results .group.closed .group-name {
-  background-image: url('/images/angle-down.png');
+  background-image: url('http://images.weekendflights.eu/angle-down.png');
 }
 
 .flight-results .group.closed .group-name:hover {
-  background-image: url('/images/angle-down-hover.png');
+  background-image: url('http://images.weekendflights.eu/angle-down-hover.png');
 }
 
 .flight-results .card {
@@ -368,7 +368,7 @@ body {
 }
 
 .flight-details .flight-time {
-  background: url('/images/connection.png') no-repeat;
+  background: url('http://images.weekendflights.eu/connection.png') no-repeat;
   background-position: left center;
   padding-left: 21px;
   line-height: 24px;
@@ -419,7 +419,7 @@ body {
 }
 
 .arrow-both {
-  background: url(/images/arrow-both.png) no-repeat;
+  background: url('http://images.weekendflights.eu/arrow-both.png') no-repeat;
   background-size: 100%;
   background-position: 0px 0px;
   width: 30px;
