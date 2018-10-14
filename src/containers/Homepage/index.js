@@ -198,7 +198,7 @@ class Homepage extends Component {
 
   fetchFlightUpdate = (flight, groupId, config) => {
     let json;
-    this.setState((state, props) => this.setStatePriceUpdating(state, flight.id, groupId)); 
+    this.setState((state) => this.setStatePriceUpdating(state, flight.id, groupId)); 
 
     fetch( apiLocation + '?action=refresh&id=' + flight.from.id + ',' + flight.to.id, config)
     .then(response => response.text()).then(text => {
@@ -206,17 +206,17 @@ class Homepage extends Component {
         console.info('Fetch price reloaded', groupId, flight);
         this.fetchFlightUpdate(flight, groupId, config);
       } else if ((json = JSON.parse(text)) && json.error) {
-        this.setState((state, props) => this.setStatePriceError(state, flight.id, groupId, json.error, json.flight_id));
+        this.setState((state) => this.setStatePriceError(state, flight.id, groupId, json.error, json.flight_id));
         setTimeout( () => { // animation of hiding, 1 sec later real remove
-          this.setState((state, props) => this.setStateFlightRemove(state, flight.id, groupId, config)); 
+          this.setState((state) => this.setStateFlightRemove(state, flight.id, groupId, config)); 
         }, 1000);
       } else {
-          this.setState((state, props) => this.setStatePriceUpdated(state, flight.id, groupId, json[0].priceLocal, json[1].priceLocal));
+          this.setState((state) => this.setStatePriceUpdated(state, flight.id, groupId, json[0].priceLocal, json[1].priceLocal));
       }
     }).catch(err => {
       if (err.name === 'AbortError') { // after this.stopFetch()
         console.log('Fetch aborted', groupId, flight);
-        this.setState((state, props) => this.setStateUpdatingAborted(state, flight.id, groupId));
+        this.setState((state) => this.setStateUpdatingAborted(state, flight.id, groupId));
       } else {
         console.error('Uh oh, an error!', err);
       }
@@ -225,11 +225,11 @@ class Homepage extends Component {
 
   handleGroupToggle = (e) => {
     let groupId = parseInt(e.currentTarget.dataset.group);
-    this.setState((state, props) => this.setStateGroupOpen(state, groupId));
+    this.setState((state) => this.setStateGroupOpen(state, groupId));
   }
 
   handlePageChange = (pageNumber, groupId) => {
-    this.setState((state, props) => this.setStateGroupPageChange(state, pageNumber, groupId));
+    this.setState((state) => this.setStateGroupPageChange(state, pageNumber, groupId));
   }
 
   render() {
