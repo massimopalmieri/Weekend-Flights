@@ -15,6 +15,7 @@ class Homepage extends Component {
     this.handleSearchFlights = this.handleSearchFlights.bind(this)
     this.handleFromChange = this.handleFromChange.bind(this)
     this.handleWeekendChange = this.handleWeekendChange.bind(this)
+    this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this)
   }
 
   static defaultProps = {
@@ -26,7 +27,8 @@ class Homepage extends Component {
     groups: this.props.groups,
     from: fromDefault,
     weekend: weekendDefault,
-    flight: null
+    flight: null,
+    maxPrice: 100
   }
 
   handleShowDetails(e) {
@@ -49,6 +51,12 @@ class Homepage extends Component {
   handleCloseDetails() {
     this.setState({
       flight: null
+    });
+  }
+
+  handleMaxPriceChange(e) {
+    this.setState({
+      maxPrice: e.target.value
     });
   }
 
@@ -175,7 +183,8 @@ class Homepage extends Component {
 
     for (var i=0; i < weekendParts; i++) {
         fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
-            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, config)
+            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=' + this.state.maxPrice + 
+            '&page=0&part=' + i, config)
         .then(response => response.json())
         .then(json => {
           json.id = parseInt(json.id);  
@@ -248,7 +257,7 @@ class Homepage extends Component {
   }
 
   render() {
-    const { loadingFlights, groups, flight } = this.state;
+    const { loadingFlights, groups, flight, maxPrice } = this.state;
 
     return (  
       <div className="container-main">
@@ -260,7 +269,13 @@ class Homepage extends Component {
         </div>
 
         <div className="container">
-          <SearchForm handleSearchFlights={this.handleSearchFlights} handleFromChange={this.handleFromChange} handleWeekendChange={this.handleWeekendChange}  />
+          <SearchForm 
+            maxPrice={maxPrice}
+            handleSearchFlights={this.handleSearchFlights} 
+            handleFromChange={this.handleFromChange} 
+            handleWeekendChange={this.handleWeekendChange} 
+            handleMaxPriceChange={this.handleMaxPriceChange}  
+          />
           { 
             loadingFlights ? 
               <Loader /> 
