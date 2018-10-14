@@ -171,12 +171,14 @@ class Homepage extends Component {
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, fetchConfig)
         .then(response => response.json())
         .then(json => {
-          json.id = parseInt(json.id);
-          json.open = open;
-          open = false; // only first loaded group is open
+          json.id = parseInt(json.id);  
           json.size = json.flights.length;
           json.empty = !json.flights.length;
           json.activePage = 1;
+          json.open = open;
+          if (!json.error) {
+            open = false; // only first loaded group is open  
+          }
           groups[json.id] = json;
           this.setState({ fetchInProgress: false, groups: groups});
         });

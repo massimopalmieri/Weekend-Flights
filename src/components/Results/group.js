@@ -46,8 +46,13 @@ class ResultsGroup extends Component {
                             />
                         </nav>
                     )}
-                    
-                    {( group.empty ) && (
+
+                    {( group.error && group.error == 'refresh') ? (
+                        <div className="no-results">
+                            Unfortunately our search engine is not able to fetch flights at this moment. <br />
+                            Please try again later.
+                        </div>
+                    ) : ( group.empty ) && (
                         <div className="no-results">No flights available</div>
                     )}
                 </div>

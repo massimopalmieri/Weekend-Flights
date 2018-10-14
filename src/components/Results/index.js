@@ -10,7 +10,7 @@ class Results extends Component {
         <div className="flight-results">
             { groups.map( group => <ResultsGroup 
                 group={group} 
-                key={group.name} 
+                key={group.id} 
                 handleShowDetails={handleShowDetails} 
                 handleGroupToggle={handleGroupToggle}
                 fetchFlightUpdate={fetchFlightUpdate}
