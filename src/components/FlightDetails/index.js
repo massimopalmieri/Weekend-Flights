@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Img from 'react-image';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import FlightDetailsFlight from './flight';
 
 class FlightDetails extends Component {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
+import Loader from '../../components/Loader'
 import FlightDetails from '../../components/FlightDetails'
 import { weekendParts, weekendDefault, fromDefault, apiLocation, fetchConfig, flightsPerPage } from '../../data';
 import _ from 'lodash';
@@ -166,6 +167,7 @@ class Homepage extends Component {
     this.setState({ fetchInProgress: true });
     let groups = [], 
       open = true;
+
     for (var i=0; i < weekendParts; i++) {
         fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
             '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=100&page=0&part=' + i, fetchConfig)
@@ -250,15 +252,15 @@ class Homepage extends Component {
           <SearchForm handleSearchFlights={this.handleSearchFlights} handleFromChange={this.handleFromChange} handleWeekendChange={this.handleWeekendChange}  />
           { 
             fetchInProgress ? 
-            <div className="loader"></div>
+              <Loader /> 
             : 
-            <Results 
-              groups={groups} 
-              handleShowDetails={this.handleShowDetails} 
-              handleGroupToggle={this.handleGroupToggle} 
-              fetchFlightUpdate={this.fetchFlightUpdate}
-              handlePageChange={this.handlePageChange}
-            />
+              <Results 
+                groups={groups} 
+                handleShowDetails={this.handleShowDetails} 
+                handleGroupToggle={this.handleGroupToggle} 
+                fetchFlightUpdate={this.fetchFlightUpdate}
+                handlePageChange={this.handlePageChange}
+              />
           } {
             flight &&
             <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />

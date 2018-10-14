@@ -3909,8 +3909,6 @@ function getWeekendOptions() {
 
     if (defaultWeek === getWeekNumber(d)[1]) {
       defaultWeekend = option;
-      // option.selected = true;
-      // debugger;
     }
     options.push(option);
   };
@@ -3919,7 +3917,6 @@ function getWeekendOptions() {
     "label": d.getFullYear(),
     "options": options
   });
-  // debugger;
 
   return [weekendsGroups, defaultWeekend];
 }
@@ -3941,12 +3938,16 @@ const fetchConfig = {
   redirect: "follow"
 };
 
+const countries = [
+  'Albania',  'Armenia', 'Austria', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 'Bulgaria', 'Switzerland', 'Cyprus', 
+  'Czechia', 'Germany', 'Denmark', 'Estonia', 'Spain', 'Finland', 'France', 'United Kingdom', 'Georgia', 'Gibraltar', 'Greece', 
+  'Hungary', 'Croatia', 'Ireland', 'Iceland', 'Italy', 'Lithuania', 'Luxembourg', 'Latvia', 'Macedonia', 'Malta', 'Norway', 
+  'Netherlands', 'Poland', 'Portugal', 'Romania', 'Russia', 'Sweden', 'Slovenia', 'Slovakia', 'Turkey', 'Ukraine'
+];
+
 const weekendParts = 4;
 const flightsPerPage = 9;
 const apiLocation = (window.location.hostname === 'localhost') ? 'api/' : 'http://api.weekendflights.eu/'; 
 const [weekends, weekendDefault] = getWeekendOptions();
 
-export {airports, weekends, fromDefault, weekendDefault, weekendParts, flightsPerPage, apiLocation, fetchConfig };
-
-// export const weekends = weekendsGroups;
-// export const weekendsDefault = defaultWeekend; //"aaaa";// getWeekNumber(new Date())[1] + 3
+export {airports, weekends, fromDefault, weekendDefault, weekendParts, flightsPerPage, apiLocation, fetchConfig, countries };
