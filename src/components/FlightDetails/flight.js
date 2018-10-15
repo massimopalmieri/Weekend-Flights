@@ -28,8 +28,8 @@ class FlightDetailsFlight extends Component {
 
                         {( details.error ) ? (
                             <span className="price-error">
-                                <img src={`${imagesLocation}images/error.png`} className="icon-error" alt="" />
-                                Ticket not available
+                                <img src={`${imagesLocation}error.png`} className="icon-error" alt="" />
+                                {details.error_message}
                             </span>
                         ) : ( flight.updating ) ? (
                             <img src={`${imagesLocation}loader-small.gif`} className="loader-small" alt="" />

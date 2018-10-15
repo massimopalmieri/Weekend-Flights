@@ -78,8 +78,37 @@ class Homepage extends Component {
       flights.updating = false; 
       Object.assign(flight, {
         error: true,
-        error_message: error_message
+        error_message: 'Ticket not available'
       });
+    }
+    return state;
+  }
+
+  setStatePriceLimitError(state, flightId, groupId, priceFrom, priceTo) {
+    let group, flights, 
+      changedFrom = false, 
+      changedTo = false,
+      errorProps = {
+        error: true,
+        error_message: 'Ticket too expensive'
+      };
+    if ((group = state.groups[groupId]) && (flights = state.groups[groupId].flights[flightId])) {
+      Object.assign(flights, {
+        updating: false,
+      });
+      if (changedFrom = (priceFrom != parseFloat(flights.from.price))) {
+        Object.assign(flights.from, errorProps, {
+          price: priceFrom.toFixed(2),
+        });
+      }
+      if (changedTo = (priceTo != parseFloat(flights.to.price))) {
+        Object.assign(flights.to, errorProps, {
+          price: priceTo.toFixed(2),
+        });
+      }
+      if (changedFrom || changedTo) {
+        flights.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
+      }
     }
     return state;
   }
@@ -221,7 +250,8 @@ class Homepage extends Component {
   }
 
   fetchFlightUpdate = (flight, groupId, config) => {
-    let json;
+    let json,
+      remove = false;
     this.setState((state) => this.setStatePriceUpdating(state, flight.id, groupId)); 
 
     fetch( apiLocation + '?action=refresh&id=' + flight.from.id + ',' + flight.to.id, config)
@@ -229,13 +259,18 @@ class Homepage extends Component {
       if (text == '') { // if empty response - fetch again
         console.info('Fetch price reloaded', groupId, flight);
         this.fetchFlightUpdate(flight, groupId, config);
-      } else if ((json = JSON.parse(text)) && json.error) {
+      } else if (remove = ((json = JSON.parse(text)) && json.error)) {
         this.setState((state) => this.setStatePriceError(state, flight.id, groupId, json.error, json.flight_id));
+      } else if (remove = ((json[0].priceLocal + json[1].priceLocal) > this.state.maxPrice)) {
+        this.setState((state) => this.setStatePriceLimitError(state, flight.id, groupId, json[0].priceLocal, json[1].priceLocal));
+      } else {
+          this.setState((state) => this.setStatePriceUpdated(state, flight.id, groupId, json[0].priceLocal, json[1].priceLocal));
+      }
+
+      if (remove) {
         setTimeout( () => { // animation of hiding, 1 sec later real remove
           this.setState((state) => this.setStateFlightRemove(state, flight.id, groupId, config)); 
         }, 1000);
-      } else {
-          this.setState((state) => this.setStatePriceUpdated(state, flight.id, groupId, json[0].priceLocal, json[1].priceLocal));
       }
     }).catch(err => {
       if (err.name === 'AbortError') { // after this.stopFetch()
