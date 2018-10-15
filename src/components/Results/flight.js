@@ -12,7 +12,7 @@ const Flight = (params) =>
     <div className="flight-row">
         <span className="flight-row-right">{params.flight.airport} </span>
         <span>{params.flight.time} </span>
-        <span className="flight-row-last">({params.flight.time_length})</span>
+        <span className="flight-row-last">({params.flight.duration})</span>
     </div>
 
 class ResultFlight extends Component {
