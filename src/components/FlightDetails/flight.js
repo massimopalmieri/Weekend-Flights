@@ -13,7 +13,7 @@ class FlightDetailsFlight extends Component {
                         <img src={details.airlines_image} alt={details.airlines} />
                         <div>
                             {details.airlines} <br />
-                            {details.flight_number}
+                            <a href={details.url_info} title="flightradar24" target="_blank">{details.flight_number}</a>
                         </div>
                     </div>
                     <h5 className="card-title">Departing flight: <span className="text-nowrap">{details.date}</span></h5>

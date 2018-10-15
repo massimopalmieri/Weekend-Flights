@@ -380,6 +380,10 @@ body {
   padding-top: 5px;
 }
 
+.flight-details .card-body .airlines-logo div a {
+  color: 	#808080;
+}
+
 .flight-details .flight-time {
   background: url('http://images.weekendflights.eu/connection.png') no-repeat;
   background-position: left center;
