@@ -24,10 +24,10 @@ class FlightDetails extends Component {
                 </ModalHeader>
                 <ModalBody>
                     <h3>
+                        <span className="float-right ml-2">{flight.price_currency}{flight.price}</span>
                         {flight.from.city}
                         <span className="arrow-both"></span>
                         {flight.city}
-                        <span className="float-right">{flight.price_currency}{flight.price}</span>
                     </h3>
                     <FlightDetailsFlight flight={flight} details={flight.from} />
                     <FlightDetailsFlight flight={flight} details={flight.to} />

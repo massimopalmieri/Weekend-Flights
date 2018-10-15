@@ -388,6 +388,10 @@ body {
   padding: 16px;
 }
 
+.flight-details .modal-body .card-title {
+  line-height: 28px;
+}
+
 .flight-details .card-body .airlines-logo {
   width: 100px;
   font-size: 13px;
@@ -395,7 +399,7 @@ body {
   float: right;
   width: auto;
   max-width: 100px;
-
+  margin-left: 4px;
 }
 
 .flight-details .card-body .airlines-logo img {
