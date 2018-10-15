@@ -303,7 +303,8 @@ class Homepage extends Component {
         console.log('FetchFlightUpdate aborted', groupId, flight);
         this.setState((state) => this.setStateUpdatingAborted(state, flight.id, groupId));
       } else {
-        console.error('FetchFlightUpdate error', err);
+        console.info('FetchFlightUpdate error, price reloader', err, groupId, flight);
+        this.fetchFlightUpdate(flight, groupId, config);
       }
     });  
   }
