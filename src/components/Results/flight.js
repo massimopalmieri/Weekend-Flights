@@ -10,9 +10,9 @@ const imgFailed = () =>
 
 const Flight = (params) => 
     <div className="flight-row">
-        <span className="flight-row-right">{params.flight.airport} </span>
-        <span>{params.flight.time} </span>
-        <span className="flight-row-last">({params.flight.duration})</span>
+        <span className="flight-row-first">{params.flight.airport} </span>
+        <span className="flight-row-second">{params.flight.time} </span>
+        <span className="flight-row-third">{params.flight.duration}</span>
     </div>
 
 class ResultFlight extends Component {
