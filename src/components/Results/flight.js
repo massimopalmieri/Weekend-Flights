@@ -10,7 +10,9 @@ const imgFailed = () =>
 
 const Flight = (params) => 
     <div className="flight-row">
-        {params.flight.time} <span className="float-right">{params.flight.airport}</span>
+        <span className="flight-row-right">{params.flight.airport} </span>
+        <span>{params.flight.time} </span>
+        <span className="flight-row-last">({params.flight.time_length})</span>
     </div>
 
 class ResultFlight extends Component {
@@ -48,8 +50,6 @@ class ResultFlight extends Component {
                     <Img className="flight-flag" src={flight.flag} alt={flight.country} />
                     <div className="card-body">
                         <h5 className="card-title">
-                            {flight.city} 
-                            
                             <span className="float-right">
                                 {( flight.from.error || flight.to.error ) ? (
                                     <span className="price-error">
@@ -64,6 +64,8 @@ class ResultFlight extends Component {
                                 )}
                                 {flight.price_currency}{flight.price}
                             </span>
+
+                            {flight.city} 
                         </h5>
                         <Flight flight={flight.from} />
                         <Flight flight={flight.to} />

@@ -14,7 +14,7 @@ class ResultsGroup extends Component {
   
       return (
         <div className={ group.open ? 'group' : 'group closed' }>
-            <h2 className="group-name" data-group={group.id} onClick={handleGroupToggle}>{group.name} ({group.size} flights)</h2>
+            <h2 className="group-name" data-group={group.id} onClick={handleGroupToggle}>{group.name} <span>({group.size} flights)</span></h2>
             {( group.open ) && (
                 <div className="group-flights row">
                     {group.flights.map(flight =>
