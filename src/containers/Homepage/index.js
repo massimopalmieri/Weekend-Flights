@@ -60,9 +60,16 @@ class Homepage extends Component {
     });
   }
 
+  findFlightById(flights, flightId) {
+    return _.find(flights, (el) => el && (el.id == flightId));
+  }
+
   setStatePriceUpdating(state, flightId, groupId) {
     let group, flights;
-    if ((group = state.groups[groupId]) && (flights = group.flights[flightId])) {
+    if (
+      (group = state.groups[groupId]) && 
+      (flights = this.findFlightById(group.flights, flightId))
+    ) {
       flights.updating = true;
     }
     return state;
@@ -72,7 +79,7 @@ class Homepage extends Component {
     let group, flights, flight;
     if (
       (group = state.groups[groupId]) && 
-      (flights = state.groups[groupId].flights[flightId]) &&
+      (flights = this.findFlightById(group.flights, flightId)) &&
       (flight = (flights.from.id == flight_id) ? flights.from : flights.to)
     ) {
       flights.updating = false; 
@@ -92,7 +99,10 @@ class Homepage extends Component {
         error: true,
         error_message: 'Ticket too expensive'
       };
-    if ((group = state.groups[groupId]) && (flights = state.groups[groupId].flights[flightId])) {
+    if (
+      (group = state.groups[groupId]) && 
+      (flights = this.findFlightById(group.flights, flightId))
+    ) {
       Object.assign(flights, {
         updating: false,
       });
@@ -113,23 +123,25 @@ class Homepage extends Component {
     return state;
   }
 
-  setVisiblePage(group, page) {
+  setVisibleGroupPage(group, page) {
+    group.activePage = page;3
     let c = 0;
-    group.activePage = page;
     _.each(group.flights, (el) => {
-      if (el) {
-        el.visible = ( 
-          (c >= (flightsPerPage * (page - 1))) &&
-          (c < (flightsPerPage * page))
-        );
-        c++;
-      }
+      el.visible = ( 
+        (c >= (flightsPerPage * (page - 1))) &&
+        (c < (flightsPerPage * page))
+      );
+      c++;
     });
+    return group;
   }
 
-  setStateFlightRemove(state, flightId, groupId, config) {
+  setStateFlightRemove(state, flightId, groupId) { 
     let group, flights, lastPage;
-    if ((group = state.groups[groupId]) && (flights = group.flights[flightId])) {
+    if (
+      (group = state.groups[groupId]) && 
+      (flights = this.findFlightById(group.flights, flightId))
+    ) {
       if (flights.visible) {
         group.flights.every((flight) => { // returns first next flight that wasn't visible
           if (flight && flight.id > flightId && !flight.visible) {
@@ -139,11 +151,15 @@ class Homepage extends Component {
           return true;
         });
       }
-      delete state.groups[groupId].flights[flightId];
+
+      group.flights = group.flights.filter((el) => {
+        return (el && (el.id !== flightId));
+      }); // remove flight - returns group without current flight
+
       state.groups[groupId].size -= 1;
       lastPage = Math.ceil(group.size / flightsPerPage);
       if (group.activePage > lastPage) {
-        this.setVisiblePage(group, lastPage);
+        group = this.setVisibleGroupPage(group, lastPage);
       }
       if (!state.groups[groupId].size) {
         state.groups[groupId].empty = true;
@@ -156,7 +172,10 @@ class Homepage extends Component {
     let group, flights, 
       changedFrom = false, 
       changedTo = false;
-    if ((group = state.groups[groupId]) && (flights = state.groups[groupId].flights[flightId])) {
+    if (
+      (group = state.groups[groupId]) && 
+      (flights = this.findFlightById(group.flights, flightId))
+    ) {
       Object.assign(flights, {
         updating: false,
         updated: true
@@ -167,8 +186,12 @@ class Homepage extends Component {
       if (changedTo = (priceTo != parseFloat(flights.to.price))) {
         flights.to.price = priceTo.toFixed(2);
       }
-      if (changedFrom || changedTo) {
+      if (changedFrom || changedTo) { // if any price changed
         flights.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
+        group.flights = _.sortBy(group.flights, (el) => { // sorting flights by price
+          return parseInt(el.price);
+        });
+        group = this.setVisibleGroupPage(group, group.activePage); // makes sure that sorted flights are visible
       }
     }
     return state;
@@ -185,14 +208,17 @@ class Homepage extends Component {
       (group = this.state.groups[groupId]) && 
       (page <= Math.ceil(group.size / flightsPerPage))
     ) {
-      this.setVisiblePage(group, page);
+      group = this.setVisibleGroupPage(group, page);
     }
     return state;
   }
 
   setStateUpdatingAborted(state, flightId, groupId) {
     let group, flights;
-    if ((group = this.state.groups[groupId]) && (flights = group.flights[flightId])) {
+    if (
+      (group = this.state.groups[groupId]) && 
+      (flights = this.findFlightById(group.flights, flightId))
+    ) {
       flights.updating = false;
     }
     return state;  
@@ -269,7 +295,7 @@ class Homepage extends Component {
 
       if (remove) {
         setTimeout( () => { // animation of hiding, 1 sec later real remove
-          this.setState((state) => this.setStateFlightRemove(state, flight.id, groupId, config)); 
+          this.setState((state) => this.setStateFlightRemove(state, flight.id, groupId)); 
         }, 1000);
       }
     }).catch(err => {
