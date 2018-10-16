@@ -3082,11 +3082,11 @@ const airports = [
     ]
   },
   {
-    "label": "Russian Federation",
+    "label": "Russia",
     "options": [
       {
-        "label": "Russian Federation (all airports)",
-        "value": "Russian Federation"
+        "label": "Russia (all airports)",
+        "value": "Russia"
       },
       {
         "value": "Irkutsk",
