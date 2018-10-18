@@ -28,6 +28,7 @@ class Homepage extends Component {
     from: fromDefault,
     weekend: weekendDefault,
     flight: null,
+    hasOpenGroup: false,
     maxPrice: 100
   }
 
@@ -224,41 +225,44 @@ class Homepage extends Component {
     return state;  
   }
 
+  fetchResults = (i, config)  => {
+    fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
+      '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=' + this.state.maxPrice + 
+      '&part=' + i, config)
+    .then(response => response.json())
+    .then(json => {
+      json.id = parseInt(json.id);  
+      json.size = json.flights.length;
+      json.empty = !json.flights.length;
+      json.activePage = 1;
+      json.open = !this.state.hasOpenGroup;
+      let newState = { 
+        loadingFlights: false, 
+        groups: _.concat(this.state.groups, [json])
+      };
+      if (!this.state.hasOpenGroup && !json.error) {
+        newState.hasOpenGroup = true;
+      }
+      this.setState(newState);
+    }).catch(err => {
+      if (err.name === 'AbortError') { // after this.stopFetch()
+        console.log('HandleSearchFlights aborted', this.state.weekend.value, this.state.from.ports, this.state.from.value, this.state.from.name, i);
+      } else {
+        console.error('HandleSearchFlights error', err);
+      }
+    });  
+  }
+
   handleSearchFlights = (e) => {
     e.preventDefault();
-    
     if (this.abortController) {
       this.abortController.abort(); // when clicked on search again, previous query will be aborted
     }
     this.setState({ loadingFlights: true });
     this.abortController = new window.AbortController();
-    let groups = [], 
-      open = true,
-      config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
-
+    let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
     for (var i=0; i < weekendParts; i++) {
-        fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
-            '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=' + this.state.maxPrice + 
-            '&part=' + i, config)
-        .then(response => response.json())
-        .then(json => {
-          json.id = parseInt(json.id);  
-          json.size = json.flights.length;
-          json.empty = !json.flights.length;
-          json.activePage = 1;
-          json.open = open;
-          if (!json.error) {
-            open = false; // only first loaded group is open  
-          }
-          groups[json.id] = json;
-          this.setState({ loadingFlights: false, groups: groups});
-        }).catch(err => {
-          if (err.name === 'AbortError') { // after this.stopFetch()
-            console.log('HandleSearchFlights aborted', this.state.weekend.value, this.state.from.ports, this.state.from.value, this.state.from.name, i);
-          } else {
-            console.error('HandleSearchFlights error', err);
-          }
-        });  
+        this.fetchResults(i, config);
     }
   }
 
