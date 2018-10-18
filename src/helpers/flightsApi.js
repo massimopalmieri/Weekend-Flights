@@ -8,11 +8,13 @@ const encodeDataToURL = (data) => {
         .join('&');
 }
 
-export const getAll = (params) => {
+export const getAll = (params, config, onError, groupId) => {
     params['action'] = 'flights';
-    return api.get(flightsApiUrl() + '?' + encodeDataToURL(params));
+    return api.get(flightsApiUrl() + '?' + encodeDataToURL(params), config, onError, {groupId});
 }
 
-
-export const get = (id) =>
-  api.get(flightsApiUrl(id))
+export const get = (params, config, onError, groupId, flight) => {
+    params['action'] = 'refresh';
+    return api.get(flightsApiUrl() + '?' + encodeDataToURL(params), config, onError, {groupId, flight});
+}
+  

@@ -1,9 +1,10 @@
-export const get = url =>
+export const get = (url, config, onError, onErrorParams) =>
   new Promise(
     (resolve, reject) => {
-      fetch(url)
+      fetch(url, config)
         .then(response => response.json())
         .then(json => resolve(json))
+        .catch(err => onError(err, config, onErrorParams))
     }
   )
 
