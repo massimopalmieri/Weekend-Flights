@@ -4,6 +4,7 @@ import Results from '../../components/Results'
 import Loader from '../../components/Loader'
 import FlightDetails from '../../components/FlightDetails'
 import { weekendParts, weekendDefault, fromDefault, apiLocation, fetchConfig, flightsPerPage } from '../../data';
+import * as flightsApi from '../../helpers/flightsApi'
 import _ from 'lodash';
 
 class Homepage extends Component {
@@ -225,32 +226,40 @@ class Homepage extends Component {
     return state;  
   }
 
-  fetchResults = (i, config)  => {
-    fetch( apiLocation + '?action=flights&week=' + this.state.weekend.value + '&dep=' + this.state.from.ports + 
-      '&text=' + this.state.from.value + '&key=' + this.state.from.name + '&max_price=' + this.state.maxPrice + 
-      '&part=' + i, config)
-    .then(response => response.json())
-    .then(json => {
-      json.id = parseInt(json.id);  
-      json.size = json.flights.length;
-      json.empty = !json.flights.length;
-      json.activePage = 1;
-      json.open = !this.state.hasOpenGroup;
+  fetchFlights = async (i, config)  => {
+    let params = {
+      week: this.state.weekend.value,
+      dep: this.state.from.ports,
+      text: this.state.from.value,
+      key: this.state.from.name,
+      max_price: this.state.maxPrice,
+      part: i
+    };
+
+    try {
+      let group = await flightsApi.getAll(params);
+      group.id = parseInt(group.id);  
+      group.size = group.flights.length;
+      group.empty = !group.flights.length;
+      group.activePage = 1;
+      group.open = !this.state.hasOpenGroup;
+      let fetchedGroup = [];
+      fetchedGroup[group.id] = group;
       let newState = { 
         loadingFlights: false, 
-        groups: _.concat(this.state.groups, [json])
+        groups: Object.assign(this.state.groups, fetchedGroup)
       };
-      if (!this.state.hasOpenGroup && !json.error) {
+      if (!this.state.hasOpenGroup && !group.error) {
         newState.hasOpenGroup = true;
       }
       this.setState(newState);
-    }).catch(err => {
-      if (err.name === 'AbortError') { // after this.stopFetch()
-        console.log('HandleSearchFlights aborted', this.state.weekend.value, this.state.from.ports, this.state.from.value, this.state.from.name, i);
+    } catch(err) {
+      if (err.name === 'AbortError') {
+        console.log('fetchFlights aborted', params);
       } else {
-        console.error('HandleSearchFlights error', err);
+        console.error('fetchFlights error', params, err);
       }
-    });  
+    }
   }
 
   handleSearchFlights = (e) => {
@@ -258,11 +267,11 @@ class Homepage extends Component {
     if (this.abortController) {
       this.abortController.abort(); // when clicked on search again, previous query will be aborted
     }
-    this.setState({ loadingFlights: true });
+    this.setState({ loadingFlights: true, groups: [], hasOpenGroup: false });
     this.abortController = new window.AbortController();
     let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
     for (var i=0; i < weekendParts; i++) {
-        this.fetchResults(i, config);
+        this.fetchFlights(i, config);
     }
   }
 
