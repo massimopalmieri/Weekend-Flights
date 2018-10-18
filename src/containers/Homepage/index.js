@@ -280,7 +280,21 @@ class Homepage extends Component {
       remove = false;
     this.setState((state) => this.setStatePriceUpdating(state, flight.id, groupId)); 
 
-    fetch( apiLocation + '?action=refresh&id=' + flight.from.id + ',' + flight.to.id, config)
+    fetch( apiLocation + '?action=refresh' + 
+      '&id=' + flight.from.id + ',' + flight.to.id +
+      '&flight_number_from=' + flight.from.flight_number +
+      '&day_out_from=' + flight.from.date_full +
+      '&dest_from=' + flight.from.airport.substr(-3) +
+      '&origin_from=' + flight.from.airport.substr(0, 3) + 
+      '&price_from=' + flight.from.price +
+      '&priceCurency_from=' + flight.from.price_curr_code +
+      '&flight_number_to=' + flight.to.flight_number +
+      '&day_out_to=' + flight.to.date_full +
+      '&dest_to=' + flight.to.airport.substr(-3) +
+      '&origin_to=' + flight.to.airport.substr(0, 3) + 
+      '&price_to=' + flight.to.price +
+      '&priceCurency_to=' + flight.to.price_curr_code
+      , config)
     .then(response => response.text()).then(text => {
       if (text == '') { // if empty response - fetch again
         console.info('Fetch price reloaded', groupId, flight);
