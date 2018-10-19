@@ -1,4 +1,4 @@
-import { flightsPerPage } from '../data';
+import { fetchConfig, flightsPerPage } from '../data';
 import _ from 'lodash';
 
 export const findById = (group, elementId) => {
@@ -21,6 +21,10 @@ export const setVisibleGroupPage = (group, page) => {
 export const resetAbortController = (abortController) => {
     abortController.abort(); // when clicked on search again, previous query will be aborted
     return new window.AbortController();
+}
+
+export const getAbortControllerConfig = (abortController) => {
+    return Object.assign({}, { signal: abortController.signal }, fetchConfig);
 }
 
 export const isPriceValid = (price, maxPrice) => {

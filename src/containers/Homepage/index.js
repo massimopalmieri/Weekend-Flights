@@ -3,7 +3,7 @@ import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
 import Loader from '../../components/Loader'
 import FlightDetails from '../../components/FlightDetails'
-import { weekendParts, weekendDefault, fromDefault, fetchConfig, flightsPerPage } from '../../data';
+import { weekendParts, weekendDefault, fromDefault} from '../../data';
 import * as flightsApi from '../../helpers/flightsApi'
 import * as common from '../../helpers/common'
 import * as stateHlp from '../../helpers/stateHlp'
@@ -61,7 +61,7 @@ class Homepage extends Component {
     e.preventDefault();
     this.setState({ loadingFlights: true, groups: [], hasOpenGroup: false });
     this.abortController = common.resetAbortController(this.abortController);
-    let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig),
+    let config = common.getAbortControllerConfig(this.abortController),
       params = {
       week: this.state.weekend.value,
       dep: this.state.from.ports,
