@@ -172,7 +172,7 @@ export const setStateGroupFetched = (state, group) => {
 }
 
 export const setStateFlightUpdated = (state, price, flight, groupId) => {
-  if (price.error) { // = is correct
+  if (price.error) {
     state = setStatePriceError(state, flight.id, groupId, price.error, price.flight_id);
   } else if ((price[0].priceLocal + price[1].priceLocal) > state.maxPrice) {
     state = setStatePriceLimitError(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal);
