@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
 import Loader from '../../components/Loader'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 import FlightDetails from '../../components/FlightDetails'
 import { weekendParts, weekendDefault, fromDefault} from '../../data';
 import * as flightsApi from '../../helpers/flightsApi'
@@ -115,14 +117,8 @@ class Homepage extends Component {
     const { loadingFlights, groups, flight, maxPrice } = this.state;
 
     return (  
-      <div className="container-main">
-        <div className="container-fluid">
-          <header className="header">
-            <h1>Weekend Flights</h1>
-            <h2>Find the best flights for your city break!</h2>
-          </header>
-        </div>
-
+      <div className="container-main">        
+        <Header />
         <div className="container">
           <SearchForm 
             maxPrice={maxPrice}
@@ -147,12 +143,7 @@ class Homepage extends Component {
             <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />
           }
         </div>
-
-        <div className="container-fluid">
-          <div className="footer">  
-            &copy; 2018 Copyright  <a href="http://frontend.london" target="_blank" rel="noopener noreferrer">Piotr Kołodziejczyk</a>
-          </div>        
-        </div>        
+        <Footer />
       </div>
       );
     }
