@@ -17,4 +17,12 @@ export const get = (params, config, onError, groupId, flight) => {
     params['action'] = 'refresh';
     return api.get(flightsApiUrl() + '?' + encodeDataToURL(params), config, onError, {groupId, flight});
 }
+
+export const handleFetchFlightsError = (err, config, params) => {
+    if (err.name === 'AbortError') {
+        console.log('fetchFlights aborted', err, params.groupId);
+    } else {
+        console.error('fetchFlights error', err, params.groupId);
+    }
+}
   

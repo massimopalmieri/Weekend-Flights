@@ -3,8 +3,9 @@ import SearchForm from '../../components/SearchForm'
 import Results from '../../components/Results'
 import Loader from '../../components/Loader'
 import FlightDetails from '../../components/FlightDetails'
-import { weekendParts, weekendDefault, fromDefault, apiLocation, fetchConfig, flightsPerPage } from '../../data';
+import { weekendParts, weekendDefault, fromDefault, fetchConfig, flightsPerPage } from '../../data';
 import * as flightsApi from '../../helpers/flightsApi'
+import * as stateHlp from '../../helpers/stateHlp'
 import _ from 'lodash';
 
 class Homepage extends Component {
@@ -13,10 +14,10 @@ class Homepage extends Component {
 
     this.handleShowDetails = this.handleShowDetails.bind(this)
     this.handleCloseDetails = this.handleCloseDetails.bind(this)
+    this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this)
     this.handleSearchFlights = this.handleSearchFlights.bind(this)
     this.handleFromChange = this.handleFromChange.bind(this)
     this.handleWeekendChange = this.handleWeekendChange.bind(this)
-    this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this)
   }
 
   static defaultProps = {
@@ -34,7 +35,7 @@ class Homepage extends Component {
   }
 
   handleShowDetails(e) {
-    e.preventDefault();
+    e.preventDefault(); // todo: rewrite to a setState method?
     let flightId = e.currentTarget.dataset.flight,
       groupId = parseInt(e.currentTarget.dataset.group),
       group, flight;
@@ -43,196 +44,16 @@ class Homepage extends Component {
       (flight = group.flights.find((el) => { 
         return el ? el.id == flightId : false;
       }))
-    ) {
-      this.setState({
-        flight: flight
-      });
-    }
+    ) this.setState({  flight: flight });
   }
 
   handleCloseDetails() {
-    this.setState({
-      flight: null
-    });
+    this.setState({ flight: null });
   }
 
   handleMaxPriceChange(e) {
-    this.setState({
-      maxPrice: e.target.value
-    });
-  }
-
-  findFlightById(flights, flightId) {
-    return _.find(flights, (el) => el && (el.id == flightId));
-  }
-
-  setStatePriceUpdating(state, flightId, groupId) {
-    let group, flights;
-    if (
-      (group = state.groups[groupId]) && 
-      (flights = this.findFlightById(group.flights, flightId))
-    ) {
-      flights.updating = true;
-    }
-    return state;
-  }
-
-  setStatePriceError(state, flightId, groupId, error_message, flight_id) {
-    let group, flights, flight;
-    if (
-      (group = state.groups[groupId]) && 
-      (flights = this.findFlightById(group.flights, flightId)) &&
-      (flight = (flights.from.id == flight_id) ? flights.from : flights.to)
-    ) {
-      flights.updating = false; 
-      Object.assign(flight, {
-        error: true,
-        error_message: 'Ticket not available'
-      });
-    }
-    return state;
-  }
-
-  setStatePriceLimitError(state, flightId, groupId, priceFrom, priceTo) {
-    let group, flights, 
-      changedFrom = false, 
-      changedTo = false,
-      errorProps = {
-        error: true,
-        error_message: 'Ticket too expensive'
-      };
-    if (
-      (group = state.groups[groupId]) && 
-      (flights = this.findFlightById(group.flights, flightId))
-    ) {
-      Object.assign(flights, {
-        updating: false,
-      });
-      if (changedFrom = (priceFrom != parseFloat(flights.from.price))) {
-        Object.assign(flights.from, errorProps, {
-          price: priceFrom.toFixed(2),
-        });
-      }
-      if (changedTo = (priceTo != parseFloat(flights.to.price))) {
-        Object.assign(flights.to, errorProps, {
-          price: priceTo.toFixed(2),
-        });
-      }
-      if (changedFrom || changedTo) {
-        flights.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
-      }
-    }
-    return state;
-  }
-
-  setVisibleGroupPage(group, page) {
-    group.activePage = page;3
-    let c = 0;
-    _.each(group.flights, (el) => {
-      el.visible = ( 
-        (c >= (flightsPerPage * (page - 1))) &&
-        (c < (flightsPerPage * page))
-      );
-      c++;
-    });
-    return group;
-  }
-
-  setStateFlightRemove(state, flightId, groupId) { 
-    let group, flights, lastPage;
-    if (
-      (group = state.groups[groupId]) && 
-      (flights = this.findFlightById(group.flights, flightId))
-    ) {
-      if (flights.visible) {
-        group.flights.every((flight) => { // returns first next flight that wasn't visible
-          if (flight && flight.id > flightId && !flight.visible) {
-            flight.visible = true;
-            return false;
-          }
-          return true;
-        });
-      }
-
-      group.flights = group.flights.filter((el) => {
-        return (el && (el.id !== flightId));
-      }); // remove flight - returns group without current flight
-
-      state.groups[groupId].size -= 1;
-      lastPage = Math.ceil(group.size / flightsPerPage);
-      if (group.activePage > lastPage) {
-        group = this.setVisibleGroupPage(group, lastPage);
-      }
-      if (!state.groups[groupId].size) {
-        state.groups[groupId].empty = true;
-      }
-    }
-    return state;
-  }
-
-  setStatePriceUpdated(state, flightId, groupId, priceFrom, priceTo) {
-    let group, flights, 
-      changedFrom = false, 
-      changedTo = false;
-    if (
-      (group = state.groups[groupId]) && 
-      (flights = this.findFlightById(group.flights, flightId))
-    ) {
-      Object.assign(flights, {
-        updating: false,
-        updated: true
-      });
-      if (changedFrom = (priceFrom != parseFloat(flights.from.price))) {
-        flights.from.price = priceFrom.toFixed(2);
-      }
-      if (changedTo = (priceTo != parseFloat(flights.to.price))) {
-        flights.to.price = priceTo.toFixed(2);
-      }
-      if (changedFrom || changedTo) { // if any price changed
-        flights.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
-        group.flights = _.sortBy(group.flights, (el) => { // sorting flights by price
-          return parseInt(el.price);
-        });
-        group = this.setVisibleGroupPage(group, group.activePage); // makes sure that sorted flights are visible
-      }
-    }
-    return state;
-  }
-
-  setStateGroupOpen(state, groupId) {
-    state.groups[groupId].open = !state.groups[groupId].open;
-    return state;
-  }
-
-  setStateGroupPageChange(state, page, groupId) {
-    let group;
-    if (
-      (group = this.state.groups[groupId]) && 
-      (page <= Math.ceil(group.size / flightsPerPage))
-    ) {
-      group = this.setVisibleGroupPage(group, page);
-    }
-    return state;
-  }
-
-  setStateUpdatingAborted(state, flightId, groupId) {
-    let group, flights;
-    if (
-      (group = this.state.groups[groupId]) && 
-      (flights = this.findFlightById(group.flights, flightId))
-    ) {
-      flights.updating = false;
-    }
-    return state;  
-  }
-
-  handleFetchFlightsError = (err, config, params) => {
-    if (err.name === 'AbortError') {
-      console.log('fetchFlights aborted', err, params.groupId);
-    } else {
-      console.error('fetchFlights error', err, params.groupId);
-    }
-  }
+    this.setState({ maxPrice: e.target.value });
+  }  
 
   fetchFlights = async (groupId, config)  => {
     let params = {
@@ -244,7 +65,7 @@ class Homepage extends Component {
       part: groupId
     };
 
-    let group = await flightsApi.getAll(params, config, this.handleFetchFlightsError, groupId);
+    let group = await flightsApi.getAll(params, config, flightsApi.handleFetchFlightsError, groupId);
     group.id = parseInt(group.id);  // todo: check all if needed, now it's json not text..
     group.size = group.flights.length;
     group.empty = !group.flights.length;
@@ -276,22 +97,17 @@ class Homepage extends Component {
   }
 
   handleFromChange = (selectedOption) => {
-    this.setState({
-      from: selectedOption 
-    });
+    this.setState({ from: selectedOption });
   }
 
   handleWeekendChange = (selectedOption) => {
-    this.setState({
-      weekend: selectedOption,
-      flight: null
-    });
+    this.setState({ weekend: selectedOption, flight: null });
   }
 
   handleFlightUpdateError = (err, config, params) => {
     if (err.name === 'AbortError') { // after this.stopFetch()
       console.log('FetchFlightUpdate aborted', params.groupId, params.flight);
-      this.setState((state) => this.setStateUpdatingAborted(state, params.flight.id, params.groupId));
+      this.setState((state) => stateHlp.setStateUpdatingAborted(state, params.flight.id, params.groupId));
     } else {
       console.info('Fetch price reloaded', err, params.groupId, params.flight);
       this.fetchFlightUpdate(params.flight, params.groupId, config);
@@ -300,7 +116,7 @@ class Homepage extends Component {
 
   fetchFlightUpdate = async (flight, groupId, config) => {
     let remove = false;
-    this.setState((state) => this.setStatePriceUpdating(state, flight.id, groupId)); 
+    this.setState((state) => stateHlp.setStatePriceUpdating(state, flight.id, groupId)); 
 
     let params = {
       id: flight.from.id + ',' + flight.to.id,
@@ -320,27 +136,27 @@ class Homepage extends Component {
     let price = await flightsApi.get(params, config, this.handleFlightUpdateError, groupId, flight);
 
     if (remove = price.error) {
-      this.setState((state) => this.setStatePriceError(state, flight.id, groupId, remove, price.flight_id));
+      this.setState((state) => stateHlp.setStatePriceError(state, flight.id, groupId, remove, price.flight_id));
     } else if (remove = ((price[0].priceLocal + price[1].priceLocal) > this.state.maxPrice)) {
-      this.setState((state) => this.setStatePriceLimitError(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal));
+      this.setState((state) => stateHlp.setStatePriceLimitError(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal));
     } else {
-        this.setState((state) => this.setStatePriceUpdated(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal));
+        this.setState((state) => stateHlp.setStatePriceUpdated(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal));
     }
 
     if (remove) {
       setTimeout( () => { // animation of hiding, 1 sec later real remove
-        this.setState((state) => this.setStateFlightRemove(state, flight.id, groupId)); 
+        this.setState((state) => stateHlp.setStateFlightRemove(state, flight.id, groupId)); 
       }, 1000);
     }
   }
 
   handleGroupToggle = (e) => {
     let groupId = parseInt(e.currentTarget.dataset.group);
-    this.setState((state) => this.setStateGroupOpen(state, groupId));
+    this.setState((state) => stateHlp.setStateGroupOpen(state, groupId));
   }
 
   handlePageChange = (pageNumber, groupId) => {
-    this.setState((state) => this.setStateGroupPageChange(state, pageNumber, groupId));
+    this.setState((state) => stateHlp.setStateGroupPageChange(state, pageNumber, groupId));
   }
 
   render() {
