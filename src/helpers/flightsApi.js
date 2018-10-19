@@ -8,9 +8,14 @@ const encodeDataToURL = (data) => {
         .join('&');
 }
 
-export const getAll = (params, config, onError, groupId) => {
+export const getGroup = async (params, config, onError, groupId) => {
     params['action'] = 'flights';
-    return api.get(flightsApiUrl() + '?' + encodeDataToURL(params), config, onError, {groupId});
+    let group = await api.get(flightsApiUrl() + '?' + encodeDataToURL(params), config, onError, {groupId});
+    group.id = parseInt(group.id);
+    group.size = group.flights.length;
+    group.empty = !group.flights.length;
+    group.activePage = 1;
+    return group;
 }
 
 export const get = (params, config, onError, groupId, flight) => {

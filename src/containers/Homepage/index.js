@@ -55,32 +55,31 @@ class Homepage extends Component {
     this.setState({ maxPrice: e.target.value });
   }  
 
-  fetchFlights = async (groupId, config)  => {
-    let params = {
-      week: this.state.weekend.value,
-      dep: this.state.from.ports,
-      text: this.state.from.value,
-      key: this.state.from.name,
-      max_price: this.state.maxPrice,
-      part: groupId
-    };
+  fetchFlightsComplete = (group) => {
+    let newState = { loadingFlights: false },
+      fetchedGroup = [];
 
-    let group = await flightsApi.getAll(params, config, flightsApi.handleFetchFlightsError, groupId);
-    group.id = parseInt(group.id);  // todo: check all if needed, now it's json not text..
-    group.size = group.flights.length;
-    group.empty = !group.flights.length;
-    group.activePage = 1;
     group.open = !this.state.hasOpenGroup;
-    let fetchedGroup = [];
     fetchedGroup[group.id] = group;
-    let newState = { 
-      loadingFlights: false, 
-      groups: Object.assign(this.state.groups, fetchedGroup)
-    };
+    newState.groups = Object.assign(this.state.groups, fetchedGroup);
     if (!this.state.hasOpenGroup && !group.error) {
       newState.hasOpenGroup = true;
     }
     this.setState(newState);
+  }
+
+  fetchFlights = async (groupId, config)  => {
+    let params = {
+        week: this.state.weekend.value,
+        dep: this.state.from.ports,
+        text: this.state.from.value,
+        key: this.state.from.name,
+        max_price: this.state.maxPrice,
+        part: groupId
+      }, 
+      group = await flightsApi.getGroup(params, config, flightsApi.handleFetchFlightsError, groupId);
+
+    this.fetchFlightsComplete(group);
   }
 
   handleSearchFlights = (e) => {
@@ -89,7 +88,7 @@ class Homepage extends Component {
       this.abortController.abort(); // when clicked on search again, previous query will be aborted
     }
     this.setState({ loadingFlights: true, groups: [], hasOpenGroup: false });
-    this.abortController = new window.AbortController();
+    this.abortController = new window.AbortController(); // fetch won't be affected by previous abort()
     let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
     for (var i=0; i < weekendParts; i++) {
         this.fetchFlights(i, config);
@@ -105,7 +104,7 @@ class Homepage extends Component {
   }
 
   handleFlightUpdateError = (err, config, params) => {
-    if (err.name === 'AbortError') { // after this.stopFetch()
+    if (err.name === 'AbortError') {
       console.log('FetchFlightUpdate aborted', params.groupId, params.flight);
       this.setState((state) => stateHlp.setStateUpdatingAborted(state, params.flight.id, params.groupId));
     } else {

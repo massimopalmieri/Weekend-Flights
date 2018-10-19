@@ -130,7 +130,7 @@ export const setStateGroupOpen = (state, groupId) => {
 export const setStateGroupPageChange = (state, page, groupId) => {
     let group;
     if (
-      (group = this.state.groups[groupId]) && 
+      (group = state.groups[groupId]) && 
       (page <= Math.ceil(group.size / flightsPerPage))
     ) {
       group = common.setVisibleGroupPage(group, page);
@@ -141,7 +141,7 @@ export const setStateGroupPageChange = (state, page, groupId) => {
 export const setStateUpdatingAborted = (state, flightId, groupId) => {
     let group, flights;
     if (
-      (group = this.state.groups[groupId]) && 
+      (group = state.groups[groupId]) && 
       (flights = common.findById(group.flights, flightId))
     ) {
       flights.updating = false;
