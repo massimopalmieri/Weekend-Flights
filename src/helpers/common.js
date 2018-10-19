@@ -22,3 +22,8 @@ export const resetAbortController = (abortController) => {
     abortController.abort(); // when clicked on search again, previous query will be aborted
     return new window.AbortController();
 }
+
+export const isPriceValid = (price, maxPrice) => {
+    return (!(price.error || ((price[0].priceLocal + price[1].priceLocal) > maxPrice))
+    );
+}

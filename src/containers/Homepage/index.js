@@ -92,19 +92,11 @@ class Homepage extends Component {
   }
 
   fetchFlightUpdate = async (flight, groupId, config) => {
-    let remove = false;
     this.setState((state) => stateHlp.setStatePriceUpdating(state, flight.id, groupId)); 
     let price = await flightsApi.get(flight, groupId, config, this.handleFlightUpdateError);
-    if (remove = price.error) {
-      this.setState((state) => stateHlp.setStatePriceError(state, flight.id, groupId, remove, price.flight_id));
-    } else if (remove = ((price[0].priceLocal + price[1].priceLocal) > this.state.maxPrice)) {
-      this.setState((state) => stateHlp.setStatePriceLimitError(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal));
-    } else {
-        this.setState((state) => stateHlp.setStatePriceUpdated(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal));
-    }
-    
-    if (remove) {
-      setTimeout( () => { // animation of hiding, 1 sec later real remove
+    this.setState((state) => stateHlp.setStateFlightUpdated(state, price, flight, groupId));
+    if (!common.isPriceValid(price, this.state.maxPrice)) {
+      setTimeout(() => { // animation of hiding, 1 sec later real remove
         this.setState((state) => stateHlp.setStateFlightRemove(state, flight.id, groupId)); 
       }, 1000);
     }
