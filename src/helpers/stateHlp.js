@@ -2,7 +2,7 @@ import { flightsPerPage } from '../data';
 import _ from 'lodash';
 import * as common from './common'
 
-export const setStatePriceUpdating = (state, flightId, groupId) => {
+export const priceUpdating = (state, flightId, groupId) => {
     let group, flights;
     if (
       (group = state.groups[groupId]) && 
@@ -13,7 +13,7 @@ export const setStatePriceUpdating = (state, flightId, groupId) => {
     return state;
 }
 
-export const setStatePriceError = (state, flightId, groupId, error_message, flight_id) => {
+export const priceError = (state, flightId, groupId, error_message, flight_id) => {
     let group, flights, flight;
     if (
       (group = state.groups[groupId]) && 
@@ -29,7 +29,7 @@ export const setStatePriceError = (state, flightId, groupId, error_message, flig
     return state;
 }
 
-export const setStatePriceLimitError = (state, flightId, groupId, priceFrom, priceTo) => {
+export const priceLimitError = (state, flightId, groupId, priceFrom, priceTo) => {
     let group, flights, 
       changedFrom = false, 
       changedTo = false,
@@ -61,7 +61,7 @@ export const setStatePriceLimitError = (state, flightId, groupId, priceFrom, pri
     return state;
 }
 
-export const setStateFlightRemove = (state, flightId, groupId) => { 
+export const flightRemove = (state, flightId, groupId) => { 
     let group, flights, lastPage;
     if (
       (group = state.groups[groupId]) && 
@@ -93,7 +93,7 @@ export const setStateFlightRemove = (state, flightId, groupId) => {
     return state;
 }
 
-export const setStatePriceUpdated = (state, flightId, groupId, priceFrom, priceTo) => {
+export const priceUpdated = (state, flightId, groupId, priceFrom, priceTo) => {
     let group, flights, 
       changedFrom = false, 
       changedTo = false;
@@ -122,12 +122,12 @@ export const setStatePriceUpdated = (state, flightId, groupId, priceFrom, priceT
     return state;
 }
 
-export const setStateGroupOpen = (state, groupId) => {
+export const groupOpen = (state, groupId) => {
     state.groups[groupId].open = !state.groups[groupId].open;
     return state;
 }
 
-export const setStateGroupPageChange = (state, page, groupId) => {
+export const groupPageChange = (state, page, groupId) => {
     let group;
     if (
       (group = state.groups[groupId]) && 
@@ -138,7 +138,7 @@ export const setStateGroupPageChange = (state, page, groupId) => {
     return state;
 }
 
-export const setStateUpdatingAborted = (state, flightId, groupId) => {
+export const updatingAborted = (state, flightId, groupId) => {
     let group, flights;
     console.log('FetchFlightUpdate aborted', groupId, flightId);
     if (
@@ -150,7 +150,7 @@ export const setStateUpdatingAborted = (state, flightId, groupId) => {
     return state;  
 }
 
-export const setStateFlightSet = (state, flightId, groupId) => {
+export const flightSet = (state, flightId, groupId) => {
   let group, flight;      
   if (
     (group = state.groups[groupId]) &&
@@ -159,7 +159,7 @@ export const setStateFlightSet = (state, flightId, groupId) => {
   return state;
 }
 
-export const setStateGroupFetched = (state, group) => {
+export const groupFetched = (state, group) => {
   let fetchedGroup = [];
   group.open = !state.hasOpenGroup;
   fetchedGroup[group.id] = group;
@@ -171,13 +171,13 @@ export const setStateGroupFetched = (state, group) => {
   return state;
 }
 
-export const setStateFlightUpdated = (state, price, flight, groupId) => {
+export const flightUpdated = (state, price, flight, groupId) => {
   if (price.error) {
-    state = setStatePriceError(state, flight.id, groupId, price.error, price.flight_id);
+    state = priceError(state, flight.id, groupId, price.error, price.flight_id);
   } else if ((price[0].priceLocal + price[1].priceLocal) > state.maxPrice) {
-    state = setStatePriceLimitError(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal);
+    state = priceLimitError(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal);
   } else {
-    state = setStatePriceUpdated(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal);
+    state = priceUpdated(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal);
   }
   return state;
 }

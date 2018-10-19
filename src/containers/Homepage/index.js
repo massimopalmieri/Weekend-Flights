@@ -43,7 +43,7 @@ class Homepage extends Component {
     e.preventDefault();
     let flightId = e.currentTarget.dataset.flight,
       groupId = parseInt(e.currentTarget.dataset.group);
-    this.setState((state) => stateHlp.setStateFlightSet(state, flightId, groupId));
+    this.setState((state) => stateHlp.flightSet(state, flightId, groupId));
   }
 
   handleCloseDetails() {
@@ -56,7 +56,7 @@ class Homepage extends Component {
 
   fetchFlights = async (params, groupId, config)  => {
     let group = await flightsApi.getGroup(params, config, flightsApi.handleFetchFlightsError, groupId);
-    this.setState((state) => stateHlp.setStateGroupFetched(state, group));
+    this.setState((state) => stateHlp.groupFetched(state, group));
   }
 
   handleSearchFlights = (e) => {
@@ -86,7 +86,7 @@ class Homepage extends Component {
 
   handleFlightUpdateError = (err, config, params) => {
     if (err.name === 'AbortError') {
-      this.setState((state) => stateHlp.setStateUpdatingAborted(state, params.flight.id, params.groupId));
+      this.setState((state) => stateHlp.updatingAborted(state, params.flight.id, params.groupId));
     } else {
       console.log('Fetch price reloaded', err, params.groupId, params.flight);
       this.fetchFlightUpdate(params.flight, params.groupId, config);
@@ -94,23 +94,23 @@ class Homepage extends Component {
   }
 
   fetchFlightUpdate = async (flight, groupId, config) => {
-    this.setState((state) => stateHlp.setStatePriceUpdating(state, flight.id, groupId)); 
+    this.setState((state) => stateHlp.priceUpdating(state, flight.id, groupId)); 
     let price = await flightsApi.get(flight, groupId, config, this.handleFlightUpdateError);
-    this.setState((state) => stateHlp.setStateFlightUpdated(state, price, flight, groupId));
+    this.setState((state) => stateHlp.flightUpdated(state, price, flight, groupId));
     if (!common.isPriceValid(price, this.state.maxPrice)) {
       setTimeout(() => { // animation of hiding, 1 sec later real remove
-        this.setState((state) => stateHlp.setStateFlightRemove(state, flight.id, groupId)); 
+        this.setState((state) => stateHlp.flightRemove(state, flight.id, groupId)); 
       }, 1000);
     }
   }
 
   handleGroupToggle = (e) => {
     let groupId = parseInt(e.currentTarget.dataset.group);
-    this.setState((state) => stateHlp.setStateGroupOpen(state, groupId));
+    this.setState((state) => stateHlp.groupOpen(state, groupId));
   }
 
   handlePageChange = (pageNumber, groupId) => {
-    this.setState((state) => stateHlp.setStateGroupPageChange(state, pageNumber, groupId));
+    this.setState((state) => stateHlp.groupPageChange(state, pageNumber, groupId));
   }
 
   render() {
