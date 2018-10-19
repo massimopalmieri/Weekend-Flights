@@ -5,6 +5,7 @@ import Loader from '../../components/Loader'
 import FlightDetails from '../../components/FlightDetails'
 import { weekendParts, weekendDefault, fromDefault, fetchConfig, flightsPerPage } from '../../data';
 import * as flightsApi from '../../helpers/flightsApi'
+import * as common from '../../helpers/common'
 import * as stateHlp from '../../helpers/stateHlp'
 import _ from 'lodash';
 
@@ -18,33 +19,29 @@ class Homepage extends Component {
     this.handleSearchFlights = this.handleSearchFlights.bind(this)
     this.handleFromChange = this.handleFromChange.bind(this)
     this.handleWeekendChange = this.handleWeekendChange.bind(this)
+
+    this.abortController = new window.AbortController();
   }
 
   static defaultProps = {
-    title: 'Weekend Flights',
-    groups: []
+    title: 'Weekend Flights'
   }
 
   state = {
-    groups: this.props.groups,
+    groups: [],
     from: fromDefault,
     weekend: weekendDefault,
     flight: null,
     hasOpenGroup: false,
+    loadingFlights: false,
     maxPrice: 100
   }
 
   handleShowDetails(e) {
-    e.preventDefault(); // todo: rewrite to a setState method?
+    e.preventDefault();
     let flightId = e.currentTarget.dataset.flight,
-      groupId = parseInt(e.currentTarget.dataset.group),
-      group, flight;
-    if (
-      (group = this.state.groups[groupId]) &&
-      (flight = group.flights.find((el) => { 
-        return el ? el.id == flightId : false;
-      }))
-    ) this.setState({  flight: flight });
+      groupId = parseInt(e.currentTarget.dataset.group);
+    this.setState((state) => stateHlp.setStateFlightSet(state, flightId, groupId));
   }
 
   handleCloseDetails() {
@@ -55,43 +52,25 @@ class Homepage extends Component {
     this.setState({ maxPrice: e.target.value });
   }  
 
-  fetchFlightsComplete = (group) => {
-    let newState = { loadingFlights: false },
-      fetchedGroup = [];
-
-    group.open = !this.state.hasOpenGroup;
-    fetchedGroup[group.id] = group;
-    newState.groups = Object.assign(this.state.groups, fetchedGroup);
-    if (!this.state.hasOpenGroup && !group.error) {
-      newState.hasOpenGroup = true;
-    }
-    this.setState(newState);
-  }
-
-  fetchFlights = async (groupId, config)  => {
-    let params = {
-        week: this.state.weekend.value,
-        dep: this.state.from.ports,
-        text: this.state.from.value,
-        key: this.state.from.name,
-        max_price: this.state.maxPrice,
-        part: groupId
-      }, 
-      group = await flightsApi.getGroup(params, config, flightsApi.handleFetchFlightsError, groupId);
-
-    this.fetchFlightsComplete(group);
+  fetchFlights = async (params, groupId, config)  => {
+    let group = await flightsApi.getGroup(params, config, flightsApi.handleFetchFlightsError, groupId);
+    this.setState((state) => stateHlp.setStateGroupFetched(state, group));
   }
 
   handleSearchFlights = (e) => {
     e.preventDefault();
-    if (this.abortController) {
-      this.abortController.abort(); // when clicked on search again, previous query will be aborted
-    }
     this.setState({ loadingFlights: true, groups: [], hasOpenGroup: false });
-    this.abortController = new window.AbortController(); // fetch won't be affected by previous abort()
-    let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig);
+    this.abortController = common.resetAbortController(this.abortController);
+    let config = Object.assign({}, { signal: this.abortController.signal }, fetchConfig),
+      params = {
+      week: this.state.weekend.value,
+      dep: this.state.from.ports,
+      text: this.state.from.value,
+      key: this.state.from.name,
+      max_price: this.state.maxPrice
+    };
     for (var i=0; i < weekendParts; i++) {
-        this.fetchFlights(i, config);
+        this.fetchFlights(params, i, config);
     }
   }
 
@@ -105,10 +84,9 @@ class Homepage extends Component {
 
   handleFlightUpdateError = (err, config, params) => {
     if (err.name === 'AbortError') {
-      console.log('FetchFlightUpdate aborted', params.groupId, params.flight);
       this.setState((state) => stateHlp.setStateUpdatingAborted(state, params.flight.id, params.groupId));
     } else {
-      console.info('Fetch price reloaded', err, params.groupId, params.flight);
+      console.log('Fetch price reloaded', err, params.groupId, params.flight);
       this.fetchFlightUpdate(params.flight, params.groupId, config);
     }
   }
@@ -116,24 +94,7 @@ class Homepage extends Component {
   fetchFlightUpdate = async (flight, groupId, config) => {
     let remove = false;
     this.setState((state) => stateHlp.setStatePriceUpdating(state, flight.id, groupId)); 
-
-    let params = {
-      id: flight.from.id + ',' + flight.to.id,
-      flight_number_from: flight.from.flight_number,
-      day_out_from: flight.from.date_full,
-      dest_from: flight.from.airport.substr(-3),
-      origin_from: flight.from.airport.substr(0, 3), 
-      price_from: flight.from.price,
-      priceCurency_from: flight.from.price_curr_code,
-      flight_number_to: flight.to.flight_number,
-      day_out_to: flight.to.date_full,
-      dest_to: flight.to.airport.substr(-3),
-      origin_to: flight.to.airport.substr(0, 3), 
-      price_to: flight.to.price,
-      priceCurency_to: flight.to.price_curr_code
-    };
-    let price = await flightsApi.get(params, config, this.handleFlightUpdateError, groupId, flight);
-
+    let price = await flightsApi.get(flight, groupId, config, this.handleFlightUpdateError);
     if (remove = price.error) {
       this.setState((state) => stateHlp.setStatePriceError(state, flight.id, groupId, remove, price.flight_id));
     } else if (remove = ((price[0].priceLocal + price[1].priceLocal) > this.state.maxPrice)) {
@@ -141,7 +102,7 @@ class Homepage extends Component {
     } else {
         this.setState((state) => stateHlp.setStatePriceUpdated(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal));
     }
-
+    
     if (remove) {
       setTimeout( () => { // animation of hiding, 1 sec later real remove
         this.setState((state) => stateHlp.setStateFlightRemove(state, flight.id, groupId)); 

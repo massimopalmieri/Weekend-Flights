@@ -140,6 +140,7 @@ export const setStateGroupPageChange = (state, page, groupId) => {
 
 export const setStateUpdatingAborted = (state, flightId, groupId) => {
     let group, flights;
+    console.log('FetchFlightUpdate aborted', groupId, flightId);
     if (
       (group = state.groups[groupId]) && 
       (flights = common.findById(group.flights, flightId))
@@ -147,4 +148,25 @@ export const setStateUpdatingAborted = (state, flightId, groupId) => {
       flights.updating = false;
     }
     return state;  
+}
+
+export const setStateFlightSet = (state, flightId, groupId) => {
+  let group, flight;      
+  if (
+    (group = state.groups[groupId]) &&
+    (flight = common.findById(group.flights, flightId))
+  ) state.flight = flight;
+  return state;
+}
+
+export const setStateGroupFetched = (state, group) => {
+  let fetchedGroup = [];
+  group.open = !state.hasOpenGroup;
+  fetchedGroup[group.id] = group;
+  Object.assign(state.groups, fetchedGroup);
+  if (!state.hasOpenGroup && !group.error) {
+    state.hasOpenGroup = true;
+  }
+  state.loadingFlights = false;
+  return state;
 }

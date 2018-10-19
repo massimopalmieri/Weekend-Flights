@@ -18,3 +18,7 @@ export const setVisibleGroupPage = (group, page) => {
     return group;
 }
 
+export const resetAbortController = (abortController) => {
+    abortController.abort(); // when clicked on search again, previous query will be aborted
+    return new window.AbortController();
+}
