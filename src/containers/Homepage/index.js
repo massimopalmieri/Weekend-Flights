@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import SearchForm from '../../components/SearchForm'
-import Results from '../../components/Results'
 import Loader from '../../components/Loader'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -9,6 +8,7 @@ import { weekendParts, weekendDefault, fromDefault} from '../../data';
 import * as flightsApi from '../../helpers/flightsApi'
 import * as common from '../../helpers/common'
 import * as stateHlp from '../../helpers/stateHlp'
+import ResultsGroup from '../../components/Results/group';
 
 class Homepage extends Component {
   abortController = new window.AbortController()
@@ -111,21 +111,23 @@ class Homepage extends Component {
             handleWeekendChange={this.handleWeekendChange}
             handleMaxPriceChange={this.handleMaxPriceChange}
           />
-          {
-            loadingFlights ?
-              <Loader />
+          {loadingFlights ?
+            <Loader />
             :
-              <Results
-                groups={groups}
-                handleShowDetails={this.handleShowDetails}
-                handleGroupToggle={this.handleGroupToggle}
-                fetchFlightUpdate={this.fetchFlightUpdate}
-                handlePageChange={this.handlePageChange}
-              />
-          } {
-            flight &&
-            <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />
+            <div className="flight-results">
+              {groups.map(group => (
+                <ResultsGroup
+                  group={group}
+                  key={group.id}
+                  handleShowDetails={this.handleShowDetails}
+                  handleGroupToggle={this.handleGroupToggle}
+                  fetchFlightUpdate={this.fetchFlightUpdate}
+                  handlePageChange={this.handlePageChange}
+                />
+              ))}
+            </div>
           }
+          {flight && <FlightDetails flight={flight} handleCloseDetails={this.handleCloseDetails} />}
         </div>
         <Footer />
       </div>
