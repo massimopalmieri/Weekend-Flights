@@ -11,22 +11,7 @@ import * as common from '../../helpers/common'
 import * as stateHlp from '../../helpers/stateHlp'
 
 class Homepage extends Component {
-  constructor(props) {
-    super(props)
-
-    this.handleShowDetails = this.handleShowDetails.bind(this)
-    this.handleCloseDetails = this.handleCloseDetails.bind(this)
-    this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this)
-    this.handleSearchFlights = this.handleSearchFlights.bind(this)
-    this.handleFromChange = this.handleFromChange.bind(this)
-    this.handleWeekendChange = this.handleWeekendChange.bind(this)
-
-    this.abortController = new window.AbortController();
-  }
-
-  static defaultProps = {
-    title: 'Weekend Flights'
-  }
+  abortController = new window.AbortController()
 
   state = {
     groups: [],
@@ -38,22 +23,22 @@ class Homepage extends Component {
     maxPrice: 100
   }
 
-  handleShowDetails(e) {
+  handleShowDetails = (e) => {
     e.preventDefault();
     let flightId = parseInt(e.currentTarget.dataset.flight, 10),
       groupId = parseInt(e.currentTarget.dataset.group, 10);
     this.setState((state) => stateHlp.flightSet(state, flightId, groupId));
   }
 
-  handleCloseDetails() {
+  handleCloseDetails = () => {
     this.setState({ flight: null });
   }
 
-  handleMaxPriceChange(e) {
+  handleMaxPriceChange = (e) => {
     this.setState({ maxPrice: e.target.value });
-  }  
+  }
 
-  fetchFlights = async (params, groupId, config)  => {
+  fetchFlights = async (params, groupId, config) => {
     let group = await flightsApi.getGroup(params, config, flightsApi.handleFetchFlightsError, groupId);
     this.setState((state) => stateHlp.groupFetched(state, group));
   }
@@ -93,12 +78,12 @@ class Homepage extends Component {
   }
 
   fetchFlightUpdate = async (flight, groupId, config) => {
-    this.setState((state) => stateHlp.priceUpdating(state, flight.id, groupId)); 
+    this.setState((state) => stateHlp.priceUpdating(state, flight.id, groupId));
     let flightUpdate = await flightsApi.get(flight, groupId, config, this.handleFlightUpdateError);
     this.setState((state) => stateHlp.flightUpdated(state, flightUpdate, flight, groupId));
     if (!common.isFlightValid(flightUpdate, this.state.maxPrice)) {
       setTimeout(() => { // animation of hiding, 1 sec later real remove
-        this.setState((state) => stateHlp.flightRemove(state, flight.id, groupId)); 
+        this.setState((state) => stateHlp.flightRemove(state, flight.id, groupId));
       }, 1000);
     }
   }
@@ -115,25 +100,25 @@ class Homepage extends Component {
   render() {
     const { loadingFlights, groups, flight, maxPrice } = this.state;
 
-    return (  
-      <div className="container-main">        
+    return (
+      <div className="container-main">
         <Header />
         <div className="container">
-          <SearchForm 
+          <SearchForm
             maxPrice={maxPrice}
-            handleSearchFlights={this.handleSearchFlights} 
-            handleFromChange={this.handleFromChange} 
-            handleWeekendChange={this.handleWeekendChange} 
-            handleMaxPriceChange={this.handleMaxPriceChange}  
+            handleSearchFlights={this.handleSearchFlights}
+            handleFromChange={this.handleFromChange}
+            handleWeekendChange={this.handleWeekendChange}
+            handleMaxPriceChange={this.handleMaxPriceChange}
           />
-          { 
-            loadingFlights ? 
-              <Loader /> 
-            : 
-              <Results 
-                groups={groups} 
-                handleShowDetails={this.handleShowDetails} 
-                handleGroupToggle={this.handleGroupToggle} 
+          {
+            loadingFlights ?
+              <Loader />
+            :
+              <Results
+                groups={groups}
+                handleShowDetails={this.handleShowDetails}
+                handleGroupToggle={this.handleGroupToggle}
                 fetchFlightUpdate={this.fetchFlightUpdate}
                 handlePageChange={this.handlePageChange}
               />
@@ -147,6 +132,5 @@ class Homepage extends Component {
       );
     }
   }
-  
+
   export default Homepage;
-  
