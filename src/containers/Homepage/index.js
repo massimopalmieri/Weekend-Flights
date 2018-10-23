@@ -40,7 +40,7 @@ class Homepage extends Component {
 
   handleShowDetails(e) {
     e.preventDefault();
-    let flightId = e.currentTarget.dataset.flight,
+    let flightId = parseInt(e.currentTarget.dataset.flight, 10),
       groupId = parseInt(e.currentTarget.dataset.group, 10);
     this.setState((state) => stateHlp.flightSet(state, flightId, groupId));
   }
