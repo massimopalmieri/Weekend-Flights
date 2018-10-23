@@ -18,7 +18,7 @@ export const priceError = (state, flightId, groupId, error_message, flight_id) =
     if (
       (group = state.groups[groupId]) && 
       (flights = common.findById(group.flights, flightId)) &&
-      (flight = (flights.from.id == flight_id) ? flights.from : flights.to)
+      (flight = (flights.from.id === flight_id) ? flights.from : flights.to)
     ) {
       flights.updating = false; 
       Object.assign(flight, {
@@ -31,8 +31,7 @@ export const priceError = (state, flightId, groupId, error_message, flight_id) =
 
 export const priceLimitError = (state, flightId, groupId, priceFrom, priceTo) => {
     let group, flights, 
-      changedFrom = false, 
-      changedTo = false,
+      changed = false,
       errorProps = {
         error: true,
         error_message: 'Ticket too expensive'
@@ -44,18 +43,20 @@ export const priceLimitError = (state, flightId, groupId, priceFrom, priceTo) =>
       Object.assign(flights, {
         updating: false,
       });
-      if (changedFrom = (priceFrom != parseFloat(flights.from.price))) {
+      if (priceFrom !== (flights.from.price)) {
         Object.assign(flights.from, errorProps, {
-          price: priceFrom.toFixed(2),
+          price: priceFrom
         });
+        changed = true;
       }
-      if (changedTo = (priceTo != parseFloat(flights.to.price))) {
+      if (priceTo !== flights.to.price) {
         Object.assign(flights.to, errorProps, {
-          price: priceTo.toFixed(2),
+          price: priceTo
         });
+        changed = true;
       }
-      if (changedFrom || changedTo) {
-        flights.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
+      if (changed) {
+        flights.price = priceFrom + priceTo;
       }
     }
     return state;
@@ -95,8 +96,7 @@ export const flightRemove = (state, flightId, groupId) => {
 
 export const priceUpdated = (state, flightId, groupId, priceFrom, priceTo) => {
     let group, flights, 
-      changedFrom = false, 
-      changedTo = false;
+      changed = false;
     if (
       (group = state.groups[groupId]) && 
       (flights = common.findById(group.flights, flightId))
@@ -105,16 +105,18 @@ export const priceUpdated = (state, flightId, groupId, priceFrom, priceTo) => {
         updating: false,
         updated: true
       });
-      if (changedFrom = (priceFrom != parseFloat(flights.from.price))) {
-        flights.from.price = priceFrom.toFixed(2);
+      if (priceFrom !== flights.from.price) {
+        flights.from.price = priceFrom;
+        changed = true;
       }
-      if (changedTo = (priceTo != parseFloat(flights.to.price))) {
-        flights.to.price = priceTo.toFixed(2);
+      if (priceTo !== flights.to.price) {
+        flights.to.price = priceTo;
+        changed = true;
       }
-      if (changedFrom || changedTo) { // if any price changed
-        flights.price = (parseFloat(priceFrom) + parseFloat(priceTo)).toFixed(0);    
+      if (changed) {
+        flights.price = priceFrom + priceTo;    
         group.flights = _.sortBy(group.flights, (el) => { // sorting flights by price
-          return parseInt(el.price);
+          return el.price;
         });
         group = common.setVisibleGroupPage(group, group.activePage); // makes sure that sorted flights are visible
       }
@@ -171,13 +173,13 @@ export const groupFetched = (state, group) => {
   return state;
 }
 
-export const flightUpdated = (state, price, flight, groupId) => {
-  if (price.error) {
-    state = priceError(state, flight.id, groupId, price.error, price.flight_id);
-  } else if ((price[0].priceLocal + price[1].priceLocal) > state.maxPrice) {
-    state = priceLimitError(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal);
+export const flightUpdated = (state, flightUpdate, flight, groupId) => {
+  if (flightUpdate.error) {
+    state = priceError(state, flight.id, groupId, flightUpdate.error, flightUpdate.id);
+  } else if ((flightUpdate[0].priceLocal + flightUpdate[1].priceLocal) > state.maxPrice) {
+    state = priceLimitError(state, flight.id, groupId, flightUpdate[0].priceLocal, flightUpdate[1].priceLocal);
   } else {
-    state = priceUpdated(state, flight.id, groupId, price[0].priceLocal, price[1].priceLocal);
+    state = priceUpdated(state, flight.id, groupId, flightUpdate[0].priceLocal, flightUpdate[1].priceLocal);
   }
   return state;
 }

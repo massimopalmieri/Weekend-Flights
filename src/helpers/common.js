@@ -2,11 +2,11 @@ import { fetchConfig, flightsPerPage } from '../data';
 import _ from 'lodash';
 
 export const findById = (group, elementId) => {
-    return _.find(group, (el) => el && (el.id == elementId));
+    return _.find(group, (el) => el && (el.id === elementId));
 }
 
 export const setVisibleGroupPage = (group, page) => {
-    group.activePage = page;3
+    group.activePage = page;
     let c = 0;
     _.each(group.flights, (el) => {
       el.visible = ( 
@@ -27,7 +27,6 @@ export const getAbortControllerConfig = (abortController) => {
     return Object.assign({}, { signal: abortController.signal }, fetchConfig);
 }
 
-export const isPriceValid = (price, maxPrice) => {
-    return (!(price.error || ((price[0].priceLocal + price[1].priceLocal) > maxPrice))
-    );
+export const isFlightValid = (flightUpdate, maxPrice) => {
+    return !(flightUpdate.error || ((flightUpdate[0].priceLocal + flightUpdate[1].priceLocal) > maxPrice));
 }

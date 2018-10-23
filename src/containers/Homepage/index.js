@@ -9,7 +9,6 @@ import { weekendParts, weekendDefault, fromDefault} from '../../data';
 import * as flightsApi from '../../helpers/flightsApi'
 import * as common from '../../helpers/common'
 import * as stateHlp from '../../helpers/stateHlp'
-import _ from 'lodash';
 
 class Homepage extends Component {
   constructor(props) {
@@ -42,7 +41,7 @@ class Homepage extends Component {
   handleShowDetails(e) {
     e.preventDefault();
     let flightId = e.currentTarget.dataset.flight,
-      groupId = parseInt(e.currentTarget.dataset.group);
+      groupId = parseInt(e.currentTarget.dataset.group, 10);
     this.setState((state) => stateHlp.flightSet(state, flightId, groupId));
   }
 
@@ -95,9 +94,9 @@ class Homepage extends Component {
 
   fetchFlightUpdate = async (flight, groupId, config) => {
     this.setState((state) => stateHlp.priceUpdating(state, flight.id, groupId)); 
-    let price = await flightsApi.get(flight, groupId, config, this.handleFlightUpdateError);
-    this.setState((state) => stateHlp.flightUpdated(state, price, flight, groupId));
-    if (!common.isPriceValid(price, this.state.maxPrice)) {
+    let flightUpdate = await flightsApi.get(flight, groupId, config, this.handleFlightUpdateError);
+    this.setState((state) => stateHlp.flightUpdated(state, flightUpdate, flight, groupId));
+    if (!common.isFlightValid(flightUpdate, this.state.maxPrice)) {
       setTimeout(() => { // animation of hiding, 1 sec later real remove
         this.setState((state) => stateHlp.flightRemove(state, flight.id, groupId)); 
       }, 1000);
@@ -105,7 +104,7 @@ class Homepage extends Component {
   }
 
   handleGroupToggle = (e) => {
-    let groupId = parseInt(e.currentTarget.dataset.group);
+    let groupId = parseInt(e.currentTarget.dataset.group, 10);
     this.setState((state) => stateHlp.groupOpen(state, groupId));
   }
 

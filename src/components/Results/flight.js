@@ -15,6 +15,14 @@ const Flight = (params) =>
         <span className="flight-row-third">{params.flight.duration}</span>
     </div>
 
+const NumberFormat = (params) => 
+    new Intl.NumberFormat('en-GB', { 
+        style: 'currency',  
+        currency: params.currency,
+        minimumFractionDigits: 0,  
+        maximumFractionDigits: 0 
+    }).format(params.value)
+
 class ResultFlight extends Component {
     componentDidMount() {
         if (!this.props.flight.updated) { // fetch update only once
@@ -45,7 +53,7 @@ class ResultFlight extends Component {
             <div className={this.getClassName()}>
                 <div className="card" onClick={handleShowDetails} data-group={group.id}  data-flight={flight.id}>
                     <div className="card-img-top flight-image">
-                        <Img src={flight.image} alt={flight.city} loader={imgLoader()} unloader={imgFailed()} alt={flight.city} />
+                        <Img src={flight.image} alt={flight.city} loader={imgLoader()} unloader={imgFailed()} />
                     </div>
                     <Img className="flight-flag" src={flight.flag} alt={flight.country} />
                     <div className="card-body">
@@ -62,7 +70,7 @@ class ResultFlight extends Component {
                                         <img src={`${imagesLocation}success.png`} className="flight-price-icon" alt="" />
                                     </span> 
                                 )}
-                                {flight.price_currency}{flight.price}
+                                <NumberFormat value={flight.price} currency={flight.price_curr_code} />
                             </span>
 
                             {flight.city} 

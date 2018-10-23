@@ -14,7 +14,6 @@ export const getGroup = async (params, config, onError, groupId) => {
         action: 'flights'
     });
     let group = await api.get(flightsApiUrl() + '?' + encodeDataToURL(params), config, onError, {groupId});
-    group.id = parseInt(group.id);
     group.size = group.flights.length;
     group.empty = !group.flights.length;
     group.activePage = 1;

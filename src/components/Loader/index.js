@@ -12,7 +12,7 @@ class Loader extends Component {
     }
 
     changeCountry() {
-        let counter = ((this.state.counter + 1) == countries.length) ? 0 : this.state.counter + 1;
+        let counter = ((this.state.counter + 1) === countries.length) ? 0 : this.state.counter + 1;
         this.setState({
             country: countries[counter],
             counter: counter
