@@ -4,27 +4,22 @@ import ResultsFlight from './flight'
 import { flightsPerPage } from '../../data';
 
 class ResultsGroup extends Component {
-
-    handlePageChange = (pageNumber) => {
-        this.props.handlePageChange(pageNumber, this.props.group.id);
-    }
-  
     render() {
-      const { group, handleShowDetails, handleGroupToggle, fetchFlightUpdate } = this.props
-  
+      const { group, handleShowDetails, handleGroupToggle, fetchFlightUpdate, handlePageChange } = this.props
+
       return (
         <div className={ group.open ? 'group' : 'group closed' }>
             <h2 className="group-name" data-group={group.id} onClick={handleGroupToggle}>{group.name} <span>({group.size} flights)</span></h2>
-            {( group.open ) && (
+            {group.open && (
                 <div className="group-flights row">
                     {group.flights.map(flight =>
                         flight.visible &&
-                        <ResultsFlight 
-                            flight={flight} 
-                            group={group} 
-                            key={flight.id} 
-                            handleShowDetails={handleShowDetails} 
-                            fetchFlightUpdate={fetchFlightUpdate} 
+                        <ResultsFlight
+                            flight={flight}
+                            group={group}
+                            key={flight.id}
+                            handleShowDetails={handleShowDetails}
+                            fetchFlightUpdate={fetchFlightUpdate}
                         />
                     )}
 
@@ -35,7 +30,7 @@ class ResultsGroup extends Component {
                                 itemsCountPerPage={flightsPerPage}
                                 totalItemsCount={group.size}
                                 pageRangeDisplayed={5}
-                                onChange={this.handlePageChange}
+                                onChange={(pageNumber) => handlePageChange(pageNumber, group.id)}
                                 hideDisabled={true}
                                 nextPageText="&raquo;"
                                 prevPageText="&laquo;"
